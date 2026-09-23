@@ -1,0 +1,9 @@
+PART A (random lifts, distinct nodes): 1500/1500 have det U != 0 and p | det U false   (hh up to 24)
+PART B (MUST-FAIL: two nodes equal mod p): 1000/1000 have p | det U
+PART C K=40: primes [17, 19, 23, 29, 31, 37]
+PART C K=80: primes [29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79]
+PART C K=120: primes [41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113]
+PART C (outer basis (4.11), K=40,80,120, all (4.9) primes): hypothesis hg holds exactly and v_p(det U)=0 at 37/37 primes
+PART C' (outer rows at p > K): hypothesis + unimodular at 18/18 primes
+PART D (inner basis (4.5) with nodes c^2, 0<=c<=(p-1)/2, random L_c): 300/300 unimodular
+[run from the repository root: python3 numerics/hermite_check.py   exit 0, about 20 s, 2026-09-23]

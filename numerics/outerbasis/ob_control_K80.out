@@ -1,0 +1,8 @@
+K=80 p=29: h=74 mK=2 entries=2775 rankL=48 r_p=48  cumulative fails=0
+K=80 p=31: h=74 mK=2 entries=2775 rankL=44 r_p=44  cumulative fails=0
+K=80 p=41: h=74 mK=1 entries=2775 rankL=24 r_p=24  cumulative fails=0
+K=80 p=43: h=74 mK=1 entries=2775 rankL=20 r_p=20  cumulative fails=0
+K=80 p=53: h=74 mK=1 entries=2775 rankL=0 r_p=0  cumulative fails=0
+K=80 p=79: h=74 mK=1 entries=2775 rankL=0 r_p=0  cumulative fails=0
+K=80 p=83: h=74 mK=0 entries=2775 rankL=0 r_p=0  cumulative fails=0
+TOTAL FAILS: 0

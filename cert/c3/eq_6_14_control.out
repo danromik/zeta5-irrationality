@@ -1,0 +1,5 @@
+Irho (from the Lean definition) = -2.126593445147050403253601   audit (A.2): -2.1265934451470504033
+lam*M0 - Irho = -4.0200315548529495967   audit: -4.0200315549
+n=1 K=  40: Delta_K(zeta5)>0: True   log Delta =    -1836.876   RHS(6.14) =     6039.399   holds: True   slack = 7876.3
+n=2 K=  80: Delta_K(zeta5)>0: True   log Delta =    -5129.992   RHS(6.14) =    11404.856   holds: True   slack = 16534.8
+n=3 K= 120: Delta_K(zeta5)>0: True   log Delta =    -8259.556   RHS(6.14) =    17263.997   holds: True   slack = 25523.6

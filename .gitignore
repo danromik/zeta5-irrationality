@@ -1,0 +1,20 @@
+# Lake build artifacts and downloaded dependencies (Mathlib cache is fetched with `lake exe cache get`)
+/.lake/
+
+# LaTeX auxiliary files (scoped to docs/: cert/ and numerics/ keep their recorded *.out / *.log outputs)
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
+docs/*.fls
+docs/*.fdb_latexmk
+docs/*.synctex.gz
+
+# Python / Sage by-products
+__pycache__/
+*.pyc
+*.sage.py
+
+# OS / editor clutter
+.DS_Store
+.vscode/

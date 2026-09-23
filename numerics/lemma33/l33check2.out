@@ -1,0 +1,3 @@
+tau(DeltaS)=[x^4]S: True
+closed-form checks bad = 0
+[run from the repository root: python3 numerics/lemma33/l33check2.py   exit 0, 2026-09-23]

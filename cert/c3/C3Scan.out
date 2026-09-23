@@ -1,0 +1,50 @@
+[1] constants in environment: 786344
+    axiom declarations (17): [Classical.choice, Lean.ofReduceBool, Lean.ofReduceNat, Lean.trustCompiler, Quot.lcInv, Quot.sound, Zeta5.Axioms.hermite_pole_integral, Zeta5.Axioms.pnt_prime_riemann_sum, isScalarObj, lcAny, lcCast, lcErased, lcProof, lcUnreachable, lcVoid, propext, sorryAx]
+[2] Zeta5 modules: 33; declarations defined in them: 3272
+    axiom declarations (2): [Zeta5.Axioms.hermite_pole_integral, Zeta5.Axioms.pnt_prime_riemann_sum]
+    declarations whose own type/value mentions sorryAx (1): [Zeta5.RealBound.eq_6_14]
+    unsafe (0): []
+    partial (5): [Zeta5.AppendixB.ChainOK._unsafe_rec, Zeta5.AppendixB.chainEnd._unsafe_rec, Zeta5.AppendixB.chainVal._unsafe_rec, Zeta5.Audit.visit._unsafe_rec, Zeta5.RealBound.chainB._unsafe_rec]
+    opaque (1): [Zeta5.Audit.visit]
+[3] cone of Zeta5.zeta5_irrational: 62097 constants
+    sorry carriers in the cone (1): [Zeta5.RealBound.eq_6_14]
+    ... of which OUTSIDE the Zeta5 modules (0): []
+    Zeta5 sorry carriers NOT in the cone, i.e. orphans (0): []
+[4] direct users in the cone of each project axiom:
+    Zeta5.Axioms.hermite_pole_integral  (1): [Zeta5.Positivity.integral_wt_div_pole]
+    Zeta5.Axioms.pnt_prime_riemann_sum  (1): [Zeta5.PrimeSum.tendsto_primeSum]
+[5] per-module census, reached/defined:
+    Zeta5 : 0/0
+    Zeta5.AppendixB : 281/311
+    Zeta5.AppendixBCheck : 0/1
+    Zeta5.Arithmetic : 55/80
+    Zeta5.Asymptotics : 6/6
+    Zeta5.Audit : 0/44
+    Zeta5.Axioms : 2/2
+    Zeta5.Basic : 127/162
+    Zeta5.Checks : 0/0
+    Zeta5.Counting : 49/50
+    Zeta5.CrudeBound : 64/83
+    Zeta5.Functional : 92/132
+    Zeta5.HermiteBasis : 14/18
+    Zeta5.HermiteBasisCore : 11/11
+    Zeta5.InnerEntries : 176/180
+    Zeta5.InnerGeneral : 52/53
+    Zeta5.InnerTate : 78/87
+    Zeta5.Interface : 27/30
+    Zeta5.Lemma33 : 142/154
+    Zeta5.Lemma42 : 40/66
+    Zeta5.LocalFunctional : 86/115
+    Zeta5.Normalization : 39/39
+    Zeta5.OuterBasis : 298/331
+    Zeta5.OuterLocal : 98/107
+    Zeta5.OuterRange : 144/172
+    Zeta5.Positivity : 64/92
+    Zeta5.PrimeSum : 133/156
+    Zeta5.RealBound : 140/320
+    Zeta5.Section3 : 2/33
+    Zeta5.Section41 : 104/148
+    Zeta5.Skeleton : 8/15
+    Zeta5.Tail : 63/65
+    Zeta5.Uniformity : 166/209
+[run from the repository root: lake env lean cert/C3Scan.lean   exit 0, 186 s wall, 2026-09-23]

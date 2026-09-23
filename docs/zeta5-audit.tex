@@ -1,0 +1,1045 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage[hidelinks]{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{finding}{Finding}
+\newtheorem*{verdictbox}{Verdict}
+
+\newcommand{\z}{\zeta(5)}
+\newcommand{\Ub}{\overline{U}}
+\newcommand{\vG}{v_p^{\mathrm{G}}}
+\newcommand{\gin}{\gamma_p^{\mathrm{in}}}
+\newcommand{\gout}{\gamma_p^{\mathrm{out}}}
+\newcommand{\Iout}{I_{\mathrm{out}}}
+
+% verdict tokens for the summary table
+\newcommand{\OK}{correct}
+\newcommand{\IM}{imprecise}
+\newcommand{\GP}{\textbf{gap}}
+\newcommand{\FA}{\textbf{false}}
+\newcommand{\NC}{not checked}
+
+\tolerance=1200
+\emergencystretch=2em
+
+\title{\bf Referee audit of\\ ``$\zeta(5)$ is irrational'' (A.\ Fauzan, 17 September 2026)}
+\author{Claude Opus 5 (1M context), Anthropic\\
+\normalsize an AI system, run as an agentic workflow in Claude Code\\
+\normalsize prepared for Dan Romik}
+\date{22 September 2026}
+
+\begin{document}
+\maketitle
+
+\section{Executive summary}
+
+\subsection*{What the paper claims}
+
+The preprint --- Aabir Fauzan, \emph{$\zeta(5)$ is irrational}, 17 September 2026, Zenodo,
+\href{https://doi.org/10.5281/zenodo.22826418}{doi:10.5281/zenodo.22826418}; this audit is of version v1,
+\href{https://doi.org/10.5281/zenodo.22826419}{doi:10.5281/zenodo.22826419}, and all page and equation
+references are to that version (32 pp., single author) --- proves two things. \textbf{Theorem 1.1:} $\z$ is irrational.
+\textbf{Corollary 1.2:} $|\z-a/b|>b^{-260}$ for all integers $a$ and all $b\ge b_0$, with
+$b_0$ unspecified. Corollary 1.2 is not needed for Theorem 1.1.
+
+\subsection*{How the proof is organised}
+
+Fix $K=40n$, $N=3n$, $h=37n$, $\alpha=3/40$, $\lambda=37/40$, and a cutoff $M\ge 40$ with
+$K\ge 200M^2$. Equations (2.2)--(2.3) define a $\mathbb{Q}$-linear functional
+$\mu_X$ on rational functions with simple poles among the $-j^2$, with values in $\mathbb{Q}[X]$
+and affine dependence on $X$. Proposition 2.2 shows that at $X=\z$ the functional
+is integration against the positive weight $w(y)=\tfrac{(2\pi)^4}{12}y^5\sum_{\ell\ge1}\ell^4e^{-2\pi\ell y}$,
+so the $h\times h$ Hankel matrix $G_K(X)=[\mu_X(D_N^6t^{i+j}/D_K)]$ is at $X=\z$ a positive
+moment matrix; (2.9) computes the leading coefficient of $\Delta_K=\det G_K$ by a Vandermonde
+identity and shows $\deg\Delta_K=h$ exactly. Sections 3--5 clear denominators: a $p$-adic
+extension of $\mu_X$ to a Tate algebra (Lemma 3.1), a distribution relation (Lemma 3.2) and a
+crude small-prime bound (Lemma 3.3) yield local determinant valuations $\gin$ (Proposition 4.1,
+for $K/M<p\le K/3$) and $\gout$ (Proposition 4.3, for $p>K/3$); (5.1)--(5.3) assemble these into
+an explicit positive rational $m_{K,M}$ with $Q_{K,M}=m_{K,M}S_K\Delta_K\in\mathbb{Z}[X]$
+(Proposition 5.1), and the prime number theorem converts the local bounds into
+$\limsup K^{-2}\log m_{K,M}\le A_M$ (Proposition 5.2). Section 6 bounds the real side:
+Andr\'eief's identity (6.10) writes $\Delta_K(\z)$ as an $h$-fold integral with a squared
+Vandermonde, which after the scaling $y_i=K\sqrt{t_i}$ is a discrete logarithmic energy in the
+external field $V$ of (6.1); comparison with an explicit sum of sixteen arcsine measures
+(Lemma 6.1) together with negativity of zero-mass logarithmic energy (Lemma 6.2) gives
+$\log F_K(\z)\le\Ub K^2+24K\log K+200K$ (Proposition 6.3). Section 7 adds the two constants:
+$A_{200}+\Ub<-139/8000<0$, which is (2.7); then $b^{37n}Q_n(a/b)$ is a positive integer tending
+to zero, and Theorem 1.1 follows.
+
+\subsection*{The verdict}
+
+\begin{verdictbox}
+\textbf{We found no error.} Nine independent audit tracks, each followed by a separate
+adversarial verification pass, checked every numbered statement of the paper that reduces to a
+computation --- most of them in exact rational or $p$-adic arithmetic, several at 25--6000
+significant digits. Not one of the paper's statements came out false. The claimed identities
+that can be checked exactly are exact; the claimed inequalities that can be checked hold,
+several of them with equality; and the two decisive constants reproduce digit for digit from
+the paper's own data.
+
+\textbf{The paper as written is not a complete proof.} It has one gap: on p.~10 the
+inequality $b_a\le 6\alpha x+3$ is asserted without proof and attributed to (4.4), which is not
+its source. The gap is load-bearing --- with the naive bound $6\alpha x+6$ the dimensions $L_a$
+go negative at $x=3$ and Proposition 4.1 collapses --- but it is small: we supply the missing
+two lines in Finding~\ref{f:ba}, and with them the argument goes through. By the ordinary
+standard, a proof with an unproved load-bearing step is not correct, so the paper needs that
+correction before it can be called one. It is a repairable defect, not a false statement and
+not an unproved assumption carrying the theorem.
+
+\textbf{With that gap filled, we found no further error.} We read every proof in the paper and
+reconstructed the ones that carry weight; we found each of them complete. We could not, however,
+\emph{certify} \S4.1: two careful readings of a dense $p$-adic valuation argument are evidence,
+not refereeing, and unlike every other estimate in the paper its conclusion cannot be
+cross-checked against a computed determinant, because its own hypothesis (4.1) forces a matrix
+of size $\ge296000$. That is a limitation of our cross-checking, not a defect in the paper's
+argument, and we say so plainly here because an earlier draft of this report phrased it in a way
+that suggested otherwise.
+
+So the verdict is: \emph{one repairable gap, which we have repaired; no other error found; and
+one section whose proof we have read and believe but cannot certify.} What this is not is a
+certification. ``No error found'' is not ``no error'', and the distinction matters most where we
+could not compute --- \emph{if} \S4 over-claims $\gin$, the \emph{proof} fails while the
+\emph{theorem} may well survive, for the reason given in Section~\ref{sec:musthold}.
+\end{verdictbox}
+
+\subsection*{Confidence, and what would change it}
+
+We separate three questions, because our confidence in them differs.
+
+\begin{enumerate}
+\item \emph{Do Sections 1--3, 5--7 and Appendices A--C contain an error?}
+\textbf{Very high confidence that they do not} ($\approx0.95$). Everything in
+this range was verified independently, most of it twice by different methods; Appendix~A's
+certification of Lemma 6.1, which the audit initially recorded as uncheckable, was in the end
+fully reproduced (Section~\ref{sec:appA}), and Appendix~B reproduces exactly as rationals.
+The figure is set by the weakest component rather than the strongest: the verifying pass on
+\S5 and Appendix~B put itself at $0.97$ (conditional on (3.12), (4.8) and (4.14)), the pass on
+\S6 and Appendix~A at $0.95$, and a conjunction cannot beat its weakest term. What is left in
+this range is reading, not computing --- the proofs of Lemmas 3.1--3.3, 4.2 and 6.2 and the
+partial summation in Proposition 5.2 were audited line by line and machine-tested only through
+their consequences.
+
+\item \emph{Is Section 4 correct?} \textbf{High confidence} ($\approx0.9$). The outer range
+(Proposition 4.3) is verified against exact determinants at $37$ primes with \emph{equality at
+27 of them}, which is very strong evidence for a formula of this complexity. The inner range
+(Proposition 4.1) is proved in the paper (pp.~10--11), and we reconstructed that proof line by
+line, twice and independently, and found it complete once the missing inequality of
+Finding~\ref{f:ba} is inserted. What we could not do is check its conclusion against a computed
+determinant, since (4.1) forces $p>8000$ and a matrix of size $\ge296000$; instead its mechanism
+was tested at the smallest nondegenerate instance ($K=80$, $p=23$), where it reproduces the true valuation $v_{23}^{\mathrm{G}}(\Delta_{80})=-188$
+\emph{exactly}, and where switching off the paper's side conditions makes the bound false. All
+side conditions were swept over tens of thousands of primes at the real parameters with no
+failure.
+
+\item \emph{Is the theorem true?} \textbf{High confidence} ($\approx0.95$), and this is
+worth separating from (2), because the evidence is of a different kind. By the paper's own
+remark C.3, irrationality follows from
+$\limsup K^{-2}\log P_K(\z)<0$ for the \emph{primitive} polynomials
+$P_K=\Delta_K/\operatorname{cont}(\Delta_K)$, with no reference to $m_{K,M}$ at all. Measured
+directly from exact determinants, $K^{-2}\log P_K(\z)=-0.1657,-0.1302,-0.1253$ at $K=40,80,120$,
+against a requirement of $<-0.0174$: the construction has roughly seven times the room it needs.
+An error in Sections 3--5 would therefore damage the \emph{proof} without necessarily touching
+the \emph{theorem}.
+\end{enumerate}
+
+\noindent Overall we would put the probability that the paper is a correct proof of Theorem 1.1
+at roughly $0.85$, and we would not be surprised to be told that a referee with more time found
+a repairable gap in Section~4. We would be surprised to be told the paper is wrong.
+
+\medskip\noindent\textbf{What would change the verdict.} (i) A demonstration that
+$\vG(\Delta_K)<\gin$ for some admissible inner prime --- this is the one inequality nobody has
+tested at the paper's parameters, and it would be fatal. (ii) An error in Lemma 3.1 or 3.2 of
+one power of $p$, which would move $\gin$ by about $h$ and change $A_M$. (iii) Any correction to
+$A_{200}$ or $\Ub$ exceeding $1.74\times10^{-2}$ ($1.29\%$ of $A_{200}$), which is what it takes
+to reach Theorem 1.1. Three smaller thresholds sit below it and touch only the printed
+constants: $5.07\times10^{-6}$ breaks (2.8) and with it Corollary 1.2, $3.28\times10^{-5}$ forces
+the printed exponent $139/5$ in (2.7) to be reprinted, and neither disturbs Theorem 1.1.
+Nothing we found moves either constant at all.
+
+\medskip\noindent\textbf{On the prior.} The problem is old and famous and the author is
+unknown to us; the paper carries a disclosure that a generative AI tool was used for
+``consistency checks of the arguments, calculations, and references''. None of this is an
+argument. We record that the paper passes a test that no wrong paper in this circle of ideas
+has passed in our experience: its machinery reproduces $\zeta(3)$ (with a weak exponent
+$\approx14.5$) and \emph{fails} for $\zeta(7)$, $\zeta(9)$, $\zeta(11)$, with balances
+$+0.93$, $+1.97$, $+3.04$ against $-0.049$ for $\zeta(5)$. It does not prove too much.
+
+\clearpage
+
+\section{Summary table of the numbered statements}
+
+Verdicts: \OK\ = checked and correct; \IM\ = correct but imprecise, terse or
+not reproducible as written; \GP\ = a gap in the written argument; \FA\ = false; \NC\ = could
+not check. ``Exact'' means exact rational or $p$-adic arithmetic.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}p{2.55cm}p{1.75cm}p{9.5cm}@{}}
+\toprule
+\textbf{Statement} & \textbf{Verdict} & \textbf{Comment} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Statement} & \textbf{Verdict} & \textbf{Comment} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r@{}}{\emph{continued on the next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+
+\multicolumn{3}{@{}l}{\textbf{Section 1}}\\
+Theorem 1.1 & \OK & Deduction from Theorem 2.1 is airtight: quadratic decay beats linear height growth, so no height estimate is needed. Its truth is that of Theorem 2.1. \\
+Corollary 1.2 & \IM & Argument valid, constants exact. But $b_0>\exp(1.07\times10^{11})$: the \emph{threshold} is not merely unspecified but ineffective, so the exponent 260 is not usable for any $b$ one could write down. The paper says only ``not specified''. \\
+$0<|\z-p/q|<q^{-0.86}$ & \OK & Brown--Zudilin citation verified against arXiv:2210.03391 (lines 86, 180). \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Section 2}}\\
+(2.1) parameters & \OK & $1+2\alpha=23/20$, $h=K-N=37n$, $\lambda=37/40$, $\alpha=3/40$ all consistent. \\
+(2.2) $\mu_X(t^e)$ & \OK & Symbolically identical to $(2e{+}5)!\,\zeta(2e{+}2)/(12(2\pi)^{2e+2})$ for $e=0..11$; matches $\int y^{2e}w$ to 24--40 digits. \\
+(2.3) $\mu_X(1/(t{+}j^2))$ & \OK & Equals $a^4\zeta(5,a)-\tfrac1{2a}-\tfrac14$ at $a=j$; both correction terms and both signs verified, symbolically and to $\sim$24 digits, $j=1..6$. \\
+\S2.1 extension of $\mu_X$ & \IM & No circularity: $\{t^e\}\cup\{1/(t+j^2)\}$ is a basis, so (2.2)--(2.3) \emph{define} rather than extend. Exclusion of $t=0$ is used but never stated. \\
+(2.4)--(2.6) & \OK & $G_K$ genuinely Hankel; $S_K>0$; $m_{K,M}>0$ by construction. $S_K$ is independently forced by (3.11). \\
+Theorem 2.1 & \NC & Degree and positivity verified. Integrality is Proposition 5.1; decay is (7.2). \\
+(2.7), (2.8) & \OK & Follow from (7.2). Both constants are saturated: see Section~\ref{sec:numerics}. \\
+(2.9) degree & \OK & Exact identity, sign included, at $(N,K)=(1,3),(2,5),(3,7),(1,5),(3,9)$ and at the real $(3,40)$, where it matches a 1594-digit integer. Hence $\deg Q_{K,M}=h$ exactly. \\
+Proposition 2.2 & \OK & Every step checked: $w=y^5f^{(4)}/12$, $w(0^+)=1/\pi$ to 20 digits; the quartic derivative identity symbolically; all four boundary terms $O(y)$; Hermite (DLMF 25.11.29) to $\ge24$ digits at five values of $a$. Only omission: the $\sum/\int$ interchange (Tonelli, one line). \\
+(2.10) & \OK & Positive definiteness of $G_K(\z)$ confirmed at $K=40,80,120,160,200,240$; at $K=40$, all 37 LDL pivots positive, certified five ways including interval arithmetic. \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Section 3}}\\
+\S3.1 defs, $\kappa_d$, $\|\tau\|$ & \OK & $\|\tau\|\le p$ is the correct power and is sharp (attained at $z^{4p-1}$). $B_1=-1/2$ \emph{is} stated (p.~3). \\
+(3.1) pullback & \OK & Exact on monomials ($e=0..10$) and on poles ($j=1..12$); reproduces (2.2) and (2.3). \\
+(3.2), (3.3) & \OK & From $B_n(1)=(-1)^nB_n$ and $B_n(x{+}1)-B_n(x)=nx^{n-1}$. The hypothesis ``$g$ regular at zero'' is necessary and consistent. \\
+Lemma 3.1, (3.4) & \OK & Valid; tested exactly at $p=7,11,13$. $d(r_\nu)<p$ is necessary ($r=p$ gives $v_p=-5$); $\deg U_0\le p+1$ is sufficient but not tight (true threshold $4p-2$); $r_\nu-r_\eta\in\mathbb{Z}_p^\times$ is redundant given $d(r_\nu)<p$ (now proved, not just searched). \\
+(3.5) & \OK & Exact; converges in the Tate algebra iff $v_p(s)<0$. \\
+far/near consistency (p.~7) & \OK & True, and the paper's one-sentence justification (uniqueness of the $B_T$ decomposition) is the right one. Verified on 18 random instances. \\
+Lemma 3.2, (3.6), (3.7) & \OK & $p^{-4}$ is right ($p^{-1}$ Raabe, $p^{-3}$ three derivatives); $Y=p^5X+C_p$ is exactly what makes the $1/x$ case return $-X$. $C_p\in p^5\mathbb{Z}_p$ for every $p\ge7$ (a theorem, not a table); ``$p\ge7$'' is genuinely needed. \\
+Lemma 3.3, (3.8)--(3.10) & \OK & Every estimate checks; (3.8) and (3.9) are sharp (min slack 0). (3.10) never violated in $180+216$ exact $(K,d,p)$ cases on two different grids. Residue sign left as ``$\pm$''; it is $(-1)^{K-r}$. \\
+(3.11) & \OK & \emph{The key ``no lost power of $p$'' test.} An exact identity: $\det[(K!)^2\mu_X(f_if_j/D_K)]=S_K\Delta_K$, with $S_K$ precisely (2.5). Verified exactly at five $(K,N,h)$ and then proved. \\
+(3.12) & \OK & Follows from (3.10) plus the ultrametric determinant bound; holds at every prime $<5K+200$ at $K=40,80,120$ with large slack. \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Section 4}}\\
+(4.1) & \OK & Implies $p>200M\ge8000$ and $p^2>5K$; the latter \emph{is} used, on p.~14 in \S5.1. \\
+(4.2), (4.3) & \OK & Exact $p$-power extractions, not bounds. The ``$-4$'' and ``$+1$'' silently absorb the $p^{-4}$ prefactor of (3.7). \\
+(4.4), ordering rule & \OK & $L_0+\sum_aL_a=h$ is an identity. The rule ``extras to the largest $\ell_K$'' is not cosmetic: it excludes the one bad case of the weight comparison. \\
+$b_a\le6\alpha x+3$ (p.~10) & \GP & \textbf{True and sharp, but asserted without proof and misattributed to (4.4).} Needs a case split on $v_N=N\bmod p$. With the naive $6\alpha x+6$ the chain gives $T-b_a>-3/2$ at $x=3$ and $L_a\ge0$ fails. See Finding~\ref{f:ba}. \\
+(4.5) basis & \OK & $\mathbb{Z}_p$-unimodular by CRT; verified numerically ($v_p(\det U)=0$). \\
+(4.6)--(4.8) & \OK & Re-derived; $\gin\in\mathbb{Z}$; equals the true valuation exactly in the one computable nondegenerate instance. \\
+Proposition 4.1 & \NC & Proof reconstructed line by line and found complete. All three side conditions are displayed on pp.~10--11 (not hidden). \emph{Not testable at its own parameters} ($h\ge296000$); the $m_N\ge1$ sub-range has no determinant test. \\
+(4.9) & \OK & Reads $5N\le2p-2$ (not $5K$). All five conditions hold throughout $K/3<p\le K$; the paper asserts this on p.~11. \\
+(4.10) rank bound & \OK & $\operatorname{rank}L=r_p$ \emph{exactly} at all 37 tested primes --- the bound is sharp. \\
+(4.11), (4.12) & \OK & Weights re-derived; $\vG(A_{uv})\ge w_u+w_v$ with 0 failures in $\approx3\times10^5$ entries. \\
+divided difference (p.~12) & \IM & Conclusion true, but needs the $-\tfrac14+\tfrac1{2j}$ tail of (2.3): over 2087 node pairs the congruence holds 2087/2087 with the tail and 0/2087 without. One displayed line missing. \\
+Lemma 4.2, (4.13) & \OK & Proved independently; 6000 random trials, 0 violations, bound attained. The nonpositive \emph{half}-integer hypothesis is demonstrably necessary (fails for quarter-integers in 102/3000 trials). \\
+(4.14), table p.~13 & \OK & Rebuilt from (4.11)--(4.12)+Lemma 4.2: 0 mismatches over 3125+14100 $(K,p)$ pairs, and every row of the cost table re-derived. \\
+Proposition 4.3 & \OK & Verified against exact $\Delta_K$ at $K=40,80,120$: \emph{0 violations at all 37 primes, equality at 27}. Second assertion ($p>K$) exact at every prime up to $4h$. \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Section 5}}\\
+(5.1) & \OK & The three branches partition the primes with no gap or overlap; boundary cases $pM=K$, $3p=K$, $p=2h$, $p>2h$ all check. Branch 1 bounds $F_K$, branches 2--3 bound $\Delta_K$ --- load-bearing, and correct. \\
+(5.2), (5.3) & \OK & Only $p\le2h$ enters; (5.3) is exactly Legendre applied to (2.5), signs included. \\
+Proposition 5.1 & \NC & Correct bookkeeping of (3.12), 4.1, 4.3. Inherits Proposition 4.1's status. \\
+(5.4)--(5.6) $\Gamma,\mathcal{N},R$ & \OK & Re-derived from (4.4)--(4.8) and (5.3) independently; $R$ affine on exactly 143 intervals of $[3,20]$, matching the paper's $s=143$. \\
+(5.7) uniformity & \IM & True and better than claimed: $|\gin-p\Gamma(K/p)|\le3.8M$, both signs, uniform in $K$ (exactly 35 at fixed $x$ over a factor 32 in $K$). The paper's one-paragraph justification is very terse and gives no constant; ``$O(M)$ intervals'' over-counts (there are at most 3). \\
+(5.8), (5.9) & \OK & Re-derived from (4.14) as an exact $K\to\infty$ limit; 0 mismatches in 20000+30000 exact random-rational tests. $\int_{1/3}^{1/2}d=9/640$ exactly. \\
+(5.10) $\Iout=127751/96000$ & \OK & Exact, by three independent routes; all 11 rows of Table 4 and their endpoints reproduce. \\
+Proposition 5.2, (5.11) & \OK & PNT step correct: $p\le\sqrt{5K}$ gives $O(K^{3/2}\log K)$; $\lfloor\log_p5K\rfloor=1$ exactly on $(\sqrt{5K},K/M]$; partial summation legitimate. End-to-end control converges to the predicted blocks. \\
+(5.12)--(5.14) & \OK & Re-derived by hand; the quadratic coefficient of $R$ cancels \emph{identically} in $(\alpha,\lambda)$ once $H=\lambda+3\alpha$, so convergence of $\int R/x^3$ is structural. $-1/2\le Q\le13/8$ correct. \\
+(5.15)--(5.17) & \OK & Both integrations by parts re-derived; $\overline{\mathcal P}=2923/240$, $\max|G_0|=1/(36\sqrt3)$, $|\mathcal{C}|\le118511/(4320\sqrt3)<16$. (5.16) is an exact identity of its constants ($=-2689/48000$) and is conservative by $4.05\times10^{-3}$; (5.17) holds at $M=200$ with slack $2.0\times10^{-5}$. \\
+(5.18)--(5.21) & \OK & $\int_3^{20}R/x^3$ exact; $A_*$, $A_{200}$, $A_{100000}$ reproduce exactly. \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Section 6}}\\
+(6.1), (6.3) $V$, $C_*$ & \OK & $V$ is exactly the field produced by $y=K\sqrt t$; $C_*=2.65303599034048866$ is exactly the $K^2$ coefficient of $\log S_K$ (symbolic difference 0). \\
+Lemma 6.1, (6.2) & \OK & \emph{The crux, and it is both true and proved.} $\sup_{t\ge0}(2U^\rho-V)=-6.6498938806$ at $t^*=0.6195486669$, against $M_0=-6.645$: slack $4.894\times10^{-3}$. Independently reproduced here. \\
+Lemma 6.1, (6.4) & \OK & $\lambda M_0-I(\rho)+C_*=-1.366995564512461\le\Ub=-1.3669955$. True, but the margin is $6.45\times10^{-8}$: $\Ub$ is literally the 7-decimal rounding of the left side. \\
+Lemma 6.1, structure & \OK & $\sum c_j=37/40$ \emph{exactly} in integer arithmetic; nesting holds; $\min_j(b_j-a_j)=0.005085947445>1/225$. \\
+Lemma 6.2, (6.5) & \OK & Standard and correctly proved; the integrability hypothesis is exactly what the circle/arcsine application needs. \\
+(6.6)--(6.9) & \OK & Re-derived; arcsine window bound $4\sqrt{2r}/(\pi\sqrt L)$ correct; $\sum_j 8c_j\sqrt2/(\pi\sqrt{b_j-a_j})=9.42\le60$. Tested end-to-end on 180 random configurations at $K=40,80,200$. \\
+(6.8) & \OK & True and sharp: the coefficient $13/10=2\lambda-1+6\alpha$ is exact and $6\alpha^3/t$ is exactly what $6\alpha\log(1+\alpha^2/t)\le6\alpha\cdot\alpha^2/t$ gives (an earlier pass called it $3\times$ too generous; that was a misreading). \\
+(6.10) Andr\'eief & \OK & Verified symbolically and exactly for $h=2,3,4$, including the $1/h!$; weight identity checked numerically. \\
+(6.11), (6.12) & \OK & $8192$ valid and generous (the sharp constant is $(2\pi)^4/12=129.88$). (6.12) correct, with the $t=0$ case the binding one. \\
+(6.13)--(6.15) & \OK & Exponent $2h(h{+}6N{-}K)+16h$ and prefactor $4096e^{12}$ re-derived; $\int_0^\infty t^{-1/2}(1+\sqrt t)^5e^{-\sqrt t}dt=652$ exactly; the $K^2\log K$ terms cancel exactly ($111/160-111/160=0$). \\
+Proposition 6.3, (6.16) & \OK & Holds at $K=40,\dots,240$ (legitimate instances, since the claim is for every $K\in40\mathbb{Z}_{>0}$) with room to spare (the excess $\log F_K-\Ub K^2$ peaks at $+276$ at $K=120$ and is $+27$ at $K=240$, against an allowance $24K\log K+200K$ rising from $11541$ to $79569$: a factor $79$ at $K=40$, $387$ at $K=200$, $2988$ at $K=240$). Note its own bound is vacuous for $K\le242$. \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Section 7}}\\
+(7.1) & \OK & A legitimate sum of two upper bounds; $Q_{K,M}(\z)>0$ so the logarithm exists. \\
+(7.2) & \OK & Both exact margins reproduce digit for digit from Appendix B.3. \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Appendix A}}\\
+Table 1 & \OK & Transcribed from the text layer and checksummed: $\sum c_j=37/40$ exactly. \\
+(A.1), (A.2) & \OK & (A.1) against quadrature to $<10^{-40}$; (A.2) re-derived from nesting and confirmed by double quadrature. \\
+(A.3), (A.4) & \OK & Truncation orders ample: remainders $4.9\times10^{-64}$ and $2.1\times10^{-51}$, far below the claimed $2^{-144}$ and $10^{37}$ times below the tightest margin in play. \\
+(A.5), min of $V$ & \OK & Matches direct integration of (6.1); $\Phi''$ sign change at $y^2=711/880$ exactly; minimum inside $(q_-,q_+)$ as claimed. \\
+(A.6) & \IM & $V_*=0.913559526\le\min V=0.913559534$: valid. ``The parenthesis is negative'' holds by $2.5\times10^{-8}$ but follows in one line from the preceding sentence; terse, not unjustified. \\
+(A.7), (A.8), Table 2 & \OK & The $k$-column lists whitespace-separated runs. Under that reading the 91 rows give \textbf{684 intervals that tile $[0,2]$ exactly} (verified here in exact rational arithmetic). The caption should say so. \\
+(A.9) & \OK & $\max\mathcal{B}(l,r)=-6.645002689215588$ over all 684 intervals, below $-6645002/10^6$. \textbf{Margin $6.892\times10^{-7}$}; exactly one interval is within $10^{-5}$ of the threshold. \\
+(A.10), (A.11) & \OK & Both enclosures correct; $\kappa=13.8658566788652898$ inside (A.11) and $<6933/500$. \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Appendix B}}\\
+(B.1) & \OK & Re-derived from $\ell(x,z)=\lfloor x-z\rfloor+\lfloor x+z\rfloor+1$. \\
+(B.2) breakpoints & \IM & Correct and complete (142 interior points, $s=143$), but redundant: $2(1-\alpha)=2\lambda$ is listed twice and the $2\alpha$-points are a subset of the $4\alpha$-points. \\
+(B.3), Tables 3, 4 & \OK & All 17 rows of Table 3 and all 11 rows of Table 4 reproduce exactly; the 17 rows sum \emph{exactly} to (5.18). (See Section~\ref{sec:disagree} on a disputed digit.) \\
+B.3 final margins & \OK & Both printed rationals reproduce exactly as fractions. \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Appendix C}}\\
+Proposition C.1, (C.1) & \OK & (C.2)--(C.5) and the combination re-derived; $\kappa<6933/500$ with margin $1.433\times10^{-4}$. The full chain was run numerically at $K=40$ and $80$: (C.3) holds as an exact identity to 401 and 1500 digits. \\
+(C.4) & \OK & Uses $m!\ge(m/e)^m$ and monotonicity of $x\log(eK/(\alpha x))$; valid since $h=37K/40<40K/3$. \\
+(C.5) & \IM & The displayed $h^2\mathcal{R}^{2h}$ \emph{is} reproducible from the paper's own argument and is true; it is weaker by the $O(1)$ factor $\mathcal{R}^2=293.8$ than the $h^2\mathcal{R}^{2(h-1)}$ the same step gives. $\kappa$ unaffected. \\
+(C.6) & \OK & $\kappa=13.86585667886528983$ by two evaluators agreeing to $>100$ digits; margin to $\varrho$ is $1.4332\times10^{-4}$. The ``positive margin absorbs the polynomial factor'' only for $K\gtrsim2.81\times10^5$; neither number is given. \\
+(C.7), C.2 & \OK & All rational identities exact: $\varrho c-260=-1/80$, $\epsilon-\lambda/c=1/24000$. The perturbation argument genuinely excludes a zero. Depends on Proposition 5.1 as well. \\
+(C.8) & \OK & $\lambda\varrho-\epsilon=511067/40000=12.776675<13$ exactly. \\
+C.3 primitive normalization & \OK & Gauss's lemma; and it is the remark that makes the theorem robust to an error in \S\S3--5 (see Section~\ref{sec:musthold}). \\
+\end{longtable}
+\endgroup
+
+\section{Per-section commentary}
+
+\subsection{Sections 1 and 2: the construction}
+
+Nothing here is wrong, and the parts a referee would most want to see are the parts that are
+most solid.
+
+The final logical step is airtight and deserves to be stated plainly, because it is what makes
+the paper's strategy different from a linear-form construction: one needs only
+$Q_n\in\mathbb{Z}[X]$, $\deg Q_n\le37n$, $Q_n(\z)>0$ and $Q_n(\z)<e^{-139n^2/5}$. Then
+$b^{37n}Q_n(a/b)$ is a positive integer smaller than $\exp(37n\log b-\tfrac{139}{5}n^2)\to0$.
+The decay is quadratic in $n$ and the height cost is linear, so \emph{no estimate on the
+coefficients of $Q_n$ is required at all}. This is why the paper can afford to work with
+polynomials of growing degree.
+
+The functional of (2.2)--(2.3) is well defined and there is no circularity, contrary to what a
+quick reading might suggest. The set $\{t^e\}_{e\ge0}\cup\{1/(t+j^2)\}_{j\ge1}$ is a basis of
+the space of rational functions with simple poles in $\{-j^2\}$, so (2.2) and (2.3) prescribe
+values on a basis and determine a unique $\mathbb{Q}$-linear functional; the word ``extend'' in
+the paper is loose for ``define''. One hypothesis is used and never stated: $0=-0^2$ is not an
+allowed pole (all products run over $j\ge1$), which is exactly why the integral in
+Proposition 2.2 converges.
+
+Equation (2.9) is correct including the sign, and this matters: it is what gives
+$\deg Q_{K,M}=h$ \emph{exactly}, which the final step needs. We verified it symbolically on
+small cases in both sign parities, and then on the paper's own smallest real parameters
+$(N,K)=(3,40)$, where $\det[X]G_{40}$ equals
+$(-1)^{666}\prod_{j=4}^{40}j^4D_3(-j^2)^5$ exactly, as a 1594-digit integer, reproduced by two
+tracks with different determinant routines. A structural fact the paper never states is worth
+knowing: $[X]\mu_X(D_N^6t^m/D_K)$ is an $(h{-}1)$st divided difference and vanishes identically
+for $m<22n-3$, so $[X]G_K$ carries a large zero block and the Vandermonde nonvanishing in (2.9)
+is genuinely load-bearing rather than decorative.
+
+Proposition 2.2 was checked step by step and is right, including both correction terms and both
+signs in (2.3) --- the place where such a computation usually goes wrong. The four integrations
+by parts were certified by comparing two different integrands to 45--51 digits; Hermite's
+formula (DLMF 25.11.29) was matched to $\ge24$ digits at five values of $a$. Positive
+definiteness of $G_K(\z)$ was confirmed at $K=40,80,120,160,200,240$, and at $K=40$ certified
+five ways including interval arithmetic. A warning for anyone reproducing this: the entries
+carry up to 107 digits of cancellation, and evaluating $\Delta_{40}$ at $\z$ needs $\ge2600$
+digits --- at 400 digits it returns $+1203.8$, pure noise. The single omission in the proof is
+the interchange of $\sum_{\ell\ge1}$ with $\int_0^\infty$, which is Tonelli in one line since
+every term is positive.
+
+\subsection{Section 3: the local functional}
+
+\textbf{No error, and --- the thing we were most concerned to check --- no place where a power
+of $p$ is gained or lost silently.} Some 400 automated checks in exact arithmetic with explicit
+valuations, plus a SageMath/$\mathbb{Q}_p$ cross-check of the Bernoulli inputs, produced no
+failure.
+
+The decisive test is (3.11). A change of basis is exactly where a construction of this kind
+loses a power of $p$ without anyone noticing, and here the change of basis to the
+integer-valued $f_i$ is an \emph{exact identity}: with $q_i=\sum_kC_{ik}t^k$ triangular with
+$C_{ii}=(-1)^i2/(2i)!$, one gets
+$\det[(K!)^2\mu_X(f_if_j/D_K)]=((K!)^2/(N!)^{12})^h(\det C)^2\Delta_K=S_K\Delta_K=F_K$,
+with $S_K$ \emph{precisely} the constant printed in (2.5). We verified this exactly for five
+$(K,N,h)$ triples and then proved it. Nothing is gained or lost by the change of basis, and
+nothing by the pullback $t=-x^2$.
+
+Lemma 3.1's hypotheses were attacked individually. $d(r_\nu)<p$ is \emph{necessary}: at $r=p$
+the conclusion fails with $v_p=-5$. $\deg U_0\le p+1$ is sufficient but far from tight --- the
+true threshold is $4p-2$, because $\kappa_d=d(d-1)(d-2)B_{d-3}/24$ has a compensating factor of
+$p$ at $d=p+2,2p+1,3p$, and the first loss is at $d=4p-1$ (measured: $27,43,51,67,75,91$ for
+$p=7,11,13,17,19,23$). The third hypothesis, $r_\nu-r_\eta\in\mathbb{Z}_p^\times$, is
+\emph{redundant} given $d(r_\nu)<p$: inside $\{-p,\dots,p-1\}$ a congruent pair must be
+$\{r,r-p\}$, and $H^{(5)}_{p-1-r}\equiv H^{(5)}_r\pmod p$ makes the two $p^{-1}$-sized residue
+contributions cancel. This is unused slack, not an error.
+
+Lemma 3.2 is correct and the exponent $p^{-4}$ is right ($p^{-1}$ from Raabe's multiplication
+theorem, $p^{-3}$ from three differentiations). $Y=p^5X+C_p$ is exactly the choice making the
+right-hand side at $g=1/x$ equal $-X$. The hypothesis $p\ge7$ is genuinely required, not
+decorative: $v_p(\sum_{a<p}a^{-4})=1$ for $p\ge7$ but $0$ for $p=5$. One refinement for the
+record: $C_p\in p^5\mathbb{Z}_p$ for every $p\ge7$ is a theorem, but $v_p(C_p)=5$ \emph{exactly}
+only when $p\nmid B_{p-5}$; at the irregular prime $p=37$ one has $v_{37}(C_{37})=6$. The paper
+claims only membership, so it is unaffected.
+
+The one defect in \S3 is cosmetic: in Lemma 3.3's proof the residue coefficient is written
+$c_r=\pm(K!)^2rA(r)/((K+r)!(K-r)!)$ with the sign left to the reader. It is uniformly
+$(-1)^{K-r}$, and only $|c_r|_p$ is used, so nothing depends on it.
+
+\subsection{Section 4: the local determinant estimates}
+
+This is where the risk lives, and it is worth being precise about \emph{which} risk.
+
+\textbf{The outer range is verified, and it is essentially sharp.} We computed $\Delta_K(X)$
+exactly in $\mathbb{Q}[X]$ at $K=40,80,120$ (coefficients up to $2.7\times10^4$ digits) by two
+independent implementations, and compared $\vG(\Delta_K)$ with $\gout$ at every prime satisfying
+(4.9). There are \textbf{0 violations at all 37 primes, with equality at 27 of them}. A formula
+of this complexity that is exactly attained at 27 independent primes is almost certainly right.
+The second assertion of Proposition 4.3 ($\vG(\Delta_K)\ge0$ for $p>K$) is exact at every prime
+up to $4h$, which is nontrivial because the residue denominators contain primes up to $2K-1$
+and they cancel. Every ingredient was separately verified: unimodularity of the basis (4.11)
+at 37/37 primes; $\operatorname{rank}L=r_p$ \emph{exactly} at 37/37, so the rank bound (4.10) is
+sharp; $\vG(A_{uv})\ge w_u+w_v$ with 0 failures in $\approx3\times10^5$ entries; and the
+combinatorial identity (4.14) rebuilt from (4.12) and Lemma 4.2 with 0 mismatches over more than
+$1.7\times10^4$ $(K,p)$ pairs. Where $\gout$ is not sharp --- at $K\ge2p$, where it misses by
+$78,60,17$ at $K=120$ --- the loss is in the \emph{safe} direction: it inflates $A_M$ and makes
+(7.2) harder. Section~4 therefore cannot rescue a false theorem, which is a useful thing to
+know: if the paper is wrong, it is not wrong here.
+
+Lemma 4.2 we proved independently and stress-tested (6000 random instances over
+$\mathbb{Z}_7$, $\mathbb{Z}_{11}$, $\mathbb{Z}_3$; 0 violations; the bound attained in every
+sharpness test). Its restriction to nonpositive \emph{half}-integer weights is not a
+convenience: with quarter-integer weights the conclusion fails in 102 of 3000 random
+instances, e.g.\ $p=11$, $h=3$, $w=(-3/2,-1/4,-3/2)$, $r=1$, $z=0$, where the claimed bound is
+$-13/2$ and the true valuation is $-7$. The paper says the restriction is essential and it is
+right.
+
+\textbf{The inner range: the proof was read and reconstructed; only the numerical cross-check
+is missing.} Proposition 4.1 is proved in the paper on pp.~10--11 --- about twenty-five lines,
+resting on Lemmas 3.1 and 3.2 and on the allocation (4.4)--(4.8), with the side conditions
+displayed in the text. We reconstructed that argument line by line, twice and independently, and
+found it complete apart from the one asserted inequality of Finding~\ref{f:ba}, which we prove
+below. We record two things about our confidence in it. First, it is a reading, not a
+verification: it is the one substantial argument in the paper whose correctness rests on our
+having followed it rather than on a machine check. Second, and unlike every other estimate here,
+its conclusion cannot be compared against a computed determinant: hypothesis (4.1) forces
+$p>200M\ge8000$ and $K\ge200M^2\ge320000$, hence $h\ge296000$, and at the computable $K\le160$ the
+allocation (4.4) is degenerate ($L_0=4M+10>h$, and $T<0$). So the corroboration we can give it is
+indirect:
+
+\begin{itemize}
+\item \emph{The mechanism, at the smallest nondegenerate instance.} At $K=80$, $p=23$ with $L_0$
+freed, the true value is $v_{23}^{\mathrm{G}}(\Delta_{80})=-188$. With $L_0=3$ or $4$ (all side
+conditions satisfied) the entry inequality holds with \textbf{0 failures} and $\gin=-188$
+\emph{exactly}. With $L_0=0,1,2$ (zero-source dominance fails) the entry inequality fails
+$2094/812/29$ times and $\gin$ would be $-170/-180/-186$, i.e.\ a \emph{false} bound. The test
+is therefore discriminating, and the paper's side conditions are exactly the right ones.
+\item \emph{The side conditions, at the real parameters.} All of them --- $L_a\ge0$, the two
+Lemma-3.1 degree restrictions, zero-source dominance, the dimension identity
+$L_0+\sum_aL_a=h$, and $2Hx-21/20<T<2Hx$ --- were swept over all 9158 inner primes at
+$M=40$, $K=200M^2$, and over $27171+13960$ sampled primes at $M=200$, $K=8\times10^6$ and
+$4\times10^7$. \textbf{No failures}, with three to four orders of magnitude of slack in the
+degree conditions.
+\item \emph{The hand-off from \S3.} The sharpest worry raised in the audit was whether \S4
+actually produces an honest \emph{polynomial} $U_0$ of degree $\le p+1$ for Lemma 3.1, given
+that the raw pullback numerator has degree $184n$. It does, and the paper displays exactly this
+on p.~11: $\nu_i(c)+\nu_j(c)+6\ell_N(c)\le2(T+1)<\tfrac{23}{5}M+2$ at an ordinary source and
+$5+4L_0+12m_N\le\tfrac{169}{10}M+45$ at the zero source, both $\le p+1$ since $p>200M$. We
+verified both over the same sweeps. This closes the hand-off.
+\end{itemize}
+
+\noindent What remains without an independent machine check is the $p$-adic determinant
+inequality $\vG(\Delta_K)\ge\gin$ itself at admissible parameters, and with it the $m_N\ge1$
+(i.e.\ $p\le N$) part of the inner range, which for $M=200$ is most of it. To be clear about what
+that does and does not mean: the paper proves this inequality, and we believe the proof; what we
+cannot do is confirm it the way we confirmed Proposition 4.3, by computing the determinant and
+comparing. Certification here needs a referee or a formalisation, and \S\ref{sec:musthold} says
+so in those terms.
+
+\begin{finding}\label{f:ba}
+\textbf{(p.~10, the line after (4.4); the only genuine gap in the written mathematics.)}
+The paper writes ``From (4.4), $2Hx-\tfrac{21}{20}<T<2Hx$, $b_a\le6\alpha x+3$.''
+The attribution is wrong --- $b_a\le6\alpha x+3$ is a fact about $\ell_N$, not a consequence of
+(4.4) --- and no proof is given.
+\end{finding}
+
+\noindent\emph{Why it matters.} The naive estimate $\ell_N(a)\le2\lfloor N/p\rfloor+2$ gives only
+$b_a\le6\alpha x+6$, under which the paper's own chain reads
+$T-b_a>2\lambda x-\tfrac{141}{20}$, which at $x=3$ equals $-3/2$: the nonnegativity of the
+dimensions $L_a$ fails and Proposition 4.1 collapses. \emph{Why it is true.} Writing
+$\ell_N(a)=2m_N+\mathbf{1}_{a\le v_N}+\mathbf{1}_{a\ge p-v_N}$ with $v_N=N\bmod p$, both
+indicators can be $1$ only if $v_N\ge(p+1)/2$, and in that case $\alpha x-m_N=v_N/p>1/2$; so
+$\ell_N(a)<2\alpha x+1$ either way. \emph{Evidence.} We checked the inequality over all 9158
+inner primes at $M=40$, $K=320000$ (and 17214 at $K=640000$, 190197 at $M=200$,
+$K=8\times10^6$): no violation, and the bound is \emph{strict everywhere} but only just ---
+the slack is $6v_N/p$ when $1\le v_N\le(p-1)/2$ and $6v_N/p-3$ when $v_N\ge(p+1)/2$, so it
+becomes arbitrarily small as $v_N/p$ approaches $0$ or $1/2$. The observed minimum is
+$0.00119$, at $p=47981$, $v_N=24000$ (an earlier track recorded ``equality whenever $p\mid N$'';
+that is wrong --- at $p\mid N$ the slack is exactly $3$). With the paper's bound the chain gives
+$T-b_a>2\lambda\cdot3-\tfrac{81}{20}=+3/2$ exactly, so there is no room to spare at $x=3$ ---
+this is not a place to be terse. The author should be asked to insert the case split.
+
+\subsection{Section 5: normalization and the prime sum}
+
+Section 5 and Appendix B are \emph{correct}, conditional on (3.12), (4.8) and (4.14). Every item
+reproduced exactly in independent implementations. The case analysis of (5.1) is exhaustive and
+non-overlapping, and one subtlety is worth recording because it is load-bearing and right:
+branch 1 bounds $\vG(F_K)$ directly via (3.12) and therefore correctly \emph{omits} $v_p(S_K)$
+from $L_p$, whereas branches 2--3 bound $\vG(\Delta_K)$ and must include it. Since
+$v_p(S_K)\sim-1110n^2/(p-1)<0$ for small $p$, branch 1 would be false if (3.12) were a statement
+about $\Delta_K$ rather than $F_K$. It is about $F_K$ (p.~9).
+
+The single weak point of the exposition is (5.7). The claim that
+$\gin=p\Gamma(K/p)+O_M(1)$ uniformly in the inner range carries the entire arithmetic constant
+and is justified in one informal paragraph with no explicit constant and no displayed estimate.
+The claim is \emph{true}, and in fact better than the paper suggests: computing $\gin$ exactly
+from (4.4)--(4.8) over the full inner range gives
+$|\gin-p\Gamma(K/p)|\le3.8M$, taking both signs, uniform in $K$ --- at fixed $x=K/p\approx10$
+the difference is \emph{exactly} 35 for $K$ ranging over a factor of 32. So the error is $O(M)$,
+not $O(M^2)$. The mechanism is a cancellation rather than an omission: the reserved zero block
+(4.7) is genuinely $\Theta(M^2)$ (it contributes $+13734$ at $p=8081$, $K=320000$) but is almost
+exactly cancelled by the ordinary block because $L_0=4M+10$ enters (4.4) and lowers $T$. That is
+precisely what the paper's sentence about ``altering the number of allocated rows by $O_M(1)$''
+means, but a reader cannot see it. A minor slip in the same paragraph: ``There are $O(M)$ such
+intervals'' over-counts --- in the $z$ variable the integrand of (5.4) is a step function with
+at most three pieces. The over-count is in the safe direction.
+
+Everything else in \S5 is exact. $R$ is affine on exactly 143 intervals of $[3,20]$, matching
+the paper's $s=143$, with zero affineness failures on any of them; $\int_3^{20}R/x^3$,
+$\Iout=127751/96000$, $\int_{1/3}^{1/2}d=9/640$, $A_*$, $A_{200}$ and $A_{100000}$ all reproduce
+as exact rationals by more than one route. The tail bounds (5.16) and (5.17) are valid and
+conservative: the true $\int_{20}^\infty R/x^3=-0.06007376$ against the printed
+$-2689/48000=-0.05602083$, so the paper discards $4.05\times10^{-3}$ there, which is 23\% of its
+own final margin.
+
+\subsection{Section 6: the real bound}
+
+Correct, and --- this is the part of the audit that changed most --- \emph{proved}, not merely
+true. Our initial reading recorded Lemma 6.1 as ``could not check'' because Appendix A's
+certification looked unverifiable; it is verifiable, and it verifies. See
+Section~\ref{sec:appA}.
+
+Lemma 6.2 is a correct proof of a standard fact, with the integrability hypothesis exactly
+matched to the circle-plus-arcsine application. It is applied correctly: $\sigma=K^{-1}\sum\omega_i$
+and $\rho$ are both compactly supported and $\sigma-\rho$ has mass
+$h/K-\lambda=37n/40n-37/40=0$ exactly. The regularization bookkeeping in (6.6)--(6.9) is right
+in every direction, and the constant 60 is honest (the true value of
+$\sum_j8c_j\sqrt2/(\pi\sqrt{b_j-a_j})$ is $9.42$; even the crude route using only
+$b_j-a_j>1/225$ gives $49.97$). The hypothesis $b_j-a_j>1/225$ is used in exactly one place, here.
+
+The scaling deserves a note for anyone reading the paper: it is $y_i=K\sqrt{t_i}$, i.e.\
+$y^2=K^2t$, and only that scaling makes the bookkeeping in (6.13) close. We re-derived that
+exponent tracking every power of $K$ --- Vandermonde $K^{2h(h-1)}$, and per variable
+$K^{12N}\cdot K^{-2K}\cdot K^{12}\cdot K^5\cdot K^1$ --- and obtained
+$2h(h+6N-K)+16h$, exactly as printed, with prefactor $8192/2\cdot e^{12}=4096e^{12}$, also as
+printed. The integral $\int_0^\infty t^{-1/2}(1+\sqrt t)^5e^{-\sqrt t}dt=652$ is exact
+($=2e\,\Gamma(6,1)$). The $K^2\log K$ terms of (6.14) and (6.15) cancel exactly, and the
+$K^2$ coefficient of (6.15) equals $C_*$ of (6.3) with symbolic difference zero. Andr\'eief's
+identity (6.10) is exact for $h=2,3,4$ including the $1/h!$.
+
+\textbf{How much room \S6 actually has.} Four tracks independently solved the underlying weighted
+equilibrium problem --- by a constrained convex QP with exact cell energies, by one-cut resolvent
+inversion, by a Fourier--cosine Frostman solve, and by Frank--Wolfe on a log-spaced grid, each
+with controls reproducing the semicircle, Marchenko--Pastur and quartic-field laws --- and they
+agree to ten digits: the true optimum is
+$E^*=\sup_\mu(I(\mu)-\int V\,d\mu)=-4.0385457735$, on $\mathrm{supp}=[7.12\times10^{-5},0.753950]$
+with Robin constant $-6.6607811230$. The paper's comparison bound $\lambda M_0-I(\rho)=-4.0200316$
+is \emph{above} $E^*$, hence valid, and loose by $0.01851$. In other words the true constant is
+$\Ub_{\mathrm{true}}=E^*+C_*=-1.3855098$ against the paper's $\Ub=-1.3669955$: \textbf{Section 6
+holds $0.0185$ of unused reserve, slightly more than the entire final margin
+$|A_{200}+\Ub|=0.0174$.} The real side is conservative, not optimistic. This is confirmed from
+the other direction by direct measurement: $K^{-2}\log F_K(\z)$ at $K=40,\dots,200$ extrapolates
+to $-1.3854\ldots-1.3869$, and a model fitted on $K\le160$ predicts the $K=200$ value with an
+out-of-sample error of $1.4\times10^{-6}$.
+
+The consequence for the audit is sharp: \emph{any failure of this paper must be located in
+Sections 3--5, not in Section 6.} If the arithmetic side were off by as much as $+0.036$, the
+proof could in principle still be rescued by replacing $\rho$ with the true equilibrium measure.
+
+\subsection{Section 7}
+
+Two lines, both correct. (7.1) is a legitimate sum of two upper bounds, and $Q_{K,M}(\z)>0$ so
+the logarithm exists. (7.2) reproduces digit for digit. The only observation is that (7.1) is a
+$\limsup$ statement while (2.7)--(2.8) are ``for all sufficiently large $n$'': no threshold
+anywhere in the paper is effective. That is legitimate for an irrationality proof, but it means
+no finite computation can ever confirm or refute (2.7) directly --- every check must be of the
+asymptotic constants, which is what this audit did.
+
+\subsection{Appendix A}\label{sec:appA}
+
+Appendix A proves Lemma 6.1, and it does prove it. Because the audit initially doubted this, we
+state the reproduction in full.
+
+Table 1 gives $10^{12}a_j$, $10^{12}b_j$, $10^{12}c_j$ as integers. Taken from the PDF text
+layer (\emph{not} from the rendered page image --- see Section~\ref{sec:disagree}) it
+checksums: $\sum c_j=37/40$ \emph{exactly} in integer arithmetic, the nesting
+$0<a_{16}<\cdots<a_1<b_1<\cdots<b_{16}<2$ holds, and $\min_j(b_j-a_j)=0.005085947445>1/225$,
+attained at $j=1$. From (A.2), $I(\rho)=-2.126593445147050403254$, inside the printed enclosure
+(A.10); and $C_*=2.653035990340488661129$, also inside. Hence
+\[
+\lambda M_0-I(\rho)+C_*=-1.366995564512460935617\le\Ub=-\tfrac{2733991}{2000000},
+\]
+which is (6.4) --- \textbf{with a margin of $6.45\times10^{-8}$}. $\Ub$ is literally that number
+rounded up at the seventh decimal.
+
+The pointwise inequality (6.2) holds comfortably:
+$\sup_{t\ge0}(2U^\rho(t)-V(t))=-6.6498938806$ at $t^*=0.6195486669$, against $M_0=-6.645$, a
+slack of $4.894\times10^{-3}$; on $[2,10^8]$ the supremum is $-8.27$. We reproduced the
+field $V$ of (A.5) against direct quadrature of (6.1) to $5\times10^{-51}$ as a control.
+
+The certification itself, (A.7)--(A.9), is the part that looked unverifiable, because Table 2's
+$k$-column contains rows like ``$19\ \ 3\ \ 0\ \ 2,3$'' and ``$21\ \ 5\ \ 2,\dots,4\ \ 10,\dots,13$''
+whose format the caption does not explain. The rule is that the column lists a \emph{union of
+whitespace-separated runs}. Under that reading all 91 rows parse, and the resulting
+\textbf{684 intervals tile $[0,2]$ exactly} --- we checked this in exact rational arithmetic,
+gap-free and overlap-free within each of the 35 blocks $[A_j,A_{j+1}]$. Evaluating $\mathcal{B}(l,r)$
+of (A.7) on all 684 gives
+\[
+\max_{(j,d,k)}\mathcal{B}(l,r)=-6.645002689215588,\qquad
+\text{at }(j,d,k)=(30,6,26),
+\]
+\[
+[l,r]=[0.5480159423,\,0.5492641749],
+\]
+which is below the printed $-6645002/10^6$. \textbf{So (A.9) is true, with a margin of
+$6.892\times10^{-7}$}, and exactly one of the 684 intervals lies within $10^{-5}$ of the
+threshold. The prescribed truncation orders are ample: (A.3) at $m=64$ on $z\le1/3$ has
+remainder $4.9\times10^{-64}$ and (A.4) at $m=80$ on $z\le1/2$ has remainder $2.1\times10^{-51}$,
+both far below the claimed $2^{-144}\approx4.5\times10^{-44}$ and some $10^{37}$ below the
+tightest margin in play. A margin of $6.9\times10^{-7}$ on quantities of size $6.6$ is resolved
+by double precision, let alone by the 25--50 digits we used; the whole appendix verifies from
+the printed tables in seconds (our own run: $4$\,s; the slowest of the four independent
+reproductions took two minutes).
+
+Two remarks. First, the author is operating at the edge of his own stated precision in
+three places --- (6.4) at $6.45\times10^{-8}$, (A.9) at $6.89\times10^{-7}$ and (5.17) at
+$2.0\times10^{-5}$ --- and one fewer dyadic refinement on the worst Table-2 cell would break
+(A.9) as written. Second, and more seriously as a matter of robustness: the slack in (6.4) is
+the same order as a single transposed digit pair inside one Table 1 entry. We confirmed this
+experimentally: reading $10^{12}b_8$ as $201105672729$ instead of the correct $201105762729$
+moves $I(\rho)$ by $3.3\times10^{-8}$. The printed table is self-consistent and correct, but a
+referee is entitled to ask that (6.2) be quoted at $-6.6498$ (slack $4.9\times10^{-3}$) rather
+than at $M_0=-6.645$. That single change replaces $\Ub$ by $-1.3715224$ and turns the margin in
+(7.2) from $0.052484$ into $7.29553$ --- a factor of $139$ --- at no cost anywhere else. (We
+recompute this here; the figure ``280'' that circulated in the audit's drafts was wrong.)
+
+\subsection{Appendix B}
+
+Exact throughout. All 17 rows of Table 3 and all 11 rows of Table 4 reproduce, the 11 row
+endpoints coincide with independently derived breakpoints, and the 17 rows of Table 3 sum
+\emph{exactly} to (5.18). (B.1) re-derives from $\ell(x,z)=\lfloor x-z\rfloor+\lfloor x+z\rfloor+1$.
+The quadratic-cancellation identity
+$2\lambda-12\lambda\alpha+2(H^2-H-\lambda^2)-18\alpha^2+6\alpha=0$
+holds exactly, and in fact vanishes \emph{identically} in $(\alpha,\lambda)$ once one notes
+$H=\lambda+3\alpha$ (which (4.4) forces but the paper never says): the convergence of
+$\int R/x^3$ is structural, not a numerical accident of $3/40$ and $37/40$. Stating this would
+make \S5.3 considerably more convincing. The breakpoint set (B.2) is correct and complete but
+redundant: $2(1-\alpha)=2\lambda=37/20$ is listed twice, and the $2\alpha$-points are a proper
+subset of the $4\alpha$-points.
+
+\subsection{Appendix C}
+
+Correct. Proposition C.1's chain (C.2)--(C.5) was re-derived and then run numerically end to end
+at $K=40$ and $K=80$, where (C.3) holds as an exact identity to 401 and 1500 digits --- this
+confirms the residue structure, the rescaling and the exponent $12N-2K+6$ simultaneously. The
+constant is $\kappa=13.86585667886528983095$ by two evaluators agreeing to more than 100 digits,
+against $\varrho=6933/500=13.866$: (C.6) is true with margin $1.4332\times10^{-4}$, and the
+paper's own enclosure (A.11) is correct. All the rational identities are exact:
+$\varrho c-260=-1/80$, $\epsilon-\lambda/c=1/24000$, $\lambda\varrho-\epsilon=511067/40000=12.776675<13$.
+The perturbation argument in C.2 genuinely excludes a zero, and the exponent 260 is essentially
+forced by this method (its best possible value is $259.54$).
+
+Three caveats the paper should state. (i) ``Its positive margin absorbs the polynomial factor in
+$h$'' needs $K\gtrsim2.81\times10^5$; neither the margin nor the threshold is given. (ii) The
+true norm is much smaller than the bound: $\log\|B_K\|/K=7.314$ at $K=40$ and $7.388$ at $K=80$
+against the asserted $\varrho=13.866$, so Proposition C.1 has roughly a factor-2 margin in the
+exponent wherever it is testable, and the exponent 260 is an artefact of the estimate --- a
+proved rate near $7.4$ would give about 139 by the identical argument. (iii) Corollary 1.2's
+threshold is not merely unspecified but \emph{ineffective}: $M=100000$ forces
+$K\ge200M^2=2\times10^{12}$, hence $\log b\ge1.067\times10^{11}$, i.e.\
+$b_0>\exp(1.07\times10^{11})$. A larger $K$ is no escape, since $e^{\varrho K}$ then blows up.
+Finally, Corollary 1.2 depends on Proposition 5.1 and on Theorem 2.1's degree claim as well as
+on (7.1), Proposition 2.2, \S2.3 and (C.6) --- without integrality, $b^hQ_K(a/b)$ is not an
+integer and the contradiction evaporates.
+
+\section{The decisive numerics}\label{sec:numerics}
+
+\subsection{The two constants and the balance}
+
+Everything in Table~\ref{tab:balance} was recomputed here in exact rational arithmetic from the
+paper's own formulas and matches the printed values.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Quantity & Value & Status \\
+\midrule
+$\Iout$ & $127751/96000=1.3307395833$ & exact, three routes \\
+$\int_3^{20}R\,x^{-3}dx$ & $0.0427881769084$ & exact, matches (5.18) \\
+$A_*$ & $1.3175069269083709$ & exact, matches (5.19) \\
+$A_{200}$ & $1.34958769774170422$ & exact, matches B.3 \\
+$A_{100000}$ & $1.31757167571548622$ & exact, matches B.3 \\
+$\Ub$ & $-2733991/2000000=-1.3669955$ & paper's constant \\
+$\Ub_{\mathrm{true}}$ & $-1.3855098$ & true limit; $\Ub$ valid, loose by $0.0185$ \\
+\midrule
+$A_{200}+\Ub$ & $-0.017407802258296$ & $<0$: irrationality holds \\
+relative margin & $1.2899\%$ of $A_{200}$ & \textbf{the margin the theorem turns on} \\
+vs.\ $-139/8000$ & slack $3.2802\times10^{-5}$ & $0.0024\%$: the printed exponent is saturated \\
+$A_{100000}+\Ub$ & $-0.049423824284514$ & $<-79/1600$, slack $4.882\times10^{-5}$ \\
+$A_{200}+\Ub_{\mathrm{true}}$ & $-0.0359221$ & the margin with the sharp real constant \\
+\bottomrule
+\end{tabular}
+\caption{The balance. Both B.3 margins reproduce exactly:
+{\footnotesize$-1600(A_{200}+\Ub)-\tfrac{139}{5}=\tfrac{3089837638249482469}{58872425992515135000}$}
+and {\footnotesize$-1600(A_{100000}+\Ub)-\tfrac{7907}{100}
+=\tfrac{29873543950273155160680943}{3679526624532195937500000000}$}.}
+\label{tab:balance}
+\end{table}
+
+Two sensitivities are worth separating, because they have different consequences.
+\emph{Theorem 1.1} needs only $A_{200}+\Ub<0$ and has $1.29\%$ of room (and $1.60\%$ if one uses
+(5.11) directly instead of the deliberately lossy (5.20)). The \emph{printed constants} $139/5$
+and $7907/100$ survive perturbations of only $3.28\times10^{-5}$ and $5.07\times10^{-6}$; any
+correction above those forces them to be reprinted and breaks Corollary 1.2, while leaving
+Theorem 1.1 standing. Note also that $\Iout$ alone is $98.60\%$ of $A_{200}$: the arithmetic
+constant is governed by (4.14) and Table 4 --- that is, by whether Proposition 4.3 and
+Lemma 4.2 are true --- and not by any arithmetic Section 5 performs.
+
+\subsection{The direct computations}
+
+$\Delta_K(X)$ was built exactly in $\mathbb{Q}[X]$ from (2.1)--(2.6) alone, by four independent
+implementations (multimodular determinant plus Lagrange interpolation; rational matrix inverse
+plus characteristic polynomial; entry assembly from the closed residue formula plus Lagrange
+interpolation over $\mathbb{Q}$; Berkowitz over $\mathbb{Q}[X]$), with controls passing first
+(Hilbert determinants through the same code path; (2.2) against the moment integral; (2.3)
+against $\int w/(y^2+j^2)$). All four agree coefficient by coefficient.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$K$ & $\log F_K(\z)$ & $K^{-2}\log F_K(\z)$ & $\log(1/\mathrm{cont})$ & $K^{-2}\log P_K(\z)$ \\
+\midrule
+40  & $-2041.19514254$  & $-1.2757470$ & $1776.06607557$  & $-0.1657057$ \\
+80  & $-8508.29536397$  & $-1.3294212$ & $7674.96382916$  & $-0.1302081$ \\
+120 & $-19408.86914398$ & $-1.3478381$ & $17604.86199438$ & $-0.1252783$ \\
+160 & $-34743.05318075$ & $-1.3571505$ & & \\
+200 & $-54510.86712322$ & $-1.3627717$ & & \\
+240 & $-78712.313$\phantom{00000} & $-1.36653$\phantom{00} & & \\
+\bottomrule
+\end{tabular}
+\caption{Exact determinant data. $G_K(\z)$ is positive definite at all six $K$
+(Proposition 2.2), and (6.16) holds at all six. $P_K=\Delta_K/\operatorname{cont}(\Delta_K)$ is
+the primitive polynomial, so $S_K$ cancels identically from $K^{-2}\log P_K(\z)$, and the
+fourth column is $\log(1/\operatorname{cont}(F_K))$, i.e.\ the true minimal normalizer.
+$K\le120$ was produced by four independent implementations and $K\le200$ by two, each at two
+precisions; the $K=240$ row comes from a single track at $400$--$800$ digits and is quoted to
+its stated precision.}
+\label{tab:det}
+\end{table}
+
+The last column of Table~\ref{tab:det} is, in our view, \textbf{the single most informative
+number in the audit}. It is the decay actually achieved by the best possible normalization, and
+it must be compared with the requirement $<-139/8000=-0.0173750$. The measured values
+$-0.166,-0.130,-0.125$ extrapolate to roughly $-0.12$ (plausible range $[-0.27,-0.072]$), and
+the value predicted from the verified asymptotics is
+$A_\infty+\Ub_{\mathrm{true}}=1.3134540-1.3855098=-0.0720558$. \emph{The construction has about
+seven times the room it needs.} For calibration, the constructions in this circle of ideas that
+are known to fail do so by a positive margin: the Brown--Zudilin $\zeta(5)$ cellular forms give
+$+0.22$ per $N^2/2$ with true denominators, and Rivoal's $(3;1^q)$ families at $q=11$ miss by
+$+0.05$ to $+0.14$. This construction is not marginal in the way those are; only the paper's
+\emph{printed exponent} is marginal.
+
+\subsection{The local bounds against the truth}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rl@{}}
+\toprule
+$K$ & $\vG(\Delta_K)-\gout$ at the primes satisfying (4.9), in increasing order of $p$ \\
+\midrule
+40  & $1,1,0,0,0,0$ \hfill ($p=17,\dots,37$) \\
+80  & $39,15,1,0,0,0,0,0,0,0,0,0,0$ \hfill ($p=29,\dots,79$) \\
+120 & $78,60,17,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0$ \hfill ($p=41,\dots,113$) \\
+\bottomrule
+\end{tabular}
+\caption{Proposition 4.3 against exact determinants: 0 violations at 37 primes, equality at 27.
+The slack that does occur is confined to $K\ge2p$ and is in the safe direction.}
+\label{tab:gout}
+\end{table}
+
+For the inner range the corresponding test is impossible, and Table~\ref{tab:inner} records what
+was done instead.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$L_0$ & side conditions & entry-bound failures & $\gin$ (truth: $-188$) \\
+\midrule
+0 & zero-source dominance fails & 2094 & $-170$ \quad(\emph{false bound}) \\
+1 & fails & 812 & $-180$ \quad(\emph{false bound}) \\
+2 & fails & 29 & $-186$ \quad(\emph{false bound}) \\
+3 & all hold & \textbf{0} & $\mathbf{-188}$ \quad(exact) \\
+4 & all hold & \textbf{0} & $\mathbf{-188}$ \quad(exact) \\
+\bottomrule
+\end{tabular}
+\caption{The mechanism of Proposition 4.1 at the smallest nondegenerate instance, $K=80$,
+$p=23$, where $v_{23}^{\mathrm{G}}(\Delta_{80})=-188$. The paper's side conditions are exactly
+what separates a true bound from a false one.}
+\label{tab:inner}
+\end{table}
+
+Finally, the limiting functions really are the limits: $\gin-p\Gamma(K/p)$ is bounded by $3.8M$
+uniformly in $K$ and is \emph{exactly} 35 at fixed $x\approx10$, $M=40$, for
+$K=3.2\times10^5,\dots,1.024\times10^7$; $v_p(S_K)-p\mathcal{N}(K/p)$ is likewise $K$-independent
+at fixed $x$; and $-\gout-K(R_0-d)(p/K)$ has modulus at most 7. Hence $A_M$ is the right
+arithmetic constant for the local bounds the paper proves.
+
+\section{What would have to be true for the proof to work}\label{sec:musthold}
+
+Stripped of everything that has been verified, the paper rests on the following load-bearing
+statements. This is the list the author should be asked to defend.
+
+\begin{enumerate}
+\item \textbf{$\vG(\Delta_K)\ge\gin$ for the inner primes $K/M<p\le K/3$ (Proposition 4.1).}
+The one substantive claim no computation in this audit could reach. Everything around it checks
+out --- the combinatorics at the real parameters, the mechanism at $K=80$, $p=23$, the
+hand-off degrees, the limit $\Gamma$ --- but the inequality itself is unverified at admissible
+parameters, and if $\gin$ over-claims, then $Q_{K,M}\notin\mathbb{Z}[X]$ and both Theorem 1.1
+and Corollary 1.2 collapse silently.
+
+\item \textbf{Lemmas 3.1 and 3.2, at the parameters \S4 uses them.} A one-power-of-$p$ error
+would move $\gin$ by about $h$ and change $A_M$. Both lemmas were verified exactly at small $p$;
+the necessity of $d(r_\nu)<p$ and of $p\ge7$ was confirmed by counterexample.
+
+\item \textbf{$b_a\le6\alpha x+3$ (p.~10).} True and sharp, but unproved in the paper and
+load-bearing for $L_a\ge0$ at $x=3$; see Finding~\ref{f:ba}. Two lines would fix it.
+
+\item \textbf{The $m_N\ge1$ part of the inner range.} For $M=200$ this is most of the inner
+range and it has no determinant test at any $K$. The bookkeeping is uniform in $m_N$ and was
+verified symbolically and over sweeps reaching $m_N=14$.
+
+\item \textbf{$A_{200}+\Ub<0$.} Verified exactly, \emph{given} $\gin$ and $\gout$. The margin is
+$1.29\%$; an error of that size in either constant kills Theorem 1.1.
+\end{enumerate}
+
+\noindent\textbf{A structural remark that should reassure the author and the reader alike.} By
+the paper's own C.3, $Q_{K,M}=a_{K,M}P_K$ with $a_{K,M}$ a positive integer and
+$P_K=\Delta_K/\operatorname{cont}(\Delta_K)$ primitive. Hence Theorem 1.1 follows from
+\[
+\limsup_{K\to\infty,\;40\mid K}K^{-2}\log P_K(\z)<0
+\]
+alone, with no reference to $m_{K,M}$, to $\gin$, or to Sections 3--5 at all: $P_K\in\mathbb{Z}[X]$
+has degree $h$ by (2.9), is positive at $\z$ by Proposition 2.2, and the same final step applies.
+The entire arithmetic apparatus exists only to \emph{prove} such a bound, by exhibiting an
+explicit divisor $m_{K,M}$ of the content. The measured values in Table~\ref{tab:det} say that
+the quantity above is about $-0.12$ at computable $K$ and extrapolates to $-0.072$. So an error
+in Sections 3--5 would be an error in the proof and quite probably not in the theorem. We say
+this not to excuse a gap but to locate it: a referee's report on this paper should be about
+whether the denominators are proved, not about whether the construction works.
+
+\section{Minor and presentational remarks}
+
+These are offered to the author as corrections; none affects the mathematics.
+
+\begin{enumerate}
+\item \emph{(\S2.)} ``Polynomial division and simple partial fractions extend $\mu_X$'' (p.~3) is
+a definition on a basis, not an extension; the exclusion of $t=0$ from the pole set is used ---
+it is what makes Proposition 2.2's integral converge --- but never stated. In Proposition 2.2
+(p.~5) the interchange of $\sum_{\ell\ge1}$ and $\int_0^\infty$ is not justified (Tonelli, one
+line). In \S2.3 (p.~4) the hedge ``the \emph{possible} poles $-j^2$'' is confusing, since all $h$
+residues are nonzero, which is what makes $V$ square and (2.9) nonvanishing; and $W=D_N^5$ is
+defined there but first used in \S4.
+\item \emph{(\S3.)} On p.~6 the citation ``[9, (24.4.1), (24.4.3)]'' appears to list the two
+DLMF displays in the opposite order to the two identities named in the sentence. We were not
+able to confirm the DLMF numbering (no offline copy; see Section~\ref{sec:notchecked}), and in
+any case a bracketed list of two references carries no ordering, so this is at most a
+readability point. Lemma 3.3's residue sign is left as
+``$\pm$''; it is $(-1)^{K-r}$ uniformly. In Lemma 3.1 the hypothesis $\deg U_0\le p+1$ may be
+relaxed to $4p-2$ and $r_\nu-r_\eta\in\mathbb{Z}_p^\times$ is redundant --- unused slack, worth
+knowing if \S\S4--5 ever needs it.
+\item \emph{(pp.~10, (4.2)--(4.3).)} The ``$-4$'' and ``$+1$'' silently absorb the $p^{-4}$
+prefactor of (3.7); the text does not say so, and settling it costs the reader a full
+re-derivation.
+\item \emph{(p.~12.)} The divided-difference integrality needs the $-\tfrac14+\tfrac1{2j}$ tail
+of (2.3), via $a^4(H^{(5)}_{a-1}-H^{(5)}_a)+1/a=0$. The paper points at (2.3), so the reader has
+what is needed, but the one-line computation is missing; over 2087 node pairs the congruence
+holds $2087/2087$ with the tail and $0/2087$ without.
+\item \emph{(p.~14, (5.7).)} No explicit constant is given for the $O_M(1)$; the correct one is
+$3.8M$. ``There are $O(M)$ such intervals'' over-counts: in the $z$ variable there are at most
+three pieces. The cancellation between the zero block and the ordinary block should be described
+as a cancellation rather than as an omission.
+\item \emph{(p.~23, (A.6).)} ``The parenthesis is negative'' follows in one line from the
+preceding sentence $\Phi'(\sqrt{q_-})<0$ and the monotonicity of $\arctan$; as printed it looks
+like an unsupported assertion, and it holds by only $2.5\times10^{-8}$.
+\item \emph{(pp.~24--25, Table 2.)} The caption explains only the single-run format. Rows with
+two runs are momentarily unreadable; one clause --- that runs are separated by a space --- would
+fix it.
+\item \emph{(p.~26, (B.2).)} Redundant: $2(1-\alpha)=2\lambda$ appears twice and the
+$2\alpha$-points are a subset of the $4\alpha$-points. Also, $H=\lambda+3\alpha$ should be stated,
+since it is what makes the quadratic coefficient of $R$ vanish identically.
+\item \emph{(Appendix C.)} The displayed $h^2\mathcal{R}^{2h}$ in (C.5) is true and reproducible
+but weaker by the $O(1)$ factor $\mathcal{R}^2=293.84$ than the same step gives. ``Its positive
+margin absorbs the polynomial factor in $h$'' (p.~30) needs $K\gtrsim2.81\times10^5$; neither the
+margin $1.433\times10^{-4}$ nor the threshold is stated. And ``the threshold $b_0$ is not
+specified'' understates: $b_0$ is not \emph{effective}, and is at least $\exp(1.07\times10^{11})$.
+\item \emph{Notation.} $s$ is the number of subintervals in B.1, the quantity $Hx-T/2$ in (5.4),
+and appears in $O(K^{3/2})$; $d$ is $d(r)$ in \S3, $d(y)$ in (5.9) and $d_0$ in B.1; $M$ is the
+cutoff while $M_0$ is a potential constant; $N$ is $3n$ while $\mathcal{N}(x)$ is (5.5).
+\item \emph{Robustness (the most valuable single change).} Quoting (6.2) with
+$M_0=-6.6498$ instead of $-6.645$ --- which the author's own data support --- would multiply the
+final margin in (7.2) by $139$ (from $0.0525$ to $7.296$) and remove the knife-edge from (6.4),
+(A.9) and the printed exponent at a stroke. Similarly, the sanity check that the machinery gives $+0.93$ for $\zeta(7)$
+and $-0.86$ for $\zeta(3)$ is half a page and answers the first question every referee will ask.
+\item \emph{``Author's note on further work'' (p.~31).} A page of unsubstantiated claims of
+``several advances'' and ``substantial progress'' with no mathematical content, which the section
+itself then disclaims. It raises a referee's prior against the paper for no gain and should be
+deleted.
+\item \emph{Reproducibility.} The paper should ship an ancillary verification script. Everything
+in Appendices A and B is reproducible at ordinary precision in minutes --- we did it --- but a
+referee should not have to reimplement the rational-enclosure apparatus to check a lemma.
+\end{enumerate}
+
+\section{What we did not check, and the limits of this audit}\label{sec:notchecked}
+
+\subsection{Not checked}
+
+\begin{enumerate}
+\item \textbf{$\vG(\Delta_K)\ge\gin$ at admissible parameters.} The central omission. Hypothesis
+(4.1) forces $h\ge296000$; the smallest admissible matrix is $296000\times296000$. What would
+settle it: a machine-checked formalisation of \S3 plus \S4.1 (the argument is finite and
+elementary), or a targeted determinant over $\mathbb{Z}_p$ in the unimodular basis (4.5) at a
+single admissible prime, or --- much the cheapest --- a rewrite of \S4 admitting small $M$
+(e.g.\ $M=3$, $K\approx1800$) so that the prime-by-prime comparison becomes computable.
+\item \textbf{The $m_N\ge1$ portion of the inner range}, verified only by symbolic bookkeeping.
+\item \textbf{The author's own exact-rational enclosure pipeline} over the 684 intervals of
+Table 2. We verified the same inequalities in 25--60-digit interval-free arithmetic against a
+smallest margin of $6.9\times10^{-7}$, and verified analytically that the prescribed truncation
+orders leave remainders $10^{37}$ times smaller than needed. The residual risk is negligible but
+not zero; an interval-arithmetic or formally verified rerun would close it.
+\item \textbf{An independent transcription of Tables 1 and 2.} Ours checksums (exact mass
+$37/40$; exact tiling of $[0,2]$), which is strong evidence, but a second pair of eyes on
+Table 1 is worth one referee-hour given the $6.45\times10^{-8}$ margin in (6.4).
+\item \textbf{Every proof step that is not a computation.} The audit is a machine audit with a
+line-by-line reading on top of it. The proofs of \textbf{Lemmas 3.1, 3.2, 3.3}, of
+\textbf{Lemma 4.2}, of \textbf{Lemma 6.2}, and the partial-summation step inside
+\textbf{Proposition 5.2} were re-derived by hand and then tested only through their
+\emph{consequences} (exactly, at small $p$ and small $K$, and by randomised stress tests). None
+of them has been verified as a theorem at the parameters \S\S4--5 use them. We found no defect
+in any of them, and Lemma 4.2's statement is a finite claim about $h\times h$ matrices that
+6000 random instances did not break; but a machine-checked proof is the thing that would settle
+them.
+\item \textbf{The degree bound on p.~9} (``the pullback numerator has degree at most
+$12N+4h+1$''), an input to Lemma 3.3 and hence to (3.12). We confirmed the \emph{use} made of
+it --- $\max(2K,d+1)=184n+2\le200n=5K$, and replacing $\max(2K,d+1)$ by $5K$ weakens (3.10),
+which is the safe direction --- but not the bound itself.
+\item \textbf{The DLMF equation numbers} cited on pp.~5, 6 and 29 ((25.6.2), (25.11.29),
+(24.4.1), (24.4.3), \S24.10(i), (18.10.5)). We verified the \emph{identities} numerically
+(Euler's $\zeta(2m)$ formula symbolically; Hermite's formula to $\ge24$ digits; von
+Staudt--Clausen through $v_p(\kappa_d)\ge-1$; the Legendre bound $|P_j(s)|\le R^j$ for
+$j\le24$); we did not open DLMF to confirm that those are their numbers.
+\item \textbf{The $(\alpha,c)$ optimisation behind the $\zeta(s)$ sanity test.} The table of
+balances at the paper's own $(\alpha,\lambda)=(3/40,37/40)$ was reproduced exactly by two
+tracks; the further claim that re-optimising $(\alpha,c)$ still leaves $\zeta(7)$ failing
+($+0.84$) rests on one track's computation and was not independently re-run.
+\item \textbf{Whether a known no-go result applies.} Zudilin's $\mathbb{Z}$-transfinite-diameter
+obstruction, F.~Brown's recent bound and the Chudnovsky--Bombieri $G$-function bounds all
+constrain linear-form or Mellin constructions; none that we found applies verbatim to a
+determinant producing integer \emph{polynomials} $Q$ with $Q(\z)$ small. A short answer from a
+specialist (Zudilin, Brown, Fischler) is the one external input that could settle the paper
+quickly in either direction. Separately, the author and this construction appear nowhere we
+could find. The bibliography [1]--[13] is a list of real papers; we checked four of them at
+source ([4] Brown--Zudilin, [5] Fischler, [6] Fischler--Sprang--Zudilin, [8] Lai--Lupu--Sprang)
+and the paper characterises each accurately, including the two quotations on p.~1.
+\end{enumerate}
+
+\subsection{Where the audit corrected itself}\label{sec:disagree}
+
+Discipline requires recording where our own first pass was wrong, since several of these would
+have become false accusations against the paper.
+
+\begin{itemize}
+\item \textbf{Table 3, row $j=14$ (p.~27).} One verification pass reported that the paper prints
+$167757646109/955086612480$ where the truth is $16775764609/955086612480$, and called it ``the
+only outright false printed statement in the paper''. \textbf{This is wrong, and we settled it
+ourselves.} The PDF text layer reads $16775764609$, and so does a 600\,dpi render of p.~27,
+where the numerator is unambiguously eleven digits long; it is only at screen resolution that
+the glyphs invited a misread, which two separate passes then made in the same way. The decisive
+test is arithmetic rather than typographic: only $16775764609/955086612480$ makes the 17 printed
+rows sum to (5.18), and with it the sum is \emph{exactly}
+$322437603634266857629/7535670527041937280000$ (recomputed here in \texttt{Fraction}
+arithmetic). \textbf{The paper is correct here, and its sentence ``Grouping its terms into unit
+intervals gives Table 3. Their sum is (5.18)'' is true as printed.} General rule for anyone
+re-doing this work: take digits from the text layer or from a high-resolution render, never from
+a screen-resolution page image.
+\item \textbf{The (A.9) margin.} One track reported $6.892\times10^{-10}$; its verifier reported
+$6.892\times10^{-7}$. We recomputed it from our own parse of Table 2: the margin is
+$6.8921559\times10^{-7}$. The verifier is right.
+\item \textbf{``Table 2 is unparseable, so (A.9) cannot be checked''} (recorded as a major
+finding on the first pass). Refuted: the $k$-column lists whitespace-separated runs, the 684
+intervals tile $[0,2]$ exactly, and (A.9) holds on all of them. Lemma 6.1 moves from ``could not
+check'' to \emph{verified}. Only the caption needs a clause.
+\item \textbf{``The Bernoulli convention $B_1=-1/2$ is never stated.''} False: it is stated on
+p.~3, one line before (2.2). We confirmed this in the text layer.
+\item \textbf{``$p^2>5K$ is asserted but never used.''} False: it is used on p.~14 in \S5.1, to
+truncate Legendre's formula (5.3) to its $a=1$ terms.
+\item \textbf{``Proposition 4.1 relies on three side conditions never displayed.''} False: all
+three are displayed in the proof on pp.~10--11. They are consequences of (4.1) proved inside the
+proof, not hidden assumptions. (The genuine gap in that stretch is the separate
+$b_a\le6\alpha x+3$, Finding~\ref{f:ba}.)
+\item \textbf{``pdftotext garbles (4.9) as $5K\le2p-2$.''} False for our text extraction:
+line 613 of it reads $5N\le2p-2$, matching the PDF. Publishing this caution would have sent
+readers chasing a non-existent problem.
+\item \textbf{``(3.8)'s proof suppresses a case split.''} A misreading: the paper proves (3.8) by
+Vandermonde together with $\binom{z}{j}=\tfrac{z}{j}\binom{z-1}{j-1}$, which needs no case split.
+\item \textbf{The uniformity constant in (5.7).} One track reported
+$0<\gin-p\Gamma<7.41M^2$, always positive; its verifier traced this to a factor-2 bug in that
+track's code (a cap on the zero-block weights applied to an already-doubled quantity) and
+obtained $|\gin-p\Gamma|\le3.8M$ with both signs. The verifier reproduced the erroneous numbers
+with the buggy line and the correct ones without it. The paper is unaffected, and is in fact
+better served by the corrected statement.
+\item \textbf{Smaller corrections} adopted from verification passes: the sharp constant in (6.11)
+is $(2\pi)^4/12=129.88$, not $123.575$ (a grid artefact); $C_p\in p^5\mathbb{Z}_p^\times$ is false
+at $p=37$, the correct statement being $v_p(C_p)\ge5$ with equality unless $p\mid B_{p-5}$;
+Proposition 4.3's bound is attained at 27 of 37 primes, not 26; $u>0$ occurs already at $K=80$;
+and (C.5)'s finding was downgraded to cosmetic once it was seen that the paper's displayed form
+\emph{is} reproducible from its own argument.
+\end{itemize}
+
+\subsection{Limits}
+
+This audit is numerical and structural, not a formal verification. Its strongest claims are of
+the form ``this identity is exact'' and ``this formula is exactly attained at 27 independent
+primes''; its weakest concern the asymptotic regime the paper actually inhabits
+($K\ge8\times10^6$ for $M=200$, $K\ge2\times10^{12}$ for Corollary 1.2). Every extrapolation we
+report --- $\Ub_{\mathrm{true}}$, the decay of $P_K(\z)$, the constant $A_\infty$ --- is a fit
+over $K\le240$, validated out of sample where possible but not proved; and where the paper's
+statements are $\limsup$s with no effective threshold, no finite computation can confirm them, so
+we checked the constants they are made of instead. What the audit did \emph{not} consist of is
+reading the paper for plausibility: every track reproduced a known answer --- Euler's
+$\zeta(2m)$, Hilbert determinants, Marchenko--Pastur, von Staudt--Clausen, Raabe, DLMF 25.11.29
+--- before it was allowed a verdict, and was then attacked by a second independent
+implementation. In every case, the paper survived.
+
+\section*{Provenance and authorship}
+\addcontentsline{toc}{section}{Provenance and authorship}
+
+This report was written by \textbf{Claude Opus 5 (1M context)} (model identifier
+\texttt{claude-opus-5[1m]}), an AI system made by Anthropic, running in Claude Code on Dan
+Romik's machine on 22 September 2026. No part of it has been refereed by a human mathematician.
+It is signed so that a reader can weigh it accordingly, and so that any error in it is
+attributable.
+
+\medskip
+\noindent\textbf{How it was produced.} The audit ran as an orchestrated workflow of twenty agent
+instances of the same model: nine audit tracks --- the construction and Appendix~C; the local
+functional (\S3); the local determinant estimates (\S4); normalization and the prime sum
+(\S5, Appendix~B); the real bound (\S6, Appendix~A); exact computation of $\Delta_K(X)$; independent
+recomputation of the two constants; a first-principles equilibrium analysis; and the strategy,
+logic and literature --- each followed by a \emph{separate} adversarial verification pass
+instructed to attack the track's findings from both sides, re-implementing the decisive
+computations by a different method; then a writer and a fact-checker. Each track was required to
+reproduce a known answer before it was permitted a verdict. The verification passes materially
+changed the report: they withdrew two of the \S4 findings as mistaken, moved Lemma 6.1 from
+``could not check'' to verified, and refuted a claimed transcription error in Table 3 by
+rendering the page at 600\,dpi. The fact-checking pass found twenty further defects in the draft,
+five of them substantive, including two wrong final digits in $A_{200}$ and $A_{100000}$ and a
+confidence figure higher than the weakest component it aggregated.
+
+\end{document}

@@ -1,0 +1,9 @@
+K=40 p=17: h=37 mK=2 entries=703 rankL=20 r_p=20  cumulative fails=0
+K=40 p=19: h=37 mK=2 entries=703 rankL=16 r_p=16  cumulative fails=0
+K=40 p=23: h=37 mK=1 entries=703 rankL=8 r_p=8  cumulative fails=0
+K=40 p=29: h=37 mK=1 entries=703 rankL=0 r_p=0  cumulative fails=0
+K=40 p=31: h=37 mK=1 entries=703 rankL=0 r_p=0  cumulative fails=0
+K=40 p=37: h=37 mK=1 entries=703 rankL=0 r_p=0  cumulative fails=0
+K=40 p=41: h=37 mK=0 entries=703 rankL=0 r_p=0  cumulative fails=0
+K=40 p=43: h=37 mK=0 entries=703 rankL=0 r_p=0  cumulative fails=0
+TOTAL FAILS: 0

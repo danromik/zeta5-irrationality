@@ -1,0 +1,334 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+
+\newcommand{\lean}[1]{\texttt{#1}}
+\newcommand{\zetafive}{\zeta(5)}
+\newcommand{\vG}{v_p^{\mathrm{G}}}
+
+\title{A Lean 4 formalisation of\\ ``$\zeta(5)$ is irrational'' (A.\ Fauzan, 17 Sep 2026):\\
+what it proves and what it assumes}
+\author{Companion note to \texttt{docs/STATUS.md}}
+\date{23 September 2026}
+
+\begin{document}
+\maketitle
+\sloppy
+
+\begin{abstract}
+The project compiles. There is one theorem, \lean{Zeta5.zeta5\_irrational :
+Irrational zeta5}, and the paper's entire route to it --- Theorem~2.1, Propositions~2.2,
+4.1, 4.3, 5.1, 5.2, 6.3, Lemma~3.3 and the numbered equations between them --- is wired up
+beneath it with nothing short-circuited. It rests on \emph{two} external axioms
+(Hermite's integral formula for the Hurwitz zeta function, and the prime number theorem in
+the partial-summation form the proof consumes; Mathlib has neither) and on \emph{one} named
+\lean{sorry}: the paper's (6.14), the logarithmic-energy bound of \S6. The four other large
+steps --- Lemma~3.3 at the entries of (3.11), the inner-range local analysis behind
+Proposition~4.1, the outer-range local analysis (4.10)--(4.12), and the uniformity statement
+(5.7) with its \S5.2 companions --- are \emph{proved}, with statements fixed before the proofs
+were written and no further axiom. Every arithmetic statement that the proof of Theorem~1.1 uses
+(\S\S2--5 and Appendix~B) is therefore machine-checked. At three places the formal proof takes a
+different route from the paper's own proof: Lemma~3.2 (the distribution formula, with the far
+poles), the polynomial part of the proof of Lemma~3.3, and the unimodularity arguments are
+replaced by different arguments, so the paper's proofs of those three steps are bypassed rather
+than checked. The assumption list is recomputed from the Lean environment on
+every build and independently confirmed by a separate scan; \S6 records the faithfulness
+audit against the PDF, including the places where the formal proof takes a different route
+from the paper's.
+\end{abstract}
+
+\section{The build}
+
+Lean 4.34.0 with Mathlib v4.34.0. Thirty-two modules plus the root file, about 24\,500 lines
+of Lean. With all project build artifacts removed, a rebuild of every \lean{Zeta5} module from
+source takes about 4--5 minutes and ends with
+\begin{center}\ttfamily Build completed successfully (8957 jobs).\end{center}
+\noindent with zero errors and exactly \emph{one} \lean{declaration uses `sorry'} warning,
+for \lean{RealBound.eq\_6\_14} --- the same one the dependency walker reports below. The
+other ${\approx}248$ warnings are Mathlib deprecation and style lints.
+
+\section{The one theorem and its assumptions}
+
+\begin{Verbatim}[fontsize=\small,frame=single]
+theorem Zeta5.zeta5_irrational : Irrational zeta5
+\end{Verbatim}
+\noindent with \lean{zeta5 : $\mathbb{R}$ := $\sum'$ v : $\mathbb{N}$, 1 / ((v : $\mathbb{R}$) + 1) \^{} 5}, i.e.\ $\zetafive$.
+\lean{Zeta5/Audit.lean} prints, on every build:
+
+\begin{Verbatim}[fontsize=\small,frame=single]
+ASSUMPTION REPORT for Zeta5.zeta5_irrational
+
+  (A) standard Lean axioms:
+    Classical.choice
+    Quot.sound
+    propext
+
+  (B) explicit external axioms of this project (Zeta5/Axioms.lean):
+    Zeta5.Axioms.hermite_pole_integral
+    Zeta5.Axioms.pnt_prime_riemann_sum
+
+  (C) sorry(s) - unfinished steps of the paper's own argument, 1 in all:
+    Zeta5.RealBound.eq_6_14
+
+  (D) any other axiom (must be empty):
+    (none)
+
+  [self-check: walker agrees with Lean.collectAxioms, 6 axiom(s)]
+
+every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
+\end{Verbatim}
+
+\noindent The last line makes (C) a \emph{complete} list rather than a selection. An
+independent scan (\lean{cert/C3Scan.lean}, sharing no code with \lean{Audit.lean}) of all
+3272 declarations defined in the 33 \lean{Zeta5} modules finds exactly two \lean{axiom}s
+and exactly one declaration mentioning \lean{sorryAx}, namely \lean{eq\_6\_14}.
+
+\subsection*{The ground rules}
+
+Anything internal to Fauzan's argument is proved or a \lean{sorry}, never an axiom. Neither
+axiom mentions any constant or table of the paper, and the only object of the paper that
+either one mentions is the explicit weight $w$ of (2.10). A finite explicit computation is
+never an axiom: Appendix~B's exact rational integrals and Appendix~A's Table-1 evaluations and
+Table-2 tiling are \emph{proved}. And no statement is changed to make it provable: the
+statements of the interface theorems were fixed before their proofs were written, and a
+comparison at the level of kernel terms with a snapshot taken before the last of them were
+proved shows that no statement or definition changed (\lean{docs/CERTIFICATION.md}, \S5).
+
+\section{(B) The two external axioms}
+
+\lean{Zeta5/Axioms.lean} is the only file containing \lean{axiom} declarations, and it
+contains two. Each docstring gives the statement, a citation, and why Mathlib lacks it.
+
+\subsection*{\lean{hermite\_pole\_integral}}
+\[
+  \int_0^\infty \frac{w(y)}{y^2+a^2}\,\mathrm{d}y \;=\; a^4\zeta(5,a) - \frac{1}{2a} - \frac14
+  \qquad (a>0),
+\]
+with $w$ the weight of (2.10) and $\zeta(5,a)=\sum_{k\ge0}(k+a)^{-5}$: the display in the
+middle of p.~5. \textbf{Citation:} DLMF 25.11.29, Hermite's integral formula for the Hurwitz
+zeta function --- the reference the paper itself gives. \textbf{Why not Mathlib:} Mathlib has
+\lean{HurwitzZeta.hurwitzZeta} and its functional equation, but no Hermite/Abel--Plana
+integral representation and no theory of the Eisenstein-type weight $w$. It is slightly
+stronger than DLMF 25.11.29 alone: the paper's four integrations by parts on p.~5 are absorbed
+into it. Numerically confirmed from the Lean definition of $w$ at 40 digits.
+
+\subsection*{\lean{pnt\_prime\_riemann\_sum}}
+For $0\le a<b$ and $\varphi$ bounded on $[a,b]$ and continuous off a finite set,
+\[
+  \frac1X\sum_{\substack{p\ \mathrm{prime}\\ aX<p\le bX}}\varphi(p/X)\log p
+  \;\longrightarrow\; \int_a^b\varphi(y)\,\mathrm{d}y \qquad (X\to\infty).
+\]
+\textbf{Citation:} the prime number theorem in the form $\theta(x)\sim x$ (the paper's
+[9, \S27.12]), carried through Abel summation and the Darboux criterion (Apostol,
+\emph{Introduction to Analytic Number Theory}, Thms 4.2, 4.4, \S4.3). \textbf{Why not
+Mathlib:} as of v4.34.0 Mathlib has Chebyshev-type bounds but no $\theta(x)\sim x$.
+It is the \emph{partial-summation corollary} of the PNT, the one place where a reader must
+grant more than a bare citation; its hypotheses carry no information about the paper's
+functions, and all of them are discharged inside \lean{PrimeSum.lean}. The certification
+derives from it in Lean, with no \lean{sorry}, the dyadic form $(\theta(2X)-\theta(X))/X\to1$ of
+the prime number theorem, so it is not vacuous.
+
+\section{(C) The one unfinished step}
+
+\begin{longtable}{@{}p{2.6cm}p{9.4cm}p{1.8cm}@{}}
+\toprule
+\lean{sorry} & paper statement, and what is missing & effort \\
+\midrule
+\endhead
+\lean{RealBound.} \lean{eq\_6\_14} &
+\textbf{(6.14)}, p.~20: for $\Delta_K(\zetafive)>0$,
+$\log\Delta_K(\zetafive)\le 2h(h+6N-K)\log K+(\lambda M_0-I(\rho))K^2+18h\log K+160h$.
+Missing, in three separable pieces:
+(i)~Andr\'eief's identity (6.10), the $h$-fold Gram integral, with (6.12)--(6.13);
+(ii)~\textbf{Lemma 6.2}, the zero-mass logarithmic energy $I(\nu)\le0$ (p.~18; Ransford,
+Thm~3.1.2), its application to circle-regularised configurations, and (6.6)--(6.9);
+(iii)~(6.2), the arcsine-potential bound $2U^\rho(t)-V(t)\le M_0$ on $[0,2]$, which is
+Appendix~A's 684 certified evaluations of $\mathcal{B}(l,r)$ (A.9), together with the
+identification of the Lean constant \lean{Irho} (the closed form (A.2)) with the energy
+$I(\rho)$.
+& several months \\
+\bottomrule
+\end{longtable}
+
+\noindent (6.14) is the one genuinely large item left, needing measure and potential theory
+that Mathlib has only in part and some 23\,000 certified \lean{arctan}/\lean{log}
+evaluations. It holds, with large slack, at the exact values of $\Delta_K(\zetafive)$ for
+$K=40,80,120$ computed in the referee audit of the preprint; that is a consistency check, not
+a proof.
+
+\section{How the four large interface statements were proved}
+
+All four are closed in the strict sense: \lean{\#print axioms} on each shows
+no \lean{sorryAx} (verbatim: \lean{'Zeta5.outer\_local\_analysis' depends on axioms: [propext,
+Classical.choice, Quot.sound]}, and likewise for the other three). Nothing was moved one
+level down.
+
+\begin{longtable}{@{}p{3.3cm}p{10.9cm}@{}}
+\toprule
+statement & how it was proved \\
+\midrule
+\endhead
+shared lemma \lean{HermiteBasis.} \lean{det\_coeffMatrix\_} \lean{unimodular} &
+\emph{A basis of integer polynomials that reduces mod $p$ to a Hermite-interpolation basis
+$\prod_{c\ne a}(t+u_c)^{m_c}(t+u_a)^i$ with distinct nodes is $\mathbb{Z}_p$-unimodular}:
+linear independence over any field via coprimality of the class factors, a dimension count,
+and reduction of the determinant mod $p$. This is p.~10's ``triangular local bases whose
+diagonal entries are units'' and p.~12's ``these form a unimodular basis'', by one argument
+for both. \\[4pt]
+\lean{outer\_local\_} \lean{analysis}, \S4.2, (4.10)--(4.12) &
+\lean{OuterBasis.lean} (1943 lines), following pp.~11--12 step by step: square classes and
+the counts $\ell-\delta$ and $\ell-2$; the rows $P_aq_{a,i}$ of (4.11) and the zero-class
+rows; $v_p(\mu(t^e))\ge-1$, with integrality for $e<2p-3$; the splitting
+$G_K=A+p^{-1}L$; $L=UL_0U^{\mathsf T}$ with $L_0[i,j]=0$ for $i+j<K-6N+2p-3$ \emph{in the
+monomial basis}, hence $\operatorname{rank}L\le r_p$ --- p.~12's reason, applied in the
+basis where it holds; and the four entry-bound cases behind (4.12). \\[4pt]
+\lean{PrimeSum.} \lean{eq\_5\_7\_} \lean{uniformity}, (5.7) and \S5.2 &
+\lean{Uniformity.lean} (1396 lines), with the explicit constant $C=400M^2$ (the true size is
+about $4M$). Inner: each class's contribution is the (5.4) integrand at $z=a/p$, and an
+elementary Riemann-sum estimate with two breakpoint cells bounds the error; the extras sum
+exactly; p.~14's transition remark is the identity $I(T+1)-I(T)=T-x-2$. $v_p(S_K)$: Legendre
+with $p^2>2K$. Outer: $K\,T(p/K)$ is an explicit integer and the comparison is linear integer
+arithmetic in each range. \\[4pt]
+\lean{CrudeBound.} \lean{crude\_entry\_} \lean{bound}, Lemma~3.3 at (3.11) &
+\lean{Lemma33.lean} (1155 lines) proves \textbf{Lemma~3.3 itself} in the paper's form, and the
+pullback (3.1) for every $\mu_X(B/D_{\mathrm{tail}})$. Pole terms as in the paper; the
+polynomial part by a different route (\S6, item 5). \\[4pt]
+\lean{Section3.} \lean{entry\_bounds\_} \lean{4\_2\_4\_3}, Prop.~4.1's basis and entries &
+\lean{InnerTate}, \lean{InnerGeneral}, \lean{InnerEntries} (2240 lines). $B$ is the Gram
+matrix in the basis (4.5), $c=(\det U)^{-2}$ a $p$-adic unit by the shared lemma; the entry
+bound $\min((4.3),\min_c(4.2))$ comes from a general local bound
+$\vG(\tau^{\mathrm{ext}}_X(W/Q))\ge\min_a(u_a-t_a)-4$, proved from Raabe's multiplication
+theorem for $\tau$ ($m^4\tau(P)=\sum_{a<m}\tau(P(a+mz))$, via Mathlib's
+\lean{sum\_bernoulli}) and a per-class estimate using a \emph{truncated} inverse of the
+far-pole factor. \\
+\bottomrule
+\end{longtable}
+
+\noindent Every sub-statement was tested in exact arithmetic before it was proved (scripts
+in \lean{numerics/}): the (4.11) decomposition at $K=40,80,120$ (0 failures;
+$\operatorname{rank}L=r_p$ wherever computed; a
+must-fail control without the $+1/(2j)$ of (2.3) fails 13 times), the inner entry bounds on all
+703 entries at $K=40$ and all 2775 at $K=80$, Lemma~3.3 on all 703 entries of (3.11) at
+$K=40$ for eleven primes, and (5.7) over every prime of the ranges at $K$ up to $520\,000$.
+
+\textbf{Consequences.} Propositions 4.1, 4.3, 5.1, 5.2 and (3.12) are fully proved (5.2
+modulo the PNT axiom). The \S4.1 combinatorics (\lean{Section41.lean}, including the repair of
+the gap in the p.~10 inequality, item 18 below) and the \S4.2 local lemmas
+(\lean{OuterLocal.lean}) are load-bearing: 104/148 and 98/107 of their declarations are in the
+dependency cone of the main theorem.
+
+\section{Faithfulness}
+
+\textbf{Statements.} The statements of the four interface theorems proved last, of
+\lean{eq\_6\_14} and of \lean{zeta5\_irrational} are byte-identical to those recorded in a
+snapshot taken before the four proofs were written, and a comparison at the level of kernel
+terms shows that no statement or definition of that snapshot changed
+(\lean{docs/CERTIFICATION.md}, \S5).
+
+\textbf{Statements checked against the PDF page images} (pp.~5--15, 18--20).
+\lean{Lemma33.lemma\_3\_3} is Lemma~3.3 as printed on p.~8, for every $p$, $K$, $d$; its
+hypothesis ``$A$ integer-valued on $\mathbb{Z}_p$'' is taken as $v_p(A(z))\ge0$ for
+$z\in\mathbb{Z}$, which is equivalent by density. \lean{pullback} is (3.1) on the whole domain
+of $\mu_X$. \lean{raabe\_tau} is (3.7) for polynomials. The weights of \lean{OuterBasis} are
+the doubled (4.12) exactly, zero class included. \textbf{No weakened statement was found.}
+
+\medskip\noindent Deviations, all recorded in docstrings:
+\begin{enumerate}
+\item \lean{eq\_6\_14} is stated with $I(\rho)$ and $M_0$ as \emph{defined real numbers} ---
+  the closed form (A.2) and $-1329/200$ --- not as the logarithmic energy. Do not read
+  ``(6.4) is proved'' as ``Lemma 6.1 is proved''.
+\item \lean{lemma\_3\_1} proves (3.4) for every \emph{partial} sum $\sum_{j\le J}p^jU_j$, not
+  for the series in the Tate algebra. It is also \emph{not in the cone}: Proposition~4.1
+  goes around it (item 7). The same holds for \lean{lemma\_4\_2} in its abstract-field form;
+  Proposition~4.3 uses the rank form \lean{vanishing\_of\_rank}.
+\item \textbf{\lean{outer\_local\_analysis} states the literal rank form of (4.10)},
+  $\operatorname{rank}L\le r_p$. An earlier formulation of this interface statement, as a set
+  of vanishing columns of $L$ in the basis (4.11), was false for the paper's own $L$ (found in
+  the referee audit of the preprint) and was replaced before the proof was written. The proof
+  shows why: the vanishing is in the monomial basis, exactly as p.~12 argues, and
+  $L=UL_0U^{\mathsf T}$ carries the rank bound over. The statement proved is (4.10) as
+  printed.
+\item \lean{AppendixB.eq\_5\_16\_5\_17} proves the finite-interval difference form rather than
+  the two improper integrals (5.16) and (5.17) --- formally weaker than p.~16, and exactly what
+  is consumed.
+\item \textbf{Lemma~3.3 is proved by a different route.} The polynomial part does not use the
+  paper's two-scale estimate $P(\mathbb{Z}_p)\subset p^{-L_0-M_0}\mathbb{Z}_p$, (3.8) or (3.9);
+  it expands $A$ in the binomial basis $\binom{x+K}{k}$ and computes $\tau$ of each quotient
+  exactly. The \emph{statement} of Lemma~3.3 is verified; its printed proof is not checked line
+  by line. The $-v_p(24)$ turns out to be unnecessary.
+\item \lean{eq\_5\_7\_uniformity} bundles three claims with one constant, proved with
+  $C=400M^2$.
+\item \textbf{Lemma~3.2 (3.7) is not formalised as stated.} The Tate-algebra extension, (3.5),
+  the parameter $Y=p^5X+C_p$, and (3.7) for rational functions do not appear. Proposition~4.1
+  is proved without them: pole terms bounded directly, the polynomial part through Raabe
+  (the polynomial half of (3.7), the paper's own justification) and a truncated-inverse
+  estimate. Do not say ``Lemma~3.2 is formalised''.
+\item $b_a<6\alpha x+3$ strictly, where the paper prints $\le$ (towards strength; see item 18).
+\item Lemma~4.2 takes $v(\mathit{pinv})\ge-1$ rather than literally $p^{-1}$ (more general).
+\item (5.21) and (5.16)--(5.18) are stated for $M\in40\mathbb{Z}_{>0}$, as printed.
+\item (5.8)/(5.9) are nested \lean{if}s, differing from the paper on a null set.
+\item Naming trap: \lean{InnerAlloc.L 0} is not the paper's $L_0=4M+10$.
+\item (6.11) is proved as printed via a sharper intermediate bound.
+\item \lean{PrimeSum.RR\_bddOn} proves the crude $|R|\le200M^2$, not the paper's sharp bound;
+  nothing needs more.
+\item \textbf{The p.~12 divided-difference step needs more than the paper says.}
+  $H^{(5)}_{p-a}\equiv H^{(5)}_{a-1}\pmod p$ alone leaves a residue $-1/a$ (machine-checked);
+  the proof also uses the $-1/4+1/(2j)$ tail of (2.3), and the must-fail control shows it is
+  essential. A point the author may want to revise, not an error in the result.
+\item Unimodularity of (4.5) and (4.11) is proved by one mod-$p$ Hermite-basis argument
+  rather than the paper's two separate justifications.
+\item The \S4.2 local analysis uses only $p\ge7$, $K<3p$, $2K<p^2$, $2N<p$, $5N\le2p-2$ ---
+  neither $p\le K$ nor $K\ge200M^2$ (towards strength).
+\item \textbf{A gap on p.~10, repaired.} The paper asserts $b_a\le6\alpha x+3$ without proof,
+  attributing it to (4.4); it is a statement about $\ell_N$, equivalent to
+  $p\,\ell_N(a)\le2N+p$. The naive bound $\ell_A(a)\le2\lfloor A/p\rfloor+2$ gives only
+  $b_a\le6\alpha x+6$, which does not make the dimensions of (4.4) provably nonnegative. The
+  inequality is proved in the strict form $p\,\ell_A(a)<2A+p$ by the case split on
+  $v_A=A\bmod p$ (\lean{Zeta5.ell\_lt\_caseSplit}) and independently from the closed form of
+  $\ell_A$ (\lean{Zeta5.ell\_lt}, the one in the dependency cone); Lean checks by \lean{rfl}
+  that the two statements are identical. A point the author may want to revise, not an error
+  in the result.
+\end{enumerate}
+
+\section{Trusting the audit metaprogram}
+
+\lean{Zeta5/Audit.lean} walks the dependency cone and reports the groups above. It avoids two
+traps that a naive dependency walker falls into (\lean{ConstantInfo.value?} is \lean{none} for
+theorems in Lean~4.34; reachability must match \lean{Lean.CollectAxioms.collect}), checks
+itself against \lean{Lean.collectAxioms} on every build, and checks that no \lean{sorry}
+escapes the cone. Its \lean{\#sorry\_tree} controls for the four interface statements of the
+previous section, the shared lemma and seven of the main new theorems all print
+\lean{depends on NO sorry}, and \lean{eq\_6\_14} prints \lean{rests on 1 sorry(s)}. An
+adversarial certification (\lean{docs/CERTIFICATION.md}; scripts in \lean{cert/}, sharing no
+code with \lean{Audit.lean}) agrees: 62\,097 constants in the cone, one \lean{sorry}, two
+project axioms, zero orphans, a full kernel replay of every module by \lean{leanchecker}, and
+the deliberately broken \lean{value?}-walker reporting the wrong answer (0 sorries), as a
+negative control should.
+
+\section{What to do next}
+
+\textbf{(1)} \lean{RealBound.eq\_6\_14}, the only \lean{sorry}, in its three pieces (Andr\'eief;
+Lemma~6.2 and (6.6)--(6.9); (6.2) via Appendix~A), each decomposed into numerically tested
+lemma statements first.
+\textbf{(2)} Reduce \lean{pnt\_prime\_riemann\_sum} to $\theta(x)\sim x$ (Abel summation plus a
+Darboux sandwich).
+\textbf{(3)} Formalise p.~5's four integrations by parts, so that \lean{hermite\_pole\_integral}
+becomes DLMF 25.11.29 verbatim.
+\textbf{(4)} Points the author may want to revise: the p.~10 inequality (item 18), the p.~12
+divided-difference step (item 15), and the phrasing of the rank argument for (4.10)
+(item 3).
+
+\bigskip
+\noindent\textbf{How to report this result.} ``Theorem~1.1 is machine-checked conditional on
+one explicitly named unproved statement of the paper --- (6.14), the logarithmic-energy bound
+of \S6 --- plus Hermite's integral formula and the prime number theorem in partial-summation
+form.'' Never ``modulo standard facts'': (6.14) is Fauzan's own claim, and it is the analytic
+heart of \S6.
+
+\end{document}

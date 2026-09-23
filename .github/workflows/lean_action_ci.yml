@@ -1,0 +1,22 @@
+name: Lean Action CI
+
+# Builds the whole development on every push and pull request.
+# leanprover/lean-action installs the toolchain pinned in `lean-toolchain`, fetches the
+# compiled Mathlib cache (`lake exe cache get`) and runs `lake build`.  The build log
+# contains the assumption report printed by Zeta5/Audit.lean.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: leanprover/lean-action@v1

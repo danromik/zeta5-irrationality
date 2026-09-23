@@ -1,0 +1,25 @@
+p=7 seed=0: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 27/40; min slack 0
+p=7 seed=1: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 32/40; min slack 0
+p=7 seed=2: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 33/40; min slack 0
+p=11 seed=0: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 36/40; min slack 0
+p=11 seed=1: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 31/40; min slack 0
+p=11 seed=2: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 32/40; min slack 0
+p=13 seed=0: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 37/40; min slack 0
+p=13 seed=1: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 35/40; min slack 0
+p=13 seed=2: failures {'T1': 0, 'T2': 0, 'T3': 0, 'T4': 0}; tight(T4 equality) 36/40; min slack 0
+p=7 baseline: E distribution [(-5, 61), (-4, 19)]; failures 0/80
+p=7 C1 (u_0 > p+1): failures 0/60
+p=7 C2 (poles differing by p^2): failures 59/60
+p=7 C3 (claim E+1): failures 50/60
+p=11 baseline: E distribution [(-5, 69), (-4, 11)]; failures 0/80
+p=11 C1 (u_0 > p+1): failures 0/60
+p=11 C2 (poles differing by p^2): failures 60/60
+p=11 C3 (claim E+1): failures 52/60
+p=7 large-E: E distribution [(-2, 55), (-1, 3), (0, 2)]; failures 0/60; tight 38
+p=11 large-E: E distribution [(-2, 44), (-1, 14), (0, 2)]; failures 0/60; tight 45
+p=13 large-E: E distribution [(-2, 54), (-1, 5), (0, 1)]; failures 0/60; tight 47
+p=7 C1' (minimizing class has deg > p+1): failures 0/60
+p=11 C1' (minimizing class has deg > p+1): failures 0/60
+p=11: E distribution [(3, 24), (4, 1)]; failures 0/25; tight 23; claim-E+1 failures 23
+p=13: E distribution [(5, 25)]; failures 0/25; tight 21; claim-E+1 failures 21
+p=17: E distribution [(8, 24), (9, 1)]; failures 0/25; tight 24; claim-E+1 failures 24

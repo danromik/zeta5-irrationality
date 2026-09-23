@@ -1,0 +1,1 @@
+K=80 p=23 L0=4 h=74  entries tested 2775  failures {'T5': 0, 'T6': 0, 'T4': 0, 'TW': 0}  tight(v==exponent) 1441  max class zero count 21 (p+1=24)

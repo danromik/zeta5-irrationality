@@ -1,0 +1,6 @@
+K=120 p=41: h=111 mK=2 entries=6216 rankL=76 r_p=76  cumulative fails=0
+K=120 p=43: h=111 mK=2 entries=6216 rankL=72 r_p=72  cumulative fails=0
+K=120 p=61: h=111 mK=1 entries=6216 rankL=36 r_p=36  cumulative fails=0
+K=120 p=113: h=111 mK=1 entries=6216 rankL=0 r_p=0  cumulative fails=0
+K=120 p=127: h=111 mK=0 entries=6216 rankL=0 r_p=0  cumulative fails=0
+TOTAL FAILS: 0

@@ -1,0 +1,12 @@
+p=2: min v_p over entries = -12, target bound -6log_p(5K)-v_p(24) = -45, no-24 bound -42, slack 33
+p=3: min v_p over entries = -15, target bound -6log_p(5K)-v_p(24) = -25, no-24 bound -24, slack 10
+p=5: min v_p over entries = -5, target bound -6log_p(5K)-v_p(24) = -18, no-24 bound -18, slack 13
+p=7: min v_p over entries = -2, target bound -6log_p(5K)-v_p(24) = -12, no-24 bound -12, slack 10
+p=11: min v_p over entries = -6, target bound -6log_p(5K)-v_p(24) = -12, no-24 bound -12, slack 6
+p=13: min v_p over entries = -4, target bound -6log_p(5K)-v_p(24) = -12, no-24 bound -12, slack 8
+p=37: min v_p over entries = 0, target bound -6log_p(5K)-v_p(24) = -6, no-24 bound -6, slack 6
+p=41: min v_p over entries = -2, target bound -6log_p(5K)-v_p(24) = -6, no-24 bound -6, slack 4
+p=43: min v_p over entries = -2, target bound -6log_p(5K)-v_p(24) = -6, no-24 bound -6, slack 4
+p=199: min v_p over entries = 0, target bound -6log_p(5K)-v_p(24) = -6, no-24 bound -6, slack 6
+p=211: min v_p over entries = 0, target bound -6log_p(5K)-v_p(24) = 0, no-24 bound 0, slack 0
+entries: 703 time 5.967720985412598

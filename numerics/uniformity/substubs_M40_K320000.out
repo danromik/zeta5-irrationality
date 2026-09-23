@@ -1,0 +1,3 @@
+inner M 40 K 320000 {'rho/M2': 0.4975, 'Z0/M2': 8.58375, 'delta/M': 4.175, 'Ggap/m': 0.3, 'Gam_split': 0, 'IT_succ': 0, 'eps_sum': 0, 'U_eq': 0, 'Tcase': {0, 1}, 'bound/M2': 18.216875}
+outer K 320000 max|K R0 - K d + gammaOut|, max|S5-2G| = (Fraction(7, 1), 3)
+outer sweep n<400: 7.0 3.0
