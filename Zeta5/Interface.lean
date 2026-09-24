@@ -33,14 +33,21 @@ statement below is discharged by a proof elsewhere in the project:
   (5.16)–(5.18) the constant bookkeeping       ← `Zeta5.AppendixB.eq_5_16_5_18`
   (5.21)  `limsup K^{-2}log m_{K,M} ≤ A_M`     ← `eq_5_21_of_prop_5_2` (Asymptotics.lean)
   Prop. 6.3  (6.16), the real bound            ← `Zeta5.RealBound.prop_6_3`
+                                                 (`Zeta5/Sec6/Final.lean`)
   (7.1)   the combination of (5.21) and (6.16) ← `eq_7_1_of` (Asymptotics.lean)
   existence of the allocation (4.4)            ← `Zeta5.exists_innerAlloc_of_inner`
   Theorem 2.1, Theorem 1.1, (2.7), (2.8)       ← proved below and in `Skeleton.lean`
 
-Exactly ONE of those proofs still bottoms out in a
-`sorry`, and it is the whole of what Theorem 1.1 still assumes beyond `Zeta5/Axioms.lean`:
+Exactly ONE of those proofs still bottoms out in `sorry`s, and they are the whole of what
+Theorem 1.1 still assumes beyond `Zeta5/Axioms.lean`:
 
   `Zeta5.RealBound.eq_6_14`                 (6.14), the logarithmic-energy bound
+
+`eq_6_14` itself is now PROVED (`Zeta5/Sec6/Final.lean`) from the §6 blueprint: a list of
+sorried leaves in `Zeta5/Sec6/*.lean`, each a self-contained analytic or finite statement
+internal to §6 and Appendix A of the paper (Lemma 6.2 for the regularised kernel, (A.1),
+(A.2), (A.5), the smoothing error, (6.7)).  The module docstring of `Zeta5/Sec6/Final.lean`
+lists them; `Zeta5/Audit.lean` prints them.
 
 Four further steps, `sorry`s until 2026-09-23, are now PROVED, statements unchanged:
 
@@ -79,6 +86,7 @@ import Zeta5.OuterRange
 import Zeta5.PrimeSum
 import Zeta5.AppendixB
 import Zeta5.RealBound
+import Zeta5.Sec6.Final
 
 namespace Zeta5
 
@@ -337,8 +345,9 @@ theorem eq_5_21 (M : ℕ) (hM : 40 ∣ M) (hM0 : 0 < M) (Alloc : ∀ n, InnerAll
 
 *No longer a `sorry`* (since 2026-09-22): it is `Zeta5.RealBound.prop_6_3`, fed with
 `Δ_K(ζ(5)) > 0` (`delta_pos`, from Proposition 2.2 — the paper's own hypothesis for it).
-`RealBound.lean` proves (6.15) and the passage (6.14) ⇒ (6.16) outright, and rests on the
-single remaining `sorry` `Zeta5.RealBound.eq_6_14`. -/
+`RealBound.lean` proves (6.15) and the passage (6.14) ⇒ (6.16) outright; (6.14) itself,
+`Zeta5.RealBound.eq_6_14`, is proved in `Zeta5/Sec6/Final.lean` from the sorried leaves of the
+§6 blueprint (`Zeta5/Sec6/*.lean`). -/
 theorem prop_6_3 (n : ℕ) (hn : 0 < n) :
     Real.log (evalZeta5 (F n))
       ≤ (Ubar : ℝ) * (K n : ℝ) ^ 2 + 24 * (K n : ℝ) * Real.log (K n : ℝ)
@@ -453,9 +462,9 @@ def stdAlloc : ∀ n, InnerAllocFamily n 200 :=
 
 /-- **Theorem 1.1**: `ζ(5)` is irrational.
 
-Depends exactly on the one `sorry` listed at the top of this file (`RealBound.eq_6_14`) and
-the two axioms of `Zeta5/Axioms.lean`; `#print axioms` shows
-`sorryAx`.  The deduction from Theorem 2.1 (`Zeta5.theorem_1_1` in `Skeleton.lean`) and
+Depends exactly on the sorried leaves of the §6 blueprint below `RealBound.eq_6_14` (listed
+at the top of this file and printed by `Zeta5/Audit.lean`) and the two axioms of
+`Zeta5/Axioms.lean`; `#print axioms` shows `sorryAx`.  The deduction from Theorem 2.1 (`Zeta5.theorem_1_1` in `Skeleton.lean`) and
 the assembly of Theorem 2.1 above are complete. -/
 theorem zeta5_irrational : Irrational zeta5 :=
   theorem_1_1 stdAlloc (theorem_2_1 stdAlloc)

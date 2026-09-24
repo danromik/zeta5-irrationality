@@ -234,8 +234,10 @@ one theorem, one explicit list of assumptions, computed by Lean.  It appears in 
 /-! ### Positive controls: the steps proved on 2026-09-23
 
 The four statements that were `sorry`s until 2026-09-23, the shared lemma they use, and the
-main new theorems behind them.  Each must print `depends on NO sorry`; `RealBound.eq_6_14`,
-still open, is the negative control and must print `rests on 1 sorry(s)`. -/
+main new theorems behind them.  Each must print `depends on NO sorry`; `RealBound.eq_6_14`
+is the negative control: since the §6 blueprint (2026-09-24) it is proved
+(`Zeta5/Sec6/Final.lean`) from the sorried leaves of `Zeta5/Sec6/`, and must print exactly
+the top-level leaves (those used by proved code). -/
 
 #sorry_tree Zeta5.outer_local_analysis
 #sorry_tree Zeta5.PrimeSum.eq_5_7_uniformity
@@ -251,13 +253,27 @@ still open, is the negative control and must print `rests on 1 sorry(s)`. -/
 #sorry_tree Zeta5.InnerEntries.entry_bounds
 #sorry_tree Zeta5.RealBound.eq_6_14
 
+/-! ### The §6 blueprint (2026-09-24)
+
+Proved parts: the Gram-integral argument (6.10)–(6.13), the configuration bound from the
+energy leaves, and the certified numerics (6.2)/(6.7).  The first three must print
+`depends on NO sorry`. -/
+
+#sorry_tree Zeta5.Sec6.Gram.eq_6_14_of_config
+#sorry_tree Zeta5.Sec6.Num.eq_6_7_closed
+#sorry_tree Zeta5.Sec6.eq_6_7_closed
+#sorry_tree Zeta5.Sec6.configBound
+#sorry_tree Zeta5.Sec6.rho_energy_ge
+
 /-! ### Orphans
 
 A `sorry` of the `Zeta5` namespace that Theorem 1.1 does *not* rest on would mean that the
 formalisation had short-circuited the paper's own logical route: a transcribed statement
-that nothing consumes.  There are none — every `sorry`
-in the project is load-bearing for `Zeta5.zeta5_irrational`, which is what makes the list
-printed by `#assumption_report` above complete. -/
+that nothing consumes.  Before the §6 blueprint there were none.  Since 2026-09-24 the only
+orphans are the *sub-leaves* of the §6 blueprint (`Zeta5/Sec6/`): leaves whose only
+consumers are the proof plans of other, still sorried, leaves (e.g. `gauss_pd`, used by the
+proof of the leaf `cauchy_cnd`).  They leave this list as the leaves above them are proved;
+`#assumption_report` together with this list is the complete list of `sorry`s. -/
 
 #orphan_sorries Zeta5.zeta5_irrational
 

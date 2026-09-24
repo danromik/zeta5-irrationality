@@ -2,6 +2,21 @@
 
 [![Lean Action CI](https://github.com/danromik/zeta5-irrationality/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/danromik/zeta5-irrationality/actions/workflows/lean_action_ci.yml)
 
+> **Work in progress on branch `eq614` (2026-09-24): the §6 blueprint.**  `Zeta5.RealBound.eq_6_14`
+> (and `prop_6_3`, same names and types) now live in `Zeta5/Sec6/Final.lean` and are **proved**
+> from 19 sorried *leaves* in `Zeta5/Sec6/*.lean`, each a self-contained analytic or finite
+> statement internal to §6/Appendix A (zero-mass energy for the Cauchy-regularised kernel
+> `½log(x²+ε²)`, the arcsine potential (A.1), (A.2), (A.5), the smoothing error).  Proved
+> outright on the way: Andréief (6.10), (6.12), (6.13) and the bookkeeping of (6.14)
+> (`Sec6/Gram.lean`); the configuration bound (6.6)/(6.9) from the leaves (`Sec6/Energy.lean`);
+> and (6.2)/(6.7) for the closed forms by a kernel-checked certified partition
+> (`Sec6/Num/`).  The route and the list of leaves are in the module docstring of
+> `Zeta5/Sec6/Final.lean`; the numerical tests of every leaf are in `numerics/sec6/`.
+> `lake build` now reports 19 `declaration uses 'sorry'` warnings, all in `Zeta5/Sec6/`, and
+> `Zeta5/Audit.lean` prints the 7 top-level leaves in the assumption report and the other 12
+> (sub-leaves, used only by the proof plans of other leaves) as orphans.  The rest of this
+> document describes the state of 2026-09-23, when `eq_6_14` was a single `sorry`.
+
 This repository contains a formalization, in the Lean 4 proof assistant with the Mathlib
 library, of the proof in A. Fauzan's preprint *"ζ(5) is irrational"* (dated 17 September
 2026). The Lean development follows the paper section by section. It defines the paper's

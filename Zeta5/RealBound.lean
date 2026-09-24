@@ -1,8 +1,7 @@
 /-
 Zeta5/RealBound.lean  —  §6 and Appendix A of the paper: the real determinant.
 
-This file reduces Proposition 6.3 (6.16) to **exactly one**
-named `sorry`, `eq_6_14`, and proves everything else it needs:
+This file proves everything that Proposition 6.3 (6.16) needs apart from (6.14):
 
   * all of Table 1's finite verifications (p. 21);
   * the constants of Appendix A.4: **(A.10)** and hence **(6.4)**, from certified
@@ -16,9 +15,10 @@ named `sorry`, `eq_6_14`, and proves everything else it needs:
   * the exact cancellation of the `K² log K` terms of (6.14) and (6.15), and the passage
     from `λM₀ - I(ρ) + C_*` to `Ū`, i.e. **(6.16) from (6.14) and (6.15)**.
 
-What is NOT proved is the single `sorry` `eq_6_14`; its docstring lists its contents
-(Andréief (6.10), (6.12), (6.13), Lemma 6.2 with (6.6)/(6.9), and (6.2) on `[0,2]`,
-i.e. the 684 evaluations of (A.9)).  **This file declares no `axiom`.**
+(6.14) itself (`Zeta5.RealBound.eq_6_14`) and Proposition 6.3 (`Zeta5.RealBound.prop_6_3`)
+are stated and proved in `Zeta5/Sec6/Final.lean` (same names, same types): their proofs need
+the §6 machinery of `Zeta5/Sec6/`, which imports this file.  **This file contains no `sorry`
+and declares no `axiom`.**
 
 Everything here was cross-checked against the independent numerics of the referee audit
 (see README, "Provenance"):
@@ -816,62 +816,12 @@ theorem eq_6_15 (n : ℕ) (hn : 0 < n) :
   push_cast at e1 e2 hSum f1 f2 ⊢
   nlinarith [e1, e2, hSum, f1, f2, hL2pos, hn1]
 
-/-! ## §6.2  (6.14): the Gram integral — THE ONE GAP OF THIS FILE -/
+/-! ## §6.2  (6.14) and Proposition 6.3
 
-/-- **(6.14)** (p. 20).  For `K ∈ 40ℤ_{>0}`,
-
-`log Δ_K(ζ(5)) ≤ 2h(h + 6N - K) log K + (λM₀ - I(ρ))K² + 18h log K + 160h`.
-
-**This is the single `sorry` of `Zeta5/RealBound.lean`**, and it is the only step of §6
-that this file does not prove.  Stated verbatim as printed; nothing is weakened.
-
-What it needs, in the paper's order (pp. 19–20), and what is already available here:
-
-* **(6.10)**, Andréief's identity [7, (1.7)]: `Δ_K(ζ(5)) = (1/h!)∫_{(0,∞)^h}
-  ∏_{i<j}(y_i²-y_j²)² ∏_i D_N(y_i²)⁶D_K(y_i²)^{-1}w(y_i) dy_i`, applied to the moment
-  matrix (2.4) via Proposition 2.2.  *Not formalised* (it needs `h`-fold product
-  integrals and the two Vandermonde expansions).
-* **(6.11)** `w(y) ≤ 8192(1+y)⁵e^{-2πy}` — **proved below** (`eq_6_11`).
-* **(6.12)** the Riemann-sum comparison `0 ≤ ∑_{j≤m}log(t+(j/K)²) - K∫_0^{m/K}log(t+u²)du
-  ≤ 2log K + 2` — *not formalised*.
-* **(6.13)** the scaling `y_i = K√t_i`, which produces the exponent `K^{2h(h+6N-K)+16h}`
-  and the prefactor `(4096e^{12})^h`, and `∫_0^∞ t^{-1/2}(1+√t)⁵e^{-√t}dt = 652`.
-  *Not formalised.*
-* **Lemma 6.2** (zero-mass logarithmic energy `I(ν) ≤ 0`), and its application to
-  `ν = σ - ρ` with `σ = K^{-1}∑ω_i`, giving **(6.6)** and then **(6.9)**.
-  *Not formalised.*  This is the one genuinely infinite-dimensional ingredient; it is a
-  classical fact (Ransford, *Potential Theory in the Complex Plane*, Thm 3.1.2 and its
-  corollaries; Saff–Totik, *Logarithmic Potentials*, Lemma I.1.8).
-* **(6.2)**, `2U^ρ(t) - V(t) ≤ M₀` for `t ≥ 0`, i.e. Lemma 6.1's potential inequality.
-  For `t ≥ 2` it is the elementary computation (6.7)/(6.8).  For `t ∈ [0,2]` the paper
-  certifies it by evaluating `ℬ(l,r)` of (A.7) on the 684 dyadic cells of Table 2; the
-  cells are transcribed and shown to tile `[0,2]` below (`table2_tiles`), but the 684
-  evaluations of (A.9) — each needing rational enclosures of sixteen `U^{ω_j}` values and
-  of `V`, hence of `log`, `arctan` and `√` — are not carried out.
-* The arithmetic that (6.14) then feeds into: **`λM₀ - I(ρ) + C_* ≤ Ū`** — **proved**
-  (`eq_6_4`, from `A10_Irho` and `A10_Cstar`, from Table 1 alone).
-
-Everything downstream of (6.14) is proved: `prop_6_3_of` above derives (6.16) from it
-and from `eq_6_15`. -/
-theorem eq_6_14 (n : ℕ) (hn : 0 < n) (hΔpos : 0 < evalZeta5 (Delta n)) :
-    Real.log (evalZeta5 (Delta n))
-      ≤ 2 * (h n : ℝ) * ((h n : ℝ) + 6 * (N n : ℝ) - (K n : ℝ)) * Real.log (K n : ℝ)
-        + ((lam : ℝ) * M0 - Irho) * (K n : ℝ) ^ 2
-        + 18 * (h n : ℝ) * Real.log (K n : ℝ) + 160 * (h n : ℝ) := by
-  sorry
-
-/-- **Proposition 6.3**, (6.16) (p. 20): `log F_K(ζ(5)) ≤ Ū K² + 24K log K + 200K`.
-
-`hΔpos` is the positivity `0 < Δ_K(ζ(5))`, which the paper gets from Proposition 2.2;
-in the project it is `Zeta5.delta_pos`, so `Zeta5.Interface.prop_6_3` is discharged by
-`Zeta5.RealBound.prop_6_3 n hn (Zeta5.delta_pos n)`.
-
-Depends on exactly one `sorry`, `eq_6_14`. -/
-theorem prop_6_3 (n : ℕ) (hn : 0 < n) (hΔpos : 0 < evalZeta5 (Delta n)) :
-    Real.log (evalZeta5 (F n))
-      ≤ (Ubar : ℝ) * (K n : ℝ) ^ 2 + 24 * (K n : ℝ) * Real.log (K n : ℝ)
-        + 200 * (K n : ℝ) :=
-  prop_6_3_of n hn hΔpos (eq_6_14 n hn hΔpos) (eq_6_15 n hn)
+`eq_6_14` ((6.14), p. 20) and `prop_6_3` ((6.16), p. 20) are stated and proved in
+`Zeta5/Sec6/Final.lean`, with the same names (`Zeta5.RealBound.eq_6_14`,
+`Zeta5.RealBound.prop_6_3`) and types as they had here.  `prop_6_3` is
+`prop_6_3_of n hn hΔpos (eq_6_14 n hn hΔpos) (eq_6_15 n hn)`. -/
 
 /-! ## A.3  Table 2 (pp. 24–25): the 684 dyadic cells
 
@@ -883,7 +833,8 @@ theorem prop_6_3 (n : ℕ) (hn : 0 < n) (hΔpos : 0 < evalZeta5 (Delta n)) :
 Both halves of "partition `[0,2]`" are proved here: the endpoints `A_j` increase from `0`
 to `2` (`AA_strictMono`, `AA_zero`, `AA_last`), and for each of the 35 gaps the listed
 dyadic cells tile `[0,1]` in order (`table2_tiles`).  What is *not* proved is (A.9),
-the inequality `ℬ(l,r) < -6645002/10⁶` on each cell; see `eq_6_14`. -/
+the inequality `ℬ(l,r) < -6645002/10⁶` on each cell: the formalisation proves (6.2) by its own
+certified partition instead (`Zeta5/Sec6/Num/`). -/
 
 /-- `q₋ = 59205077/10¹⁰` of p. 23. -/
 def qminus : ℝ := 59205077 / 10 ^ 10
@@ -1156,10 +1107,10 @@ factorial estimates (`log_factorial_ge`, `log_factorial_le`, `sum_log_fact`) and
 **(6.15)** (`eq_6_15`); **(6.11)** (`eq_6_11`); and the derivation of **(6.16)** from
 (6.14) and (6.15) (`prop_6_3_of`, with the exact cancellation `K2logK_cancel`).
 
-**Not established**: `eq_6_14`, the one `sorry`.  Its docstring lists exactly what it
-contains: Andréief's identity (6.10), the Riemann-sum bound (6.12), the scaling (6.13),
-Lemma 6.2 and the configuration bound (6.6)/(6.9), and the potential inequality (6.2) on
-`[0,2]` (the 684 evaluations of (A.9)).
+**Not here**: (6.14) and Proposition 6.3 themselves, which are in `Zeta5/Sec6/Final.lean`
+(Andréief's identity (6.10), the Riemann-sum bound (6.12), the scaling (6.13), the
+zero-mass energy argument and the configuration bound (6.6)/(6.9), and the potential
+inequality (6.2)).
 
 **No `axiom` is declared by this file.** -/
 
@@ -1172,7 +1123,6 @@ section AuditPrints
 #print axioms eq_6_11
 #print axioms table2_tiles
 #print axioms prop_6_3_of
-#print axioms prop_6_3
 
 end AuditPrints
 
