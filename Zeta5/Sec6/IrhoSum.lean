@@ -10,6 +10,25 @@ open Real Finset
 
 noncomputable section
 
+private lemma Irho_double_sum_aux (c f : ℕ → ℝ) (n : ℕ) :
+    ∑ i ∈ range n, ∑ j ∈ range n, c i * c j * f (max i j)
+      = ∑ m ∈ range n, ((∑ i ∈ range (m + 1), c i) ^ 2 - (∑ i ∈ range m, c i) ^ 2) * f m := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have h1 : ∀ i ∈ range n, c i * c n * f (max i n) = c i * c n * f n := by
+      intro i hi
+      rw [max_eq_right (le_of_lt (mem_range.mp hi))]
+    have h2 : ∀ j ∈ range n, c n * c j * f (max n j) = c n * c j * f n := by
+      intro j hj
+      rw [max_eq_left (le_of_lt (mem_range.mp hj))]
+    simp only [sum_range_succ (fun j => _ * c j * f (max _ j)), sum_add_distrib]
+    rw [sum_range_succ (fun i => ∑ j ∈ range n, c i * c j * f (max i j)),
+      sum_range_succ (fun i => c i * c n * f (max i n)), ih, sum_congr rfl h1, sum_congr rfl h2,
+      sum_range_succ _ n, sum_range_succ c n, max_self, ← sum_mul, ← sum_mul, ← mul_sum,
+      ← sum_mul]
+    ring
+
 /-- **LEAF (easy–medium; finite algebra).**  **(A.2) as a double sum**:
 
 `I(ρ) = ∑_{i,j<16} c_i c_j log(L_{max(i,j)}/4)`,   `L_m = b_m − a_m`,
@@ -30,7 +49,9 @@ theorem Irho_double_sum :
     RealBound.Irho = ∑ i ∈ range 16, ∑ j ∈ range 16,
       RealBound.cT i * RealBound.cT j
         * Real.log ((RealBound.bT (max i j) - RealBound.aT (max i j)) / 4) := by
-  sorry
+  rw [Irho_double_sum_aux RealBound.cT
+    (fun m => Real.log ((RealBound.bT m - RealBound.aT m) / 4)) 16]
+  rfl
 
 end
 

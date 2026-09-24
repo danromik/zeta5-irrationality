@@ -30,7 +30,52 @@ the error is `≤ ∑ c_j (450ε + 30π√ε) = λ(450ε + 30π√ε) ≤ 420ε 
 (`RealBound.sum_cT`, `λ = 37/40`, `Real.pi_lt_d2 : π < 3.15`). -/
 theorem rho_cross (t : ℝ) {ε : ℝ} (hε : 0 < ε) :
     ∫ y, kC ε (t - y) ∂rhoM ≤ Urho t + 88 * Real.sqrt ε + 420 * ε := by
-  sorry
+  have hcont : Continuous (fun y => kC ε (t - y)) :=
+    (continuous_kC hε.ne').comp (continuous_const.sub continuous_id)
+  rw [integral_rhoM hcont]
+  have hpi := Real.pi_pos
+  have hpi2 : π < 3.15 := Real.pi_lt_d2
+  have hsε : 0 ≤ Real.sqrt ε := Real.sqrt_nonneg ε
+  have hterm : ∀ j ∈ range 16,
+      RealBound.cT j * (π⁻¹ * ∫ θ in (0 : ℝ)..π, kC ε (t - (mid j + rad j * Real.cos θ)))
+        ≤ RealBound.cT j * Uarc (RealBound.aT j) (RealBound.bT j) t
+          + RealBound.cT j * (450 * ε + 95 * Real.sqrt ε) := by
+    intro j hj
+    have hj' : j < 16 := Finset.mem_range.1 hj
+    have hc := RealBound.cT_pos j hj'
+    have hab := RealBound.aT_lt_bT j hj'
+    have hL := RealBound.tab1_length j hj'
+    have hsL := RealBound.sqrt_len_gt j hj'
+    have hE := arcsine_smooth_err hab t hε
+    simp only [mid, rad]
+    set L := RealBound.bT j - RealBound.aT j with hLdef
+    have hL0 : 0 < L := by linarith
+    have hI : π⁻¹ * ∫ θ in (0 : ℝ)..π,
+        kC ε (t - ((RealBound.aT j + RealBound.bT j) / 2
+          + (RealBound.bT j - RealBound.aT j) / 2 * Real.cos θ))
+        ≤ Uarc (RealBound.aT j) (RealBound.bT j) t + 2 * ε / L
+          + 2 * π * Real.sqrt (ε / L) := by
+      rw [inv_mul_le_iff₀ hpi]; exact hE
+    have h1 : 2 * ε / L ≤ 450 * ε := by
+      rw [div_le_iff₀ hL0]; nlinarith
+    have hsqL : 0 < Real.sqrt L := by linarith
+    have h2 : Real.sqrt (ε / L) ≤ 15 * Real.sqrt ε := by
+      rw [Real.sqrt_div' _ hL0.le, div_le_iff₀ hsqL]; nlinarith
+    have h3 : 2 * π * Real.sqrt (ε / L) ≤ 95 * Real.sqrt ε := by
+      have h4 : 2 * π * Real.sqrt (ε / L) ≤ 2 * π * (15 * Real.sqrt ε) :=
+        mul_le_mul_of_nonneg_left h2 (by positivity)
+      nlinarith
+    rw [← mul_add]
+    apply mul_le_mul_of_nonneg_left _ hc.le
+    linarith
+  calc ∑ j ∈ range 16, RealBound.cT j *
+        (π⁻¹ * ∫ θ in (0 : ℝ)..π, kC ε (t - (mid j + rad j * Real.cos θ)))
+      ≤ ∑ j ∈ range 16, (RealBound.cT j * Uarc (RealBound.aT j) (RealBound.bT j) t
+          + RealBound.cT j * (450 * ε + 95 * Real.sqrt ε)) := Finset.sum_le_sum hterm
+    _ = Urho t + (lam : ℝ) * (450 * ε + 95 * Real.sqrt ε) := by
+      rw [Finset.sum_add_distrib, ← Finset.sum_mul, RealBound.sum_cT, Urho]
+    _ ≤ Urho t + 88 * Real.sqrt ε + 420 * ε := by
+      norm_num [lam]; nlinarith
 
 end
 

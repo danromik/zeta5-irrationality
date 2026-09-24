@@ -234,10 +234,9 @@ one theorem, one explicit list of assumptions, computed by Lean.  It appears in 
 /-! ### Positive controls: the steps proved on 2026-09-23
 
 The four statements that were `sorry`s until 2026-09-23, the shared lemma they use, and the
-main new theorems behind them.  Each must print `depends on NO sorry`; `RealBound.eq_6_14`
-is the negative control: since the §6 blueprint (2026-09-24) it is proved
-(`Zeta5/Sec6/Final.lean`) from the sorried leaves of `Zeta5/Sec6/`, and must print exactly
-the top-level leaves (those used by proved code). -/
+main new theorems behind them.  Each must print `depends on NO sorry`.  `RealBound.eq_6_14`,
+the last `sorry` of the project until 2026-09-24, is now proved (`Zeta5/Sec6/Final.lean`,
+with all 19 leaves of the §6 blueprint proved) and must print `depends on NO sorry` too. -/
 
 #sorry_tree Zeta5.outer_local_analysis
 #sorry_tree Zeta5.PrimeSum.eq_5_7_uniformity
@@ -255,9 +254,9 @@ the top-level leaves (those used by proved code). -/
 
 /-! ### The §6 blueprint (2026-09-24)
 
-Proved parts: the Gram-integral argument (6.10)–(6.13), the configuration bound from the
-energy leaves, and the certified numerics (6.2)/(6.7).  The first three must print
-`depends on NO sorry`. -/
+The main intermediate results of `Zeta5/Sec6/`: the Gram-integral argument (6.10)–(6.13),
+the certified numerics (6.2)/(6.7), the configuration bound (6.9') and the energy of `ρ`.
+All must print `depends on NO sorry` (since 2026-09-24, when the last leaves were proved). -/
 
 #sorry_tree Zeta5.Sec6.Gram.eq_6_14_of_config
 #sorry_tree Zeta5.Sec6.Num.eq_6_7_closed
@@ -269,11 +268,9 @@ energy leaves, and the certified numerics (6.2)/(6.7).  The first three must pri
 
 A `sorry` of the `Zeta5` namespace that Theorem 1.1 does *not* rest on would mean that the
 formalisation had short-circuited the paper's own logical route: a transcribed statement
-that nothing consumes.  Before the §6 blueprint there were none.  Since 2026-09-24 the only
-orphans are the *sub-leaves* of the §6 blueprint (`Zeta5/Sec6/`): leaves whose only
-consumers are the proof plans of other, still sorried, leaves (e.g. `gauss_pd`, used by the
-proof of the leaf `cauchy_cnd`).  They leave this list as the leaves above them are proved;
-`#assumption_report` together with this list is the complete list of `sorry`s. -/
+that nothing consumes.  While the §6 blueprint was being proved (2026-09-24) its sub-leaves
+(leaves used only by other, still sorried, leaves) appeared here; now that every leaf is
+proved there are no `sorry`s at all, so this prints that the (empty) list is complete. -/
 
 #orphan_sorries Zeta5.zeta5_irrational
 

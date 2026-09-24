@@ -1,7 +1,12 @@
 # Adversarial certification of the Zeta5 Lean development
 
 **Date:** 2026-09-23 · **Toolchain:** Lean 4.34.0, Mathlib v4.34.0 · **State certified:** the
-state described in `STATUS.md`
+state of 2026-09-23 (32 modules, one `sorry`, `Zeta5.RealBound.eq_6_14`)
+
+> **Note (2026-09-24).** Since this certification, (6.14) has been proved (branch `eq614`,
+> `Zeta5/Sec6/`), and the project contains no `sorry`; see `STATUS.md`. This document has
+> **not** been redone for that state: everything below, including its verdict and its counts,
+> refers to the state of 2026-09-23.
 
 *This certification was carried out by Claude (Anthropic), in a run separate from the one that
 developed the proofs (see README, 'Provenance'); "I" below is the certifier. The scripts are in `cert/`, their

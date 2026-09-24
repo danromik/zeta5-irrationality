@@ -2,20 +2,17 @@
 
 [![Lean Action CI](https://github.com/danromik/zeta5-irrationality/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/danromik/zeta5-irrationality/actions/workflows/lean_action_ci.yml)
 
-> **Work in progress on branch `eq614` (2026-09-24): the §6 blueprint.**  `Zeta5.RealBound.eq_6_14`
-> (and `prop_6_3`, same names and types) now live in `Zeta5/Sec6/Final.lean` and are **proved**
-> from 19 sorried *leaves* in `Zeta5/Sec6/*.lean`, each a self-contained analytic or finite
-> statement internal to §6/Appendix A (zero-mass energy for the Cauchy-regularised kernel
-> `½log(x²+ε²)`, the arcsine potential (A.1), (A.2), (A.5), the smoothing error).  Proved
-> outright on the way: Andréief (6.10), (6.12), (6.13) and the bookkeeping of (6.14)
-> (`Sec6/Gram.lean`); the configuration bound (6.6)/(6.9) from the leaves (`Sec6/Energy.lean`);
-> and (6.2)/(6.7) for the closed forms by a kernel-checked certified partition
-> (`Sec6/Num/`).  The route and the list of leaves are in the module docstring of
-> `Zeta5/Sec6/Final.lean`; the numerical tests of every leaf are in `numerics/sec6/`.
-> `lake build` now reports 19 `declaration uses 'sorry'` warnings, all in `Zeta5/Sec6/`, and
-> `Zeta5/Audit.lean` prints the 7 top-level leaves in the assumption report and the other 12
-> (sub-leaves, used only by the proof plans of other leaves) as orphans.  The rest of this
-> document describes the state of 2026-09-23, when `eq_6_14` was a single `sorry`.
+> **Update, branch `eq614` (2026-09-24): (6.14) is proved; the project has no `sorry`.**
+> `Zeta5.RealBound.eq_6_14` (statement unchanged) is proved in `Zeta5/Sec6/Final.lean`
+> through the §6 blueprint of 19 leaf statements in `Zeta5/Sec6/*.lean`, all of which are
+> now proved. `lake build` completes with no `declaration uses 'sorry'` warning, and the
+> assumption report of `Zeta5/Audit.lean` lists **no `sorry`**: `Zeta5.zeta5_irrational`
+> rests on Lean's three standard axioms and the two external axioms of `Zeta5/Axioms.lean`,
+> and on nothing else. The §6 proof takes a different route from the paper at several places
+> (a real-line regularisation of the kernel instead of circles, and its own certified
+> partition instead of Table 2); see [(6.14): how it is proved](#614-how-it-is-proved). The
+> certification in `docs/CERTIFICATION.md` and the typeset `docs/lean-status.pdf` describe the
+> state of 2026-09-23, when (6.14) was a `sorry`, and have not been redone for this state.
 
 This repository contains a formalization, in the Lean 4 proof assistant with the Mathlib
 library, of the proof in A. Fauzan's preprint *"ζ(5) is irrational"* (dated 17 September
@@ -24,31 +21,30 @@ objects (the functional μ_X, the Hankel matrices G_K and their determinants Δ_
 normalized polynomials Q_{K,M}, the allocations of §4, the limiting functions of §5, the
 constants of Appendix A), states the paper's propositions and lemmas, and proves them, up to
 Theorem 1.1. Two classical results that Mathlib does not yet contain are entered as axioms.
-One inequality of the paper, (6.14), is left as an explicitly marked unproved step (a
-`sorry`). Every other statement on the paper's route to Theorem 1.1 is proved in Lean. Three
-of the proved steps use a different argument from the paper's (see
-[Deviations from the paper](#deviations-from-the-paper)). The development has 32 Lean files,
-about 24,000 lines, and builds with Lean 4.34.0 and Mathlib v4.34.0.
+Every statement on the paper's route to Theorem 1.1 is proved in Lean; there is no `sorry`.
+(Until 2026-09-24 one inequality of the paper, (6.14), was an explicitly marked unproved step.)
+Several of the proved steps use a different argument from the paper's (see
+[Deviations from the paper](#deviations-from-the-paper)). The development has 69 Lean files
+under `Zeta5/` (37 of them in `Zeta5/Sec6/`, the proof of (6.14)), about 29,000 lines, and
+builds with Lean 4.34.0 and Mathlib v4.34.0.
 
 ## The result
 
 **Lean verifies an implication.** Lean checks a proof that ζ(5) is irrational **assuming**
-three statements:
+two statements:
 
 1. **Hermite's integral formula** for the Hurwitz zeta function (DLMF 25.11.29), in the form
    displayed on p. 5 of the paper. This is the axiom `Zeta5.Axioms.hermite_pole_integral`.
 2. **The prime number theorem**, in the Riemann-sum form that the proof of Proposition 5.2
    uses. This is the axiom `Zeta5.Axioms.pnt_prime_riemann_sum`.
-3. **The paper's inequality (6.14)**, the logarithmic-energy bound of §6. This is the unproved
-   theorem `Zeta5.RealBound.eq_6_14`.
 
-(1) and (2) are classical results that are not yet in Mathlib. (3) is a claim of the paper
-itself, and the paper's proof of it has not been formalized. So this repository contains a
-machine-checked proof of the implication
+Both are classical results that are not yet in Mathlib; neither is a claim of the paper. So
+this repository contains a machine-checked proof of the implication
 
-> (1) and (2) and (3) ⟹ ζ(5) is irrational,
+> (1) and (2) ⟹ ζ(5) is irrational.
 
-not a machine-checked proof that ζ(5) is irrational.
+(Until 2026-09-24 there was a third assumption, the paper's inequality (6.14), a `sorry`. It is
+now proved; see [(6.14): how it is proved](#614-how-it-is-proved).)
 
 ### The main theorem
 
@@ -73,7 +69,7 @@ and their existence is proved. Separately, `cert/C3Semantics.lean` proves
 `((zeta5 : ℝ) : ℂ) = riemannZeta 5`, where `riemannZeta` is Mathlib's Riemann zeta function,
 with no `sorry` and no axiom of this project. That file is not part of the build.
 
-### The one unproved step: (6.14)
+### (6.14): how it is proved
 
 In the paper's notation (K = 40n, N = 3n, h = 37n, λ = 37/40), (6.14) is the upper bound
 
@@ -82,43 +78,65 @@ In the paper's notation (K = 40n, N = 3n, h = 37n, λ = 37/40), (6.14) is the up
 for the Hankel determinant Δ_K of (2.4) evaluated at ζ(5). In Lean:
 
 ```lean
--- Zeta5/RealBound.lean, namespace Zeta5.RealBound
+-- Zeta5/Sec6/Final.lean, namespace Zeta5.RealBound
 theorem eq_6_14 (n : ℕ) (hn : 0 < n) (hΔpos : 0 < evalZeta5 (Delta n)) :
     Real.log (evalZeta5 (Delta n))
       ≤ 2 * (h n : ℝ) * ((h n : ℝ) + 6 * (N n : ℝ) - (K n : ℝ)) * Real.log (K n : ℝ)
         + ((lam : ℝ) * M0 - Irho) * (K n : ℝ) ^ 2
-        + 18 * (h n : ℝ) * Real.log (K n : ℝ) + 160 * (h n : ℝ) := by
-  sorry
+        + 18 * (h n : ℝ) * Real.log (K n : ℝ) + 160 * (h n : ℝ)
 ```
 
 Here `M0 = -1329/200`, and `Irho` is the closed form (A.2) of the logarithmic energy I(ρ),
 computed from the entries of Table 1. The hypothesis `0 < Δ_K(ζ(5))` follows from
-Proposition 2.2 and is proved (`Zeta5.delta_pos`).
+Proposition 2.2 and is proved (`Zeta5.delta_pos`). The statement is the one that was a
+`sorry` until 2026-09-24 (it was then in `Zeta5/RealBound.lean`), unchanged.
+`#print axioms Zeta5.RealBound.eq_6_14` gives `[propext, Classical.choice, Quot.sound,
+Zeta5.Axioms.hermite_pole_integral]`: the external axiom enters through Proposition 2.2's
+integral representation of the moments, which (6.10) uses.
 
-**(6.14) is where the paper's analytic estimate lives, and it is the one unformalized step.**
-The paper's proof of it uses:
+The proof is in `Zeta5/Sec6/` (the route, with every step, is in the module docstring of
+`Zeta5/Sec6/Final.lean`):
 
-* Andréief's identity (6.10), which writes Δ_K(ζ(5)) as an h-fold integral. It also uses the
-  comparison of the resulting discrete energy with the continuous one: the Riemann-sum
-  bound (6.12) and the scaling (6.13).
-* Lemma 6.1, the potential inequality (6.2), 2U^ρ(t) − V(t) ≤ M₀. For t ∈ [0, 2] the paper
-  verifies it through Appendix A, by evaluating (A.9) on the 684 dyadic cells of Table 2.
-* Lemma 6.2 (I(ν) ≤ 0 for a signed measure ν of total mass zero), applied as in (6.6)–(6.9).
-* The identification of the closed form (A.2) with the logarithmic energy of ρ.
+* **The Gram integral, (6.10)–(6.13)** (`Sec6/Gram.lean`). Andréief's identity (6.10) writes
+  Δ_K(ζ(5)) as an h-fold integral; with (6.11), the Riemann-sum bound (6.12) and the
+  scaling (6.13), (6.14) follows from any *configuration bound* of the shape of (6.9). The
+  factor 1/h! of (6.10), which the paper drops, is kept, and ∫₀^∞(1+y)⁵e^{−y/K}dy ≤ 326K⁶
+  replaces the paper's constant 652.
+* **The configuration bound (6.6)–(6.9)** (`Sec6/Energy.lean`), with the constant 20h where
+  the paper has (120+√2)h. **Deviation:** the paper regularises the points by circles of
+  radius ε in ℂ and applies Lemma 6.2 to the kernel log|z − w|. Here the points stay Dirac
+  masses on the real line and the kernel is regularised instead:
+  kC ε(x) = ½ log(x² + ε²) ≥ log|x|. The zero-mass argument of Lemma 6.2 (a Frullani
+  representation and positive definiteness of the Gaussian kernel) is proved for kC ε
+  (`Sec6/CND.lean`, `Frullani.lean`, `GaussPD.lean`, `Swap.lean`). Since kC ε is bounded on
+  compacts, the log-integrability hypothesis and the limit step of Lemma 6.2 are not needed.
+  The smoothing error is bounded in a different way from the paper's mass bound and "60√ε"
+  of p. 19 (`SmoothErr.lean`, `SmoothArc.lean`, `RhoCross.lean`).
+* **The arcsine potential (A.1) and the energy (A.2)** (`LogCos*.lean`, `ArcsinePot.lean`,
+  `PairEnergy.lean`, `RhoEnergy.lean`). (A.1) is proved for every interval, on the interval
+  from ∫₀^π log sin θ dθ = −π log 2 and off it from Mathlib's circle averages. (A.2) is used as
+  the inequality I(ρ) ≤ I_k(ρ, ρ) for the regularised kernel, which is what the argument needs.
+* **The potential inequality (6.2)/(6.7), Lemma 6.1** (`Sec6/Num/`, `Potential.lean`,
+  `Field.lean`). **Deviation:** the paper verifies (6.2) on [0, 2] by the bound ℬ(l, r) of
+  (A.9) on the 684 cells of Table 2. That route is not used. Instead the closed forms (A.1)
+  and (A.5) of 2U^ρ − V are evaluated with certified interval arithmetic on the
+  formalization's own partition: 1049 cells on [0, 2] and 2 on [2, 4], each checked by the
+  kernel (`decide +kernel`), and an analytic bound for t ≥ 4 in place of (6.8). The partition
+  is generated by `numerics/sec6/gen_lean.py`. (A.5), the closed form of the field V of (6.1),
+  is proved (`Field.lean`).
 
-None of this is formalized. Everything downstream of (6.14) is proved: Proposition 6.3, i.e.
-(6.16) from (6.14) and (6.15) (`Zeta5.RealBound.prop_6_3_of`), then (7.1), Theorem 2.1 and
-Theorem 1.1. (6.15) and the margin (7.2) are proved as well. The following finite parts of
-Appendix A are also proved: Table 1's verifications, and (A.10)/(6.4), λM₀ − I(ρ) + C_* ≤ Ū,
-from certified rational enclosures of the logarithms involved (`Zeta5.RealBound.eq_6_4`).
-The fact that Table 2's 684 cells tile [0, 2] is proved too (`Zeta5.RealBound.table2_tiles`),
-but the main proof does not use it, because the evaluations on those cells belong to (6.14).
+The statements of the 19 leaves were fixed, and each was tested numerically with must-fail
+controls (`numerics/sec6/check_leaves.py`), before any of them was proved. Downstream of
+(6.14), Proposition 6.3, i.e. (6.16) from (6.14) and (6.15) (`Zeta5.RealBound.prop_6_3_of`),
+then (7.1), Theorem 2.1 and Theorem 1.1 are proved, as are (6.15), the margin (7.2), Table 1's
+verifications and (A.10)/(6.4), λM₀ − I(ρ) + C_* ≤ Ū (`Zeta5.RealBound.eq_6_4`). The fact that
+Table 2's 684 cells tile [0, 2] is also proved (`Zeta5.RealBound.table2_tiles`), but the main
+proof does not use it, and (A.9) is not formalized.
 
-As a consistency check of the transcription, the Lean statement of (6.14) was evaluated at
-n = 1, 2, 3 (K = 40, 80, 120). The exact values of Δ_K(ζ(5)) came from the referee audit
-described under [Provenance](#provenance). The inequality holds with a large margin
-(`cert/c3/eq_6_14_control.py`, `cert/c3/eq_6_14_control.out`). This check says nothing
-about large K.
+Before it was proved, the Lean statement of (6.14) was evaluated at n = 1, 2, 3 (K = 40, 80,
+120) as a consistency check of the transcription. The exact values of Δ_K(ζ(5)) came from the
+referee audit described under [Provenance](#provenance). The inequality holds with a large
+margin (`cert/c3/eq_6_14_control.py`, `cert/c3/eq_6_14_control.out`).
 
 ### The two axioms
 
@@ -164,28 +182,27 @@ info: Zeta5/Audit.lean:203:0: ASSUMPTION REPORT for Zeta5.zeta5_irrational
     Zeta5.Axioms.hermite_pole_integral
     Zeta5.Axioms.pnt_prime_riemann_sum
 
-  (C) sorry(s) — unfinished steps of the paper's own argument, 1 in all:
-    Zeta5.RealBound.eq_6_14
+  (C) sorry(s) — unfinished steps of the paper's own argument, 0 in all:
+    (none)
 
   (D) any other axiom (must be empty):
     (none)
 
-  [self-check: walker agrees with Lean.collectAxioms, 6 axiom(s)]
+  [self-check: walker agrees with Lean.collectAxioms, 5 axiom(s)]
 ```
 
 The last line records that the walker's result agrees with Lean's own `Lean.collectAxioms`.
 The build then prints
 
 ```
-info: Zeta5/Audit.lean:262:0: every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
+info: Zeta5/Audit.lean:275:0: every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
 ```
 
-So the project contains no other `sorry`. Lean's built-in `#print axioms` gives the same list.
-In it, `sorryAx` stands for the `sorry` in (6.14):
+(vacuously: there is none). Lean's built-in `#print axioms` gives the same list, with no
+`sorryAx`:
 
 ```
 'Zeta5.zeta5_irrational' depends on axioms: [propext,
- sorryAx,
  Classical.choice,
  Quot.sound,
  Zeta5.Axioms.hermite_pole_integral,
@@ -196,23 +213,22 @@ In it, `sorryAx` stands for the `sorry` in (6.14):
 (propositional extensionality, the axiom of choice, and soundness of quotients). Essentially
 all of Mathlib uses them.
 
-`Audit.lean` also reports, for each named intermediate statement, whether it depends on the
-`sorry`. Only Theorem 2.1, Proposition 6.3 and (7.1) do, through (6.14). For example,
-Propositions 2.2, 4.1, 4.3, 5.1 and 5.2, (2.9), (3.12) and (5.16)–(5.18) all print
+`Audit.lean` also reports, for each named intermediate statement, whether it depends on a
+`sorry`. All of them, including Theorem 2.1, Proposition 6.3, (6.14) and (7.1), print
 `depends on NO sorry`, and `Zeta5.theorem_1_1` (Theorem 2.1 ⟹ Theorem 1.1) depends only on
 the three standard axioms.
 
 ### What is machine-checked
 
-Everything on the paper's route to Theorem 1.1 apart from (6.14) is machine-checked. That
+Everything on the paper's route to Theorem 1.1 is machine-checked. That
 covers §2 (the functional μ_X, (2.9), and Proposition 2.2 modulo Hermite's formula), §3
 (Lemma 3.3, (3.11), (3.12)) and §4 (Propositions 4.1 and 4.3 with both p-adic local
 analyses). It covers §5 (Propositions 5.1 and 5.2, the latter modulo the prime number
 theorem; (5.7) with an explicit uniform constant; the tail estimates (5.15)–(5.17); all of
-Appendix B), the part of §6 downstream of (6.14), and §7. The finite computations the paper
-relies on outside (6.14) are carried out in Lean by exact rational arithmetic and certified
-enclosures, not assumed. These are Appendix B's 143 intervals and its Tables 3 and 4, Table 1
-and the constants of Appendix A.4, and the margin (7.2).
+Appendix B), §6 including (6.14) (by the route described above), and §7. The finite
+computations are carried out in Lean by exact rational arithmetic and certified enclosures,
+not assumed. These are Appendix B's 143 intervals and its Tables 3 and 4, Table 1 and the
+constants of Appendix A.4, the certified partition for (6.2)/(6.7), and the margin (7.2).
 
 ## How to check it yourself
 
@@ -251,13 +267,14 @@ space. Most of that space is for the compiled Mathlib library.
    lake build
    ```
 
-   This compiles the 32 files of this project. It took about four to five minutes on the
-   machine used for development. What to look for in the output:
+   This compiles the 69 files of this project. A full rebuild of the project (on top of the
+   Mathlib cache) took about four to five minutes on the machine used for development before
+   the §6 files were added; an incremental build of the §6 files took about four minutes. What
+   to look for in the output:
    * the assumption report shown above, among many `info:` lines (the other `info:` lines are
      `#print axioms` checks on intermediate results, and they are expected);
-   * exactly one warning `declaration uses 'sorry'`, at `Zeta5/RealBound.lean` (this is
-     (6.14));
-   * about 250 other warnings, all of them Mathlib deprecation notices and style lints
+   * no warning `declaration uses 'sorry'`;
+   * about 270 warnings, all of them Mathlib deprecation notices and style lints
      (`if_pos`/`if_neg` deprecations, unused `simp` arguments, and similar), which do not
      affect correctness;
    * the final line `Build completed successfully`.
@@ -281,7 +298,6 @@ space. Most of that space is for the compiled Mathlib library.
    def Zeta5.zeta5 : ℝ :=
    ∑' (v : ℕ), 1 / (↑v + 1) ^ 5
    'Zeta5.zeta5_irrational' depends on axioms: [propext,
-    sorryAx,
     Classical.choice,
     Quot.sound,
     Zeta5.Axioms.hermite_pole_integral,
@@ -334,7 +350,8 @@ can be checked against the paper without reading any proof.
 | §5, Proposition 5.2 | `PrimeSum.lean` | The three-range decomposition of log m_{K,M} and (5.11). Uses the axiom `pnt_prime_riemann_sum`. |
 | §5.3, (5.15)–(5.17) | `Tail.lean` | The two integrations by parts, on finite intervals. |
 | Appendix B, (5.8)–(5.18) | `AppendixB.lean` | (B.1), the 143 affine pieces of (B.2), Tables 3 and 4, (5.10), and (5.18) exactly. |
-| §6 and Appendix A | `RealBound.lean` | Table 1, (A.10)/(6.4), Table 2's tiling, (6.11), (6.15), and (6.16) from (6.14). **Contains the one `sorry`, `eq_6_14`.** |
+| §6 and Appendix A | `RealBound.lean` | Table 1, (A.10)/(6.4), Table 2's tiling, (6.11), (6.15), and (6.16) from (6.14). |
+| §6 and Appendix A, (6.14) | `Sec6/*.lean`, `Sec6/Num/*.lean` | (6.14) and Proposition 6.3 (`Sec6/Final.lean`): the Gram integral (6.10)–(6.13) (`Gram.lean`), the configuration bound (6.6)–(6.9) for the regularised kernel (`Energy.lean` and the leaves it uses), (A.1), (A.2), (A.5), and the certified partition for (6.2)/(6.7) (`Num/`). |
 | §7, (5.21) and (7.1) | `Asymptotics.lean` | (5.21) from (5.11), and (7.1) from (5.21) and (6.16). |
 | §7, Theorems 2.1 and 1.1 | `Interface.lean` | The named statements, Theorem 2.1 at M = 200, and `zeta5_irrational`. |
 | (not in the paper) | `Axioms.lean` | The two axioms. |
@@ -413,8 +430,14 @@ by the explicit case split on N mod p.
   (`Zeta5.vanishing_of_rank`). Lemma 4.2 as printed is also proved (`Zeta5.lemma_4_2`), but
   the main proof does not use it.
 * **(6.14) is stated with I(ρ) as the number (A.2)** and M₀ as −1329/200, as described
-  above. The identification of (A.2) with the logarithmic energy of ρ is part of what the
-  `sorry` stands for.
+  above. The proof uses (A.2) only through the inequality I(ρ) ≤ I_k(ρ, ρ) for the
+  regularised kernel (`Zeta5.Sec6.rho_energy_ge`).
+* **§6 by a different route.** The energy step (6.6)–(6.9) regularises the kernel on the real
+  line instead of the points by circles in ℂ, and bounds the smoothing error differently;
+  (6.2) on [0, 2] is proved on the formalization's own certified partition instead of by (A.9)
+  on Table 2; the Gram step keeps the 1/h! of (6.10) and uses 326K⁶ in place of 652. See
+  [(6.14): how it is proved](#614-how-it-is-proved) and the module docstring of
+  `Zeta5/Sec6/Final.lean`.
 * **(5.16) and (5.17)** are proved in the combined form that (5.18) uses, a bound on
   ∫_{20}^{M} R(x) x^{−3} dx (`Zeta5.AppendixB.eq_5_16_5_17`). This form avoids improper
   integrals. The two separate statements of p. 16 are not stated.
@@ -426,8 +449,8 @@ refer to this section.
 
 * **Nothing internal to the paper's argument is axiomatized.** Every proposition, lemma,
   equation, computation and table of the paper that the proof uses is either proved in Lean or
-  left as a named `sorry`. The assumption report lists every `sorry`, and currently there is
-  one.
+  left as a named `sorry`. The assumption report lists every `sorry`, and currently there are
+  none.
 * **Only standard external facts may be axioms.** Each one is declared in `Zeta5/Axioms.lean`
   with (i) its precise statement, (ii) a literature citation, and (iii) the reason Mathlib
   lacks it. Where an axiom is stronger than the bare citation (both current axioms are, as
@@ -490,12 +513,12 @@ numbers in this repository refer to v1. The preprint itself is not included here
 
 * `docs/STATUS.md`: the detailed status. It covers what is proved, section by section; the
   assumption list with the axioms' docstrings summarized; the complete list of deviations; and
-  what remains to be done for (6.14).
-* `docs/CERTIFICATION.md`: the adversarial certification of the current state. It checks that
-  the main theorem is faithfully stated and that it depends on exactly the assumptions listed
-  above.
+  what remains to be done.
+* `docs/CERTIFICATION.md`: the adversarial certification of the state of 2026-09-23, when
+  (6.14) was still a `sorry`. It checks that the main theorem is faithfully stated and that it
+  depends on exactly the assumptions listed then. It has not been redone for the present state.
 * `docs/lean-status.pdf` (source `docs/lean-status.tex`): a readable summary of what the
-  formalization proves and assumes.
+  formalization proved and assumed as of 2026-09-23 (before (6.14) was proved).
 * `docs/zeta5-audit.pdf` (source `docs/zeta5-audit.tex`): the referee audit of the preprint.
   It gives a section-by-section and lemma-by-lemma assessment, the exact determinant data, and
   a proof of the inequality on p. 10.

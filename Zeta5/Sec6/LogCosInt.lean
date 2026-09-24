@@ -22,7 +22,9 @@ and the Joukowski factorisation; or bound `|log|x − cos θ||` near the zero us
 duplicate the two-line Jordan bound here or use the circle route). -/
 theorem intervalIntegrable_log_abs_sub_cos (x : ℝ) :
     IntervalIntegrable (fun θ => Real.log |x - Real.cos θ|) volume 0 π := by
-  sorry
+  have hmero : MeromorphicOn (fun θ : ℝ => x - Real.cos θ) (Set.uIcc 0 π) :=
+    ((analyticOnNhd_const (v := x)).sub analyticOnNhd_cos).meromorphicOn
+  simpa [Real.norm_eq_abs] using hmero.intervalIntegrable_log_norm
 
 end
 

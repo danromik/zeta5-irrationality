@@ -26,7 +26,36 @@ continuous, so `intervalIntegral.integral_eq_sub_of_hasDerivAt` (with
 theorem integral_log_add_sq {t : ℝ} (ht : 0 < t) (c : ℝ) :
     ∫ u in (0 : ℝ)..c, Real.log (t + u ^ 2)
       = c * Real.log (t + c ^ 2) - 2 * c + 2 * Real.sqrt t * Real.arctan (c / Real.sqrt t) := by
-  sorry
+  have hs : 0 < Real.sqrt t := Real.sqrt_pos.mpr ht
+  have hss : Real.sqrt t ^ 2 = t := Real.sq_sqrt ht.le
+  set F : ℝ → ℝ := fun u =>
+    u * Real.log (t + u ^ 2) - 2 * u + 2 * Real.sqrt t * Real.arctan (u / Real.sqrt t) with hF
+  have hderiv : ∀ x ∈ Set.uIcc (0 : ℝ) c, HasDerivAt F (Real.log (t + x ^ 2)) x := by
+    intro x _
+    have hpos : 0 < t + x ^ 2 := by positivity
+    have h1 : HasDerivAt (fun u : ℝ => t + u ^ 2) (2 * x) x := by
+      simpa using (hasDerivAt_pow 2 x).const_add t
+    have h2 : HasDerivAt (fun u : ℝ => Real.log (t + u ^ 2)) (2 * x / (t + x ^ 2)) x :=
+      h1.log hpos.ne'
+    have h3 : HasDerivAt (fun u : ℝ => u * Real.log (t + u ^ 2))
+        (1 * Real.log (t + x ^ 2) + x * (2 * x / (t + x ^ 2))) x := (hasDerivAt_id x).mul h2
+    have h4 : HasDerivAt (fun u : ℝ => u / Real.sqrt t) (1 / Real.sqrt t) x :=
+      (hasDerivAt_id x).div_const _
+    have h5 : HasDerivAt (fun u : ℝ => Real.arctan (u / Real.sqrt t))
+        (1 / (1 + (x / Real.sqrt t) ^ 2) * (1 / Real.sqrt t)) x := h4.arctan
+    have h6 := (h3.sub ((hasDerivAt_id x).const_mul 2)).add (h5.const_mul (2 * Real.sqrt t))
+    convert h6 using 1
+    · funext u; simp [hF]
+    · have hq : 1 + (x / Real.sqrt t) ^ 2 = (t + x ^ 2) / t := by
+        rw [div_pow, hss]; field_simp
+      rw [hq]
+      field_simp
+      ring
+  have hint : IntervalIntegrable (fun u : ℝ => Real.log (t + u ^ 2)) volume 0 c := by
+    apply Continuous.intervalIntegrable
+    exact Continuous.log (by fun_prop) (fun u => by positivity)
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hint]
+  simp [hF]
 
 /-- **(A.5)**: `V(t) = Vclosed t` for `t > 0`. -/
 theorem Vfield_eq_Vclosed {t : ℝ} (ht : 0 < t) : Vfield t = Vclosed t := by

@@ -58,7 +58,21 @@ Proof plan.  `θ₀ = arccos (max (−1) (min 1 τ))`; `Real.cos_arccos` gives
 `−1 ≤ τ ≤ 1`, `1 ≤ τ`; `Real.neg_one_le_cos`, `Real.cos_le_one`; `abs_le`, `le_abs`). -/
 theorem exists_nearest_cos (τ : ℝ) :
     ∃ θ₀ ∈ Icc (0 : ℝ) π, ∀ θ, |Real.cos θ₀ - Real.cos θ| ≤ |τ - Real.cos θ| := by
-  sorry
+  set c := max (-1) (min 1 τ) with hc
+  have hc1 : -1 ≤ c := le_max_left _ _
+  have hc2 : c ≤ 1 := max_le (by norm_num) (min_le_left _ _)
+  refine ⟨Real.arccos c, ⟨Real.arccos_nonneg _, Real.arccos_le_pi _⟩, fun θ => ?_⟩
+  rw [Real.cos_arccos hc1 hc2]
+  have hy1 := Real.neg_one_le_cos θ
+  have hy2 := Real.cos_le_one θ
+  rcases le_total τ (-1) with h | h
+  · have : c = -1 := by rw [hc, min_eq_right (by linarith), max_eq_left h]
+    rw [this, abs_of_nonpos (by linarith), abs_of_nonpos (by linarith)]; linarith
+  · rcases le_total τ 1 with h' | h'
+    · have : c = τ := by rw [hc, min_eq_right h', max_eq_right h]
+      rw [this]
+    · have : c = 1 := by rw [hc, min_eq_left h', max_eq_right (by norm_num)]
+      rw [this, abs_of_nonneg (by linarith), abs_of_nonneg (by linarith)]; linarith
 
 end
 

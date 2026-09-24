@@ -1,19 +1,15 @@
 # Development status and deviations from the paper
 
-> **Work in progress on branch `eq614` (2026-09-24): the §6 blueprint.**  `Zeta5.RealBound.eq_6_14`
-> (and `prop_6_3`, same names and types) now live in `Zeta5/Sec6/Final.lean` and are **proved**
-> from 19 sorried *leaves* in `Zeta5/Sec6/*.lean`, each a self-contained analytic or finite
-> statement internal to §6/Appendix A (zero-mass energy for the Cauchy-regularised kernel
-> `½log(x²+ε²)`, the arcsine potential (A.1), (A.2), (A.5), the smoothing error).  Proved
-> outright on the way: Andréief (6.10), (6.12), (6.13) and the bookkeeping of (6.14)
-> (`Sec6/Gram.lean`); the configuration bound (6.6)/(6.9) from the leaves (`Sec6/Energy.lean`);
-> and (6.2)/(6.7) for the closed forms by a kernel-checked certified partition
-> (`Sec6/Num/`).  The route and the list of leaves are in the module docstring of
-> `Zeta5/Sec6/Final.lean`; the numerical tests of every leaf are in `numerics/sec6/`.
-> `lake build` now reports 19 `declaration uses 'sorry'` warnings, all in `Zeta5/Sec6/`, and
-> `Zeta5/Audit.lean` prints the 7 top-level leaves in the assumption report and the other 12
-> (sub-leaves, used only by the proof plans of other leaves) as orphans.  The rest of this
-> document describes the state of 2026-09-23, when `eq_6_14` was a single `sorry`.
+> **Branch `eq614`, 2026-09-24: (6.14) is proved, and the project contains no `sorry`.**
+> `Zeta5.RealBound.eq_6_14` and `prop_6_3` (same names and types as before) are proved in
+> `Zeta5/Sec6/Final.lean` through the §6 blueprint (commit `4dea216`), whose 19 leaf
+> statements in `Zeta5/Sec6/*.lean` are all proved, statements unchanged. `lake build`
+> reports no `declaration uses 'sorry'` warning, and the assumption report lists **no
+> `sorry`**: only the three standard Lean axioms and the two axioms of `Zeta5/Axioms.lean`.
+> The §6 route and its deviations from the paper are in §2 (C) and §6 (deviations 19–23)
+> below. Numbers attributed below to the certification (`CERTIFICATION.md`, `cert/`, §4 and
+> §8) were measured on the state of 2026-09-23, when `eq_6_14` was the single `sorry`, and
+> have not been re-run for this state.
 
 This file records, for a reader who wants to check the formalization against A. Fauzan's
 preprint "ζ(5) IS IRRATIONAL" (17 September 2026): what the Lean development proves, what it
@@ -21,20 +17,19 @@ assumes, where the formal proof takes a different route from the paper, and what
 be done. The independent certification of the assumption list is in
 [`CERTIFICATION.md`](CERTIFICATION.md); a typeset summary is in `lean-status.pdf`.
 
-**State:** 2026-09-23 · **Toolchain:** Lean 4.34.0, Mathlib v4.34.0 · 32 modules plus the
-root file, about 24 500 lines of Lean.
+**State:** 2026-09-24 · **Toolchain:** Lean 4.34.0, Mathlib v4.34.0 · 69 modules under
+`Zeta5/` (37 of them in `Zeta5/Sec6/`) plus the root file, about 28 800 lines of Lean.
 
-**Build.** With all Zeta5 build artifacts removed, `lake build` recompiles every module from
-source in about 4–5 minutes (on top of the downloaded Mathlib cache) and ends with
+**Build.** `lake build` (incremental, after the §6 leaves were filled in) ends with
 
 ```
-Build completed successfully (8957 jobs).
+Build completed successfully (8994 jobs).
 ```
 
-with zero errors and **exactly one** `declaration uses 'sorry'` warning, for
-`Zeta5.RealBound.eq_6_14` in `Zeta5/RealBound.lean`. The other ~248 warnings are Mathlib
+with zero errors and **no** `declaration uses 'sorry'` warning. The 267 warnings are Mathlib
 deprecation and style lints (`if_neg`/`if_pos` deprecations, unused simp arguments, and
-similar); none affects soundness.
+similar); none affects soundness. (On 2026-09-23, with 32 modules, a from-scratch rebuild of
+the project took about 4–5 minutes on top of the Mathlib cache.)
 
 ---
 
@@ -53,15 +48,17 @@ paper, and the whole of the paper's route to it — Theorem 2.1, Propositions 2.
 statement short-circuited. (Lemmas 3.1 and 4.2 are proved too, but the proofs of
 Propositions 4.1 and 4.3 go around them; see §4 and deviation 7.)
 
-**It rests on two external axioms and ONE named `sorry`, and on nothing else.** The `sorry`
-is `Zeta5.RealBound.eq_6_14`, the paper's (6.14) — the logarithmic-energy upper bound for
-`Δ_K(ζ(5))` in §6. **Every arithmetic statement that the proof of Theorem 1.1 uses (§§2–5 and
-Appendix B) is machine-checked**, conditional only on the prime number theorem in
+**It rests on two external axioms, and on nothing else: no `sorry`.** The last `sorry`,
+`Zeta5.RealBound.eq_6_14` — the paper's (6.14), the logarithmic-energy upper bound for
+`Δ_K(ζ(5))` in §6 — was proved on 2026-09-24 (§2 (C)). **Every statement that the proof of
+Theorem 1.1 uses is machine-checked**, conditional only on the prime number theorem in
 partial-summation form (for Proposition 5.2) and Hermite's integral formula (for
-Proposition 2.2). At three places the formal proof takes a different route from the paper's
+Proposition 2.2, which §6 also uses, through (6.10)). At three places the formal proof takes a different route from the paper's
 own proof — Lemma 3.2 (the distribution formula, with the far poles), the polynomial part of
 the proof of Lemma 3.3, and the unimodularity arguments — so the paper's proofs of those three
-steps are bypassed rather than checked (see the deviations list, §6).
+steps are bypassed rather than checked; §6 of the paper is also proved partly by a different
+route (the kernel regularisation, the smoothing error, and (6.2) on the formalisation's own
+partition instead of Table 2) (see the deviations list, §6).
 
 Verbatim build output (`Zeta5/Audit.lean`, recomputed from the Lean environment on every
 build):
@@ -78,17 +75,16 @@ ASSUMPTION REPORT for Zeta5.zeta5_irrational
     Zeta5.Axioms.hermite_pole_integral
     Zeta5.Axioms.pnt_prime_riemann_sum
 
-  (C) sorry(s) — unfinished steps of the paper's own argument, 1 in all:
-    Zeta5.RealBound.eq_6_14
+  (C) sorry(s) — unfinished steps of the paper's own argument, 0 in all:
+    (none)
 
   (D) any other axiom (must be empty):
     (none)
 
-  [self-check: walker agrees with Lean.collectAxioms, 6 axiom(s)]
+  [self-check: walker agrees with Lean.collectAxioms, 5 axiom(s)]
 ...
 every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
 'Zeta5.zeta5_irrational' depends on axioms: [propext,
- sorryAx,
  Classical.choice,
  Quot.sound,
  Zeta5.Axioms.hermite_pole_integral,
@@ -96,8 +92,8 @@ every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
 'Zeta5.theorem_1_1' depends on axioms: [propext, Classical.choice, Quot.sound]
 ```
 
-The `sorryAx` in the last-but-one line is `eq_6_14` and nothing else: the walker, Lean's
-`collectAxioms`, and an independent module-keyed scan (§4) all agree on that.
+There is no `sorryAx`: the walker and Lean's `collectAxioms` agree on that. (The independent
+scans of §4 were last run on 2026-09-23, when they found exactly `eq_6_14`.)
 
 ### The ground rules these lists follow
 
@@ -152,24 +148,42 @@ not vacuous.
 
 Each axiom has exactly one direct user in the cone: `hermite_pole_integral` →
 `Positivity.integral_wt_div_pole`; `pnt_prime_riemann_sum` → `PrimeSum.tendsto_primeSum`
-(`cert/C3Scan.lean`, §4).
+(`cert/C3Scan.lean`, §4; scan of 2026-09-23, before `Zeta5/Sec6/` existed; `Sec6/Gram.lean`
+reaches `hermite_pole_integral` through `Positivity.prop_2_2_moment`).
 
-### (C) The one unfinished step — internal to the paper
+### (C) Unfinished steps: none. How (6.14) was proved
 
-| `sorry` | location | paper statement | what is missing |
+Until 2026-09-24 the one `sorry` was `Zeta5.RealBound.eq_6_14`, **(6.14)**, p. 20:
+`log Δ_K(ζ(5)) ≤ 2h(h+6N−K)log K + (λM₀ − I(ρ))K² + 18h log K + 160h`, under `Δ_K(ζ(5)) > 0`.
+It is now proved in `Zeta5/Sec6/Final.lean`, with its statement unchanged (it was moved from
+`RealBound.lean` by the blueprint commit, same name and type). `#print axioms` gives
+
+```
+'Zeta5.RealBound.eq_6_14' depends on axioms: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]
+```
+
+(the axiom through Proposition 2.2's moment representation `Positivity.prop_2_2_moment`, used
+by (6.10)). The route, in the module docstring of `Zeta5/Sec6/Final.lean`:
+
+| step | paper | Lean | notes |
 |---|---|---|---|
-| `Zeta5.RealBound.eq_6_14` | `Zeta5/RealBound.lean` | **(6.14)**, p. 20: `log Δ_K(ζ(5)) ≤ 2h(h+6N−K)log K + (λM₀ − I(ρ))K² + 18h log K + 160h`, under `Δ_K(ζ(5)) > 0` | three separable pieces. **(i) Andréief's identity (6.10)**, `Δ_K(ζ(5)) = (1/h!)∫_{(0,∞)^h}∏_{i<j}(y_i²−y_j²)²∏_i D_N(y_i²)⁶/D_K(y_i²) w(y_i)dy_i` (`h`-fold product integrals; absolute convergence from the decay of `w`), then (6.12)/(6.13) — the change of variables `y_i = K√t_i` and the monotonicity bound (6.12). **(ii) Lemma 6.2**, `I(ν) ≤ 0` for a zero-mass signed measure with log-integrable total variation (p. 18 — Ransford, *Potential Theory in the Complex Plane*, Thm 3.1.2; Saff–Totik I.1.8), its application to circle-regularised configurations, and the circle-average identity, giving (6.6)–(6.9). **(iii) (6.2)**, the arcsine-potential bound `2U^ρ(t) − V(t) ≤ M₀` on `[0,2]`, which is Appendix A's 684 certified evaluations of `ℬ(l,r)` (A.9), plus the identification of the Lean constant `Irho` (the closed form (A.2)) with the logarithmic energy `I(ρ)` |
+| (6.14) from a configuration bound | (6.10)–(6.13), p. 20 | `Sec6/Gram.lean` (`andreief`, `eq_6_10`, `eq_6_12_lower/upper`, `gram_bound`, `eq_6_14_of_config`) | Andréief's identity via a double permutation sum; any configuration constant `A ≤ (λM₀ − I(ρ))K² + 3h log K + 131h` suffices (deviation 21) |
+| configuration bound (6.6)–(6.9) | pp. 18–19 | `Sec6/Energy.lean` (`configBound`, `eq_6_6_cauchy`) | for the kernel `kC ε x = ½log(x²+ε²)`, `ε = (16K)⁻²`; `20h` in place of `(120+√2)h` (deviation 19) |
+| Lemma 6.2 for `kC ε` | p. 18 | `CND.lean` (`cauchy_cnd`), `Frullani.lean`, `GaussPD.lean`, `Swap.lean` | zero-mass energy `≤ 0` from a Frullani representation of `kC ε` and positive definiteness of the Gaussian kernel, for finite measures on a bounded interval |
+| cross term `∫U^ρ dσ_ε` | p. 19 | `RhoCross.lean`, `SmoothArc.lean`, `SmoothErr.lean`, `SmoothAux.lean`, `Antideriv.lean` | smoothing error `π(δ + π√(2δ))` per arcsine component, total `88√ε + 420ε` (deviation 20) |
+| (A.1), arcsine potential | App. A | `LogCos.lean`, `LogCosInt.lean`, `LogCosOn.lean`, `LogCosOff.lean`, `ArcsinePot.lean` | on the interval via `∫_0^π log sin = −π log 2`; off it via Mathlib's `circleAverage_log_norm_sub_const₂` |
+| (A.2), energy of `ρ` | App. A | `RhoEnergy.lean` (`rho_energy_ge`), `PairEnergy.lean`, `ArcComm.lean`, `Bilinear.lean`, `IrhoSum.lean` | proved as `Irho ≤ I_k(ρ,ρ)` for the regularised kernel, which is what (6.6) needs |
+| (A.5), field `V` of (6.1) | App. A | `Field.lean` (`Vfield_eq_Vclosed`, `integral_log_add_sq`) | |
+| (6.2), (6.7), (6.8); Lemma 6.1 | §6.1, App. A.3 | `Potential.lean`, `Num/*.lean` (`Num.eq_6_7_closed`) | not by (A.9) on Table 2: a certified partition of its own, 1049 cells on `[0,2]`, 2 on `[2,4]`, analytic tail for `t ≥ 4`, every cell `decide +kernel` (deviation 22) |
 
-This is the one large item left: it needs measure theory and potential theory that Mathlib has
-only in part, plus about 23 000 certified `arctan`/`log` evaluations. A rough estimate is
-several months of work (see §7).
+The 19 leaf statements (marked `LEAF` in the route in `Sec6/Final.lean`) were fixed in the
+blueprint commit `4dea216`, each with a numerical test and must-fail controls
+(`numerics/sec6/check_leaves.py`, output `check_leaves.out`), and were then proved in
+parallel; none was changed. `Num/` is generated by `numerics/sec6/gen_lean.py`. The
+certified partition uses no `native_decide`: every finite check is `decide +kernel`.
 
-Its docstring in `RealBound.lean` itemises what it stands for, with the paper text quoted.
-Note how it is stated (deviation 1): `I(ρ)` and `M₀` are defined real numbers,
-`Irho = ∑_{j<16}(S_j²−S_{j−1}²)log((b_j−a_j)/4)` and `M0 = −1329/200`, so (A.10)/(6.4) is
-proved from Table 1 without the `sorry`, but the identification with the energy and (6.2) are
-inside it. (6.14) was checked against exact values of `Δ_K(ζ(5))` at `K = 40, 80, 120`, where it
-holds with large slack (`CERTIFICATION.md` §6); that is a consistency check, not a proof.
+Before it was proved, (6.14) was checked against exact values of `Δ_K(ζ(5))` at `K = 40, 80,
+120`, where it holds with large slack (`CERTIFICATION.md` §6).
 
 ---
 
@@ -184,7 +198,7 @@ Four interface statements, and one lemma shared by two of them, were the last to
 'Zeta5.PrimeSum.eq_5_7_uniformity' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.CrudeBound.crude_entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.Section3.entry_bounds_4_2_4_3' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Zeta5.RealBound.eq_6_14' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'Zeta5.RealBound.eq_6_14' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]   ← 2026-09-23; now: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]
 'Zeta5.OuterBasis.outer_local_core' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.Uniformity.eq_5_7_uniformity' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.Lemma33.entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -229,11 +243,15 @@ namespace is in the cone.
 `Audit.lean` also carries `#sorry_tree` controls. For the last-proved statements they all
 print `depends on NO sorry` (the four interface statements of §3, the shared lemma,
 `outer_local_core`, `Uniformity.eq_5_7_uniformity`, `Lemma33.lemma_3_3`, `Lemma33.pullback`,
-`InnerEntries.raabe_tau`, `general_bound`, `entry_bounds`), and the negative control prints
-`Zeta5.RealBound.eq_6_14 rests on 1 sorry(s)`.
+`InnerEntries.raabe_tau`, `general_bound`, `entry_bounds`). `Zeta5.RealBound.eq_6_14`, the
+negative control until 2026-09-23 (`rests on 1 sorry(s)`), now prints `depends on NO sorry`,
+as do the §6 controls `Sec6.Gram.eq_6_14_of_config`, `Sec6.Num.eq_6_7_closed`,
+`Sec6.eq_6_7_closed`, `Sec6.configBound` and `Sec6.rho_energy_ge`.
 
 **Independent checks** (the certification scripts in `cert/`, which share no code with
-`Audit.lean`; full report in `CERTIFICATION.md`):
+`Audit.lean`; full report in `CERTIFICATION.md`). **These were run on the state of
+2026-09-23** (32 modules, `eq_6_14` a `sorry`) and have not been re-run since `Zeta5/Sec6/`
+was added:
 
 * `cert/C3Scan.lean` — module-keyed scan of **all 3 272 declarations defined in the 33
   `Zeta5*` modules**: `axiom` declarations (2): `hermite_pole_integral`,
@@ -304,7 +322,14 @@ an axiom is named.
   (5.12)–(5.14); (5.15)–(5.17) in finite-interval form (deviation 4); (5.18) exactly; (5.19)–(5.21).
 * **§6 and Appendix A (`RealBound.lean`).** (6.11) as printed; (6.15); `prop_6_3_of`, i.e.
   (6.14) ∧ (6.15) ⇒ (6.16) with the exact `K² log K` cancellation; (A.10)/(6.4) from Table 1
-  with certified logarithm enclosures; Table 2's 684-cell tiling of `[0,2]`.
+  with certified logarithm enclosures; Table 2's 684-cell tiling of `[0,2]` (not in the cone).
+* **§6 and Appendix A (`Sec6/`), since 2026-09-24.** **(6.14)** and **Proposition 6.3**
+  (`Sec6/Final.lean`); Andréief's identity (6.10), (6.12), (6.13) (`Gram.lean`); the
+  configuration bound (6.6)–(6.9) for the regularised kernel (`Energy.lean`); Lemma 6.2 for
+  that kernel (`CND.lean`); (A.1) for every interval (`ArcsinePot.lean`), (A.2) as a lower
+  bound for the regularised energy (`RhoEnergy.lean`), (A.5) (`Field.lean`); (6.2) and (6.7)
+  for the closed forms on the whole half-line (`Num/`), transferred to the field `V` of (6.1)
+  (`Potential.lean`) — modulo `hermite_pole_integral` through (6.10).
 * **§7.** (7.1) from (5.21) and (6.16).
 
 ---
@@ -340,9 +365,11 @@ an axiom is named.
 
 1. **`eq_6_14` is stated with `I(ρ)` and `M₀` as defined real numbers**, the closed form
    (A.2) and `−1329/200`, not as the logarithmic energy `∬log|t−u|dρ dρ` and not as a
-   conclusion of Lemma 6.1. (A.10)/(6.4) is proved from them; the identification of `Irho`
-   with the energy, and the proof of (6.2), are part of the `eq_6_14` `sorry`. Do not read
-   "`eq_6_4` is proved" as "Lemma 6.1 is proved".
+   conclusion of Lemma 6.1. (A.10)/(6.4) is proved from them. Since 2026-09-24 the proof of
+   `eq_6_14` connects them to the energy argument: `Irho ≤ I_k(ρ,ρ)` for the regularised
+   kernel (`Sec6.rho_energy_ge`, deviation 19) and (6.2)/(6.7) for the closed forms of `U^ρ`
+   and `V` with `M₀ = −1329/200` (`Sec6/Num/`, deviation 22). The equality of `Irho` with the
+   singular energy `∬log|t−u|dρ dρ` is not stated.
 2. **`lemma_3_1` proves (3.4) for every partial sum `∑_{j≤J}p^jU_j`, not for the series** in
    the Tate algebra `ℚ_p⟨z⟩`, which is not formalised. A proved lemma weaker than the paper's.
    (It is also bypassed: Proposition 4.1's proof goes through `general_bound`, deviation 7.)
@@ -416,19 +443,49 @@ an axiom is named.
     verifies by `rfl` that the two statements are identical. In the paper's variables it is
     `bCoef_lt_real`. A point the author may want to revise, not an error in the result.
 
+Deviations in the proof of (6.14) (`Zeta5/Sec6/`, 2026-09-24; each also recorded in the module
+docstrings of `Sec6/Final.lean`, `Sec6/Defs.lean`, `Sec6/Energy.lean`, `Sec6/Gram.lean`,
+`Sec6/SmoothErr.lean` and `Sec6/Num/Final.lean`):
+
+19. **Kernel regularisation on the real line instead of circles.** The paper replaces each
+    point `t_i` by the uniform measure on a circle of radius `ε` in `ℂ` and applies Lemma 6.2
+    to `log|z − w|`, with its log-integrability hypothesis and a limiting argument. Here the
+    points stay Dirac masses and the kernel is regularised: `kC ε x = ½log(x²+ε²)`, which is
+    `≥ log|x|`, continuous, and `log ε` at `0`. The zero-mass argument of Lemma 6.2 (Frullani
+    representation plus Gaussian positive definiteness) is proved for `kC ε` directly
+    (`cauchy_cnd`); every singular integral is a one-dimensional integral in `θ` for the
+    arcsine measures `θ ↦ m + r cos θ`. Lemma 6.2 for the singular kernel is **not**
+    formalised. The resulting (6.9') has `2h log K + 20h` where the paper has `(120+√2)h`.
+20. **The smoothing error** is bounded by `π(δ + π√(2δ))` per arcsine component
+    (`smooth_err_norm`), via the nearest point of `[−1,1]` in angle form and
+    `∫_0^X log(1+b²/x²)dx`, instead of the paper's mass bound and `60√ε` (p. 19); the paper's
+    regularisation constant `≤ 60` (`RealBound.reg_const_le_sixty`) is proved but not used.
+21. **The Gram step** keeps the factor `1/h!` of (6.10), which the paper drops, and uses
+    `∫_0^∞(1+y)⁵e^{−y/K}dy ≤ 326K⁶` in place of the paper's constant `652`; the upper half of
+    (6.12) is proved by sum–integral comparison for an increasing function, avoiding the
+    paper's "decreasing in `t`, then evaluate at `t = 0`". The paper's own (6.9) constants
+    are admissible for `eq_6_14_of_config` (`paper_6_9_admissible`).
+22. **(6.2) is not proved by Appendix A's route.** The bound `ℬ(l,r)` of (A.9) on the 684
+    cells of Table 2 is not formalised; Table 2 is used only for the proved (and unused)
+    tiling statement. Instead `Sec6/Num/` evaluates the closed forms (A.1)/(A.5) of
+    `2U^ρ − V` with certified rational interval arithmetic on the formalisation's own
+    partition — 1049 cells on `[0,2]`, 2 on `[2,4]` against `M₀ − 3/10` — each checked by
+    `decide +kernel`, and proves `t ≥ 4` by an analytic bound (`tail_bound_ge4`) replacing
+    (6.8).
+23. **(A.1)** is proved in normalised form (`(1/π)∫_0^π log|x − cos θ|dθ`) and scaled: on
+    `[−1,1]` from the product formula for `cos φ − cos θ` and `∫_0^π log sin = −π log 2`, off
+    it from Mathlib's circle average of `log‖· − a‖`.
+
 ---
 
 ## 7. What to do next, in value order
 
-1. **`Zeta5.RealBound.eq_6_14`** — the only `sorry`. Three separable sub-projects, in
-   increasing size: (i) Andréief (6.10) with (6.12)/(6.13) — finite-dimensional integration,
-   Mathlib-friendly, perhaps 2–3 weeks; (ii) Lemma 6.2 and (6.6)–(6.9) — the Gaussian-kernel
-   proof on p. 18 is elementary modulo Fubini and dominated convergence, but the circle-average
-   identity and arcsine potentials need building, perhaps 4–6 weeks; (iii) (6.2) on `[0,2]` via
-   Appendix A's (A.9) — a certified `arctan` enclosure plus ~23 000 certified evaluations (the
-   certified-`log` machinery of Table 1 is already built), and the identification of `Irho`
-   with `I(ρ)`, perhaps 4–6 weeks. Decompose into lemma statements first and test each
-   numerically, as was done for the other steps (`numerics/`).
+1. **Re-run the certification on the present state.** `eq_6_14` is proved (2026-09-24) and
+   there is no `sorry` left, but the checks of `CERTIFICATION.md` — clean rebuild, the
+   independent walkers and module scan of `cert/`, `leanchecker` kernel replay, statement
+   snapshot comparison — were run on the state of 2026-09-23 and should be repeated with the
+   37 modules of `Zeta5/Sec6/` included. The typeset `docs/lean-status.pdf` should be updated
+   likewise.
 2. **Reduce `pnt_prime_riemann_sum` to `θ(x) ~ x`** (1–2 weeks): Abel summation plus a Darboux
    sandwich, no Fauzan-specific object. Would leave only textbook citations among the axioms.
 3. **Reduce `hermite_pole_integral` to DLMF 25.11.29 verbatim** by formalising the four
@@ -442,7 +499,10 @@ an axiom is named.
 
 ## 8. Certification
 
-An adversarial certification of this state (`CERTIFICATION.md`; scripts and outputs in
+*This section records the certification of the state of 2026-09-23, before (6.14) was proved;
+it has not been redone for the present state (see §7).*
+
+An adversarial certification of that state (`CERTIFICATION.md`; scripts and outputs in
 `cert/`) reached the verdict: **the claim holds.** `Zeta5.zeta5_irrational : Irrational
 Zeta5.zeta5` rests on `propext`, `Classical.choice` and `Quot.sound`, on the two axioms of
 `Axioms.lean`, and on **exactly one** `sorry`, `Zeta5.RealBound.eq_6_14`. Nothing else is in
@@ -480,8 +540,10 @@ the dependency cone.
   statement the proof of Theorem 1.1 uses") and a stray scratch file outside the library (now
   removed). Neither affected the assumption list.
 
-**How to report this result:** *"ζ(5) is irrational, machine-checked conditional on one
-explicitly named unproved statement of the paper — (6.14), the logarithmic-energy bound of §6
-— plus Hermite's integral formula and the prime number theorem in partial-summation form."*
-Never "modulo standard facts": (6.14) is Fauzan's own claim, and it is the analytic heart
-of §6.
+**How to report this result (2026-09-24):** *"ζ(5) is irrational, machine-checked
+conditional on two external results entered as axioms — Hermite's integral formula (in the
+integrated-by-parts form of p. 5) and the prime number theorem in partial-summation form."*
+Both axioms are stronger than their bare citations (§2 (B)). The certification of §8 predates
+the proof of (6.14); until it is repeated, the no-`sorry` claim rests on the build and on
+`Audit.lean`'s check against `Lean.collectAxioms`. (Before 2026-09-24 the result had to be
+reported as conditional also on (6.14), Fauzan's own claim.)

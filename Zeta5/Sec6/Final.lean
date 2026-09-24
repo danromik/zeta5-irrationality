@@ -5,6 +5,13 @@ Zeta5/Sec6/Final.lean  —  (6.14) and Proposition 6.3, assembled.  THIS FILE CO
 (`Sec6/Gram.lean`).  The names and types of `Zeta5.RealBound.eq_6_14` and
 `Zeta5.RealBound.prop_6_3` are exactly those they had in `Zeta5/RealBound.lean`.
 
+**Status (2026-09-24): no `sorry` anywhere below `eq_6_14`.**  All 19 leaves of the blueprint
+(marked `LEAF` in the route below; their statements were fixed in the blueprint commit and
+have not changed) are proved.  `#print axioms Zeta5.RealBound.eq_6_14` gives
+`[propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]`; the external
+axiom enters through Proposition 2.2's moment representation `Positivity.prop_2_2_moment`,
+which (6.10) uses to write the entries of `G_K(ζ(5))` as integrals (`Sec6/Gram.lean`).
+
 ## The route (the §6 blueprint)
 
 ```
@@ -59,6 +66,24 @@ margin: (6.9') has `20h` where the paper has `(120+√2)h`, and `eq_6_14_of_conf
 
 **Deviation from the paper (Gram step)**: see `Sec6/Gram.lean` — the `1/h!` of (6.10) is kept
 (it pays for one `h log K`), and `∫_0^∞(1+y)⁵e^{-y/K}dy ≤ 326K⁶` replaces the constant `652`.
+
+**Deviation from the paper (potential inequality (6.2)/(6.7))**: Appendix A's route — the
+bound `ℬ(l,r)` of (A.9) on the 684 cells of Table 2 — is not used.  `Num/` instead evaluates
+the closed forms (A.1)/(A.5) of `2U^ρ − V` directly, with certified interval arithmetic, on
+the formalisation's own partition (1049 cells on `[0,2]`, 2 on `[2,4]`), every cell checked by
+`decide +kernel`; `t ≥ 4` is an analytic bound (`Num/Tail.lean`) replacing (6.8).  Table 2's
+tiling is still proved (`RealBound.table2_tiles`) but is not in the dependency cone.
+
+**Deviation from the paper (smoothing error)**: the paper's mass bound and
+`∫U^ρ dω_i − U^ρ(t_i) ≤ 60√ε` (p. 19) are replaced by a bound on the Cauchy-kernel smoothing
+error against an arcsine measure, `smooth_err_norm` (`π(δ + π√(2δ))`, via the nearest point
+of `[−1,1]` in angle form and `∫_0^X log(1+b²/x²)dx`), giving the cross term `rho_cross`
+with `88√ε + 420ε`.
+
+**The arcsine potential (A.1)** is proved in normalised form (`LogCos*.lean`): on `[−1,1]` by
+the product formula for `cos φ − cos θ` and `∫_0^π log sin = −π log 2`; off `[−1,1]` by
+Mathlib's circle average `circleAverage_log_norm_sub_const₂`.  (A.2) is used only as the
+lower bound `I(ρ) ≤ I_k(ρ,ρ)` (`rho_energy_ge`), for the kernel `kC ε ≥ log|·|`.
 -/
 import Zeta5.Sec6.Energy
 
