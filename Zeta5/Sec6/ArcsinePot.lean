@@ -74,9 +74,9 @@ theorem arcsine_pot {a b : ℝ} (hab : a < b) (t : ℝ) :
       · rintro ⟨h1, h2⟩; constructor <;> linarith
       · rintro ⟨h1, h2⟩; constructor <;> linarith
     by_cases h : a ≤ t ∧ t ≤ b
-    · rw [if_pos (habs.2 h), if_pos h, ← sub_eq_add_neg, ← Real.log_div hr0.ne' two_ne_zero, hr]
+    · rw [ite_eq_left (habs.2 h), ite_eq_left h, ← sub_eq_add_neg, ← Real.log_div hr0.ne' two_ne_zero, hr]
       · congr 1; ring
-    · rw [if_neg (fun h' => h (habs.1 h')), if_neg h]
+    · rw [ite_eq_right (fun h' => h (habs.1 h')), ite_eq_right h]
       have hx1 : 1 < |x| := lt_of_not_ge (fun h' => h (habs.1 h'))
       have hx2 : 0 ≤ x ^ 2 - 1 := by nlinarith [sq_abs x, abs_nonneg x]
       have hpos : 0 < (|x| + Real.sqrt (x ^ 2 - 1)) / 2 := by

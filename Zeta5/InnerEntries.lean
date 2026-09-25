@@ -293,8 +293,8 @@ lemma indic_eq_dvd {a : ℕ} (ha : a < p) (y : ℤ) :
     indic p a y = if (p : ℤ) ∣ y - a then 1 else 0 := by
   unfold indic
   by_cases h : (p : ℤ) ∣ y - a
-  · rw [if_pos h, if_pos ((emod_eq_iff_dvd ha y).2 h)]
-  · rw [if_neg h, if_neg fun h' => h ((emod_eq_iff_dvd ha y).1 h')]
+  · rw [ite_eq_left h, ite_eq_left ((emod_eq_iff_dvd ha y).2 h)]
+  · rw [ite_eq_right h, ite_eq_right fun h' => h ((emod_eq_iff_dvd ha y).1 h')]
 
 lemma CF_congr {a : ℕ} {W : ℚ[X]} {u d u' d' : ℕ} (h : ClassFact p a W u d) (hu : u = u')
     (hd : d = d') : ClassFact p a W u' d' := by
@@ -401,8 +401,8 @@ lemma rowPoly_eq_prod (A : InnerAlloc n M p) {a : ℕ} (ha : a ≤ mHalf p) (i :
   rw [InnerAlloc.rowPoly, ← Finset.prod_erase_mul _ _ hmem]
   congr 1
   · refine Finset.prod_congr rfl fun c hc => ?_
-    rw [InnerAlloc.nu, if_neg (Finset.ne_of_mem_erase hc)]
-  · rw [InnerAlloc.nu, if_pos rfl]
+    rw [InnerAlloc.nu, ite_eq_right (Finset.ne_of_mem_erase hc)]
+  · rw [InnerAlloc.nu, ite_eq_left rfl]
 
 /-- `E(−x²) = ∏_c (c² − x²)^{ν(c)}`. -/
 lemma rowPoly_comp (A : InnerAlloc n M p) {a : ℕ} (ha : a ≤ mHalf p) (i : ℕ) :
@@ -494,8 +494,8 @@ lemma sum_qcount_zero (A' : ℕ) : ∑ j ∈ Icc 1 A', qcount p 0 j = 2 * (A' / 
     have e2 : ((p : ℤ) ∣ -(j : ℤ) - ((0 : ℕ) : ℤ)) ↔ p ∣ j := by
       simp [dvd_neg, Int.natCast_dvd_natCast]
     by_cases hj : p ∣ j
-    · rw [if_pos (e1.2 hj), if_pos (e2.2 hj), if_pos hj]
-    · rw [if_neg (fun h => hj (e1.1 h)), if_neg (fun h => hj (e2.1 h)), if_neg hj]
+    · rw [ite_eq_left (e1.2 hj), ite_eq_left (e2.2 hj), ite_eq_left hj]
+    · rw [ite_eq_right (fun h => hj (e1.1 h)), ite_eq_right (fun h => hj (e2.1 h)), ite_eq_right hj]
   rw [Finset.sum_congr rfl fun j _ => hq j, ← Finset.mul_sum, ← Finset.card_filter]
   congr 1
   have : Icc 1 A' = Ioc 0 A' := by ext x; simp only [Finset.mem_Icc, Finset.mem_Ioc]; omega
@@ -530,10 +530,10 @@ lemma sum_qcount_eq_ell (h7 : 7 ≤ p) {a : ℕ} (ha1 : 1 ≤ a) (ha : a < p) (A
       omega
   by_cases h1 : (p : ℤ) ∣ (j : ℤ) - a
   · have h2 : ¬ (p : ℤ) ∣ -(j : ℤ) - a := fun h2 => hdis ⟨h1, h2⟩
-    rw [if_pos h1, if_neg h2, if_pos (Or.inl (e1.1 h1))]
+    rw [ite_eq_left h1, ite_eq_right h2, ite_eq_left (Or.inl (e1.1 h1))]
   · by_cases h2 : (p : ℤ) ∣ -(j : ℤ) - a
-    · rw [if_neg h1, if_pos h2, if_pos (Or.inr (e2.1 h2))]
-    · rw [if_neg h1, if_neg h2, if_neg]
+    · rw [ite_eq_right h1, ite_eq_left h2, ite_eq_left (Or.inr (e2.1 h2))]
+    · rw [ite_eq_right h1, ite_eq_right h2, ite_eq_right]
       rintro (h | h)
       · exact h1 (e1.2 h)
       · exact h2 (e2.2 h)
@@ -553,7 +553,7 @@ lemma qcount_symm {a : ℕ} (ha1 : 1 ≤ a) (ha : a < p) (c : ℕ) :
     rw [hc, show -(c : ℤ) - ((p : ℤ) - a) = -((c : ℤ) - a) - p by ring, dvd_sub_self_right,
       dvd_neg]
   by_cases h1 : (p : ℤ) ∣ -(c : ℤ) - a <;> by_cases h2 : (p : ℤ) ∣ (c : ℤ) - a <;>
-    simp [h1, h2, e1, e2] <;> omega
+    simp [h1, h2, e1, e2]
 
 /-- The roots `±c`, `0 ≤ c ≤ m`, in the class `a ∈ [1, m]`: only `c = a`. -/
 lemma qcount_low {a c : ℕ} (hodd : 2 * mHalf p + 1 = p) (ha1 : 1 ≤ a) (ham : a ≤ mHalf p)
@@ -565,10 +565,10 @@ lemma qcount_low {a c : ℕ} (hodd : 2 * mHalf p + 1 = p) (ha1 : 1 ≤ a) (ham :
     intro h
     have := eq_zero_of_dvd_of_lt h (by omega) (by omega)
     omega
-  rw [if_neg h2, add_zero]
+  rw [ite_eq_right h2, add_zero]
   by_cases hca : c = a
-  · rw [if_pos (by rw [hca]; simp), if_pos hca]
-  · rw [if_neg, if_neg hca]
+  · rw [ite_eq_left (by rw [hca]; simp), ite_eq_left hca]
+  · rw [ite_eq_right, ite_eq_right hca]
     intro h
     have := eq_zero_of_dvd_of_lt h (by omega) (by omega)
     omega
@@ -589,30 +589,30 @@ lemma qcount_zero {c : ℕ} (hodd : 2 * mHalf p + 1 = p) (hc : c ≤ mHalf p) :
       intro h
       have := eq_zero_of_dvd_of_lt h (by omega) (by omega)
       omega
-    rw [if_neg h1, if_neg h2, if_neg hc0]
+    rw [ite_eq_right h1, ite_eq_right h2, ite_eq_right hc0]
 
 lemma sum_nu_qcount_low (hodd : 2 * mHalf p + 1 = p) (f : ℕ → ℕ) {a : ℕ} (ha1 : 1 ≤ a)
     (ham : a ≤ mHalf p) : ∑ c ∈ range (mHalf p + 1), f c * qcount p a c = f a := by
   rw [Finset.sum_eq_single a]
-  · rw [qcount_low hodd ha1 ham ham, if_pos rfl, mul_one]
+  · rw [qcount_low hodd ha1 ham ham, ite_eq_left rfl, mul_one]
   · intro c hc hca
-    rw [qcount_low hodd ha1 ham (by simp only [Finset.mem_range] at hc; omega), if_neg hca,
+    rw [qcount_low hodd ha1 ham (by simp only [Finset.mem_range] at hc; omega), ite_eq_right hca,
       mul_zero]
   · intro h; exact absurd (Finset.mem_range.2 (by omega)) h
 
 lemma sum_nu_qcount_zero (hodd : 2 * mHalf p + 1 = p) (f : ℕ → ℕ) :
     ∑ c ∈ range (mHalf p + 1), f c * qcount p 0 c = 2 * f 0 := by
   rw [Finset.sum_eq_single 0]
-  · rw [qcount_zero hodd (Nat.zero_le _), if_pos rfl]; ring
+  · rw [qcount_zero hodd (Nat.zero_le _), ite_eq_left rfl]; ring
   · intro c hc hc0
-    rw [qcount_zero hodd (by simp only [Finset.mem_range] at hc; omega), if_neg hc0, mul_zero]
+    rw [qcount_zero hodd (by simp only [Finset.mem_range] at hc; omega), ite_eq_right hc0, mul_zero]
   · intro h; exact absurd (Finset.mem_range.2 (Nat.succ_pos _)) h
 
 lemma indic_zero_self : indic p 0 0 = 1 := by simp [indic]
 
 lemma indic_zero_of_pos {a : ℕ} (ha1 : 1 ≤ a) : indic p a 0 = 0 := by
   unfold indic
-  rw [if_neg]
+  rw [ite_eq_right]
   simp only [Int.zero_emod]
   omega
 
@@ -700,7 +700,7 @@ theorem entry_le_class (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) (u v : A
     have ht := tcount_low (n := n) h7 hc1 (by omega : c < p)
     rw [uW_low h7 hodd A u v hc1 hcm]
     unfold srcBound at hle
-    rw [if_neg (by omega)] at hle
+    rw [ite_eq_right (by omega)] at hle
     push_cast
     have htZ : (ell p (K n) c : ℤ) = (ell p (N n) c : ℤ)
         + (((poleSet n).filter (fun r => r % (p : ℤ) = c)).card : ℤ) := by exact_mod_cast ht
@@ -709,7 +709,7 @@ theorem entry_le_class (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) (u v : A
   · have hle : entry A u v ≤ srcBound A u v 0 :=
       Finset.inf'_le _ (Finset.mem_range.2 (Nat.succ_pos _))
     unfold srcBound at hle
-    rw [if_pos rfl] at hle
+    rw [ite_eq_left rfl] at hle
     rw [uW_zero hodd A u v]
     have ht := tcount_zero (n := n) (p := p)
     simp only [mFloor] at hle
@@ -806,7 +806,7 @@ local bound applies with the class counts `uW` of `W` (`CF_gramNum`), which are
 `min((4.3), min_c (4.2))` at every class (`entry_le_class`). -/
 theorem gram_entry_bound (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) (u v : A.Rows) :
     vGAtLeast p (OuterLocal.Bil n (A.rowPoly u.1 u.2) (A.rowPoly v.1 v.2)) (entry A u v) := by
-  haveI : Fact p.Prime := ⟨hp.prime⟩
+  have : Fact p.Prime := ⟨hp.prime⟩
   have h7 : 7 ≤ p := by have := hp.gt_200M; have := hp.cutoff; omega
   rw [OuterLocal.Bil, pullback]
   exact general_bound h7 (poleSet n) (pbI n (D (N n) ^ 5 * (A.rowPoly u.1 u.2 * A.rowPoly v.1 v.2)))
@@ -843,24 +843,24 @@ theorem rowW_le_halfB (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) (u : A.Ro
   unfold InnerAlloc.rowW halfB
   by_cases ha0 : (a : ℕ) = 0
   · -- the zero block
-    rw [if_pos ha0]
+    rw [ite_eq_left ha0]
     unfold InnerAlloc.w2zero
     by_cases hc0 : c = 0
     · subst hc0
-      rw [if_pos rfl]
+      rw [ite_eq_left rfl]
       have hnu : A.nu (a : ℕ) (i : ℕ) 0 = (i : ℕ) := by simp [InnerAlloc.nu, ha0]
       rw [hnu]
       exact min_le_left _ _
-    · rw [if_neg hc0]
+    · rw [ite_eq_right hc0]
       have hnu : A.nu (a : ℕ) (i : ℕ) c = A.Ldim c := by
-        simp [InnerAlloc.nu, ha0, Ne.symm hc0, hc0]
+        simp [InnerAlloc.nu, ha0, hc0]
       rw [hnu, hLc c (by omega) hc]
       refine le_trans (min_le_right _ _) ?_
       refine le_trans (Finset.inf'_le _ (Finset.mem_Icc.2 ⟨by omega, hc⟩)) ?_
       rw [hZ c, hb c]
       linarith
   · -- an ordinary block `a ≥ 1`
-    rw [if_neg ha0]
+    rw [ite_eq_right ha0]
     unfold InnerAlloc.w2
     have ha1 : 1 ≤ (a : ℕ) := by omega
     have ham : (a : ℕ) ≤ mHalf p := by omega
@@ -870,7 +870,7 @@ theorem rowW_le_halfB (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) (u : A.Ro
       omega
     by_cases hc0 : c = 0
     · subst hc0
-      rw [if_pos rfl]
+      rw [ite_eq_left rfl]
       have hnu : A.nu (a : ℕ) (i : ℕ) 0 = A.Ldim 0 := by simp [InnerAlloc.nu, Ne.symm ha0]
       rw [hnu, InnerAlloc.Ldim_zero]
       have hzs := zero_source_bound hp
@@ -885,7 +885,7 @@ theorem rowW_le_halfB (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) (u : A.Ro
       have hell : (0 : ℤ) ≤ (ell p (K n) a : ℤ) := Int.natCast_nonneg _
       have hM0 : (0 : ℤ) ≤ (M : ℤ) := Int.natCast_nonneg _
       linarith
-    · rw [if_neg hc0]
+    · rw [ite_eq_right hc0]
       by_cases hca : c = (a : ℕ)
       · subst hca
         have hnu : A.nu (a : ℕ) (i : ℕ) (a : ℕ) = (i : ℕ) := by simp [InnerAlloc.nu]
@@ -988,7 +988,7 @@ theorem entry_bounds (n M p : ℕ) (hp : IsInnerPrime n M p) (A : InnerAlloc n M
       (∀ u v, A.rowW u + A.rowW v ≤ 2 * entry u v) ∧
       c ≠ 0 ∧ padicValRat p c = 0 ∧ Delta n = C c * B.det := by
   classical
-  haveI : Fact p.Prime := ⟨hp.prime⟩
+  have : Fact p.Prime := ⟨hp.prime⟩
   let σ : Fin (h n) ≃ A.Rows := (Fintype.equivFinOfCardEq (card_rows hp A)).symm
   let u : Fin (mHalf p + 1) → ZMod p := fun c => ((c : ℕ) : ZMod p) ^ 2
   let uZ : Fin (mHalf p + 1) → ℤ := fun c => ((c : ℕ) : ℤ) ^ 2
@@ -1038,7 +1038,7 @@ example : ∑ j ∈ Icc 1 9, qcount 7 2 j = ell 7 9 2 := by decide
 
 /-- ... and the same value through the proved identity `sum_qcount_eq_ell`. -/
 example : ∑ j ∈ Icc 1 9, qcount 7 2 j = ell 7 9 2 := by
-  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 7) := ⟨by norm_num⟩
   exact sum_qcount_eq_ell (le_refl 7) (by norm_num) (by norm_num) 9
 
 section Audit

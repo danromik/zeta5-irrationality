@@ -123,7 +123,7 @@ lemma padicNorm_ge_of_not_sq_dvd {z : ℤ} (hz : ¬ ((p : ℤ) ^ 2 ∣ z)) :
   apply zpow_le_zpow_right₀ (le_of_lt p_one_lt_q)
   have : padicValInt p z ≤ 1 := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     exact hz ((padicValInt_dvd_iff 2 z).2 (Or.inr (by omega)))
   have : (padicValInt p z : ℤ) ≤ 1 := by exact_mod_cast this
   omega
@@ -140,7 +140,7 @@ lemma vge_H5 {d : ℕ} (hd : d < p ^ 2) : vge p (H5 d) (-5) := by
   have hvq : (v : ℚ) ≠ 0 := Nat.cast_ne_zero.2 hv0
   have hval : padicValNat p v ≤ 1 := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have hdvd : p ^ 2 ∣ v := (padicValNat_dvd_iff_le hv0).2 hcon
     have := Nat.le_of_dvd (by omega) hdvd
     omega
@@ -485,7 +485,7 @@ lemma vGAtLeast_C_of_vge {x : ℚ} {c : ℤ} (hx : vge p x c) : vGAtLeast p (C x
   refine vGAtLeast_iff_vge.2 fun i => ?_
   rcases Nat.eq_zero_or_pos i with rfl | hi
   · simpa using hx
-  · rw [coeff_C, if_neg (by omega)]
+  · rw [coeff_C, ite_eq_right (by omega)]
     exact vge_zero _
 
 /-- **Each summand of the distribution formula**: `v_p(τ(P(a+pz))) ≥ min(u − t, f + 2)`,

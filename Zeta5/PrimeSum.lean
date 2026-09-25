@@ -310,7 +310,7 @@ lemma negLp_of_B1 {n M p : ℕ} (Alloc : InnerAllocFamily n M) (hp : p ∈ B1 n 
       = 6 * (h n : ℝ) * (Nat.log p (5 * K n) : ℝ) + (h n : ℝ) * (padicValNat p 24 : ℝ) := by
   have hmem : p * M ≤ K n := (Finset.mem_filter.1 hp).2
   obtain ⟨v, hv⟩ : ∃ v : ℕ, padicValNat p 24 = v := ⟨_, rfl⟩
-  rw [Lp, if_pos hmem, hv]
+  rw [Lp, ite_eq_left hmem, hv]
   push_cast
   ring
 
@@ -352,10 +352,10 @@ lemma block1_le {n M : ℕ} (hM : 40 ≤ M) (hn : 0 < n) (Alloc : InnerAllocFami
         ≤ Real.log (p : ℝ)
           + (if p * p ≤ 5 * K n then Real.log ((5 * K n : ℕ) : ℝ) else 0) := by
       by_cases hsq : p * p ≤ 5 * K n
-      · rw [if_pos hsq]
+      · rw [ite_eq_left hsq]
         have h1 : (1 : ℝ) ≤ (Nat.log p (5 * K n) : ℝ) := by exact_mod_cast hone
         nlinarith [hbig, hlogp]
-      · rw [if_neg hsq]
+      · rw [ite_eq_right hsq]
         have hlt : 5 * K n < p ^ 2 := by
           rw [pow_two]; omega
         have : Nat.log p (5 * K n) = 1 :=
@@ -656,43 +656,43 @@ lemma Tout_piecewise :
   have hhi : y < (37/20 : ℝ) := lt_of_le_of_ne hy2 e11
   by_cases c0 : y < (43/120 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_0 hlo c0
-  push_neg at c0
+  push Not at c0
   have c0' : (43/120 : ℝ) < y := lt_of_le_of_ne c0 (Ne.symm e1)
   by_cases c1 : y < (37/100 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_1 c0' c1
-  push_neg at c1
+  push Not at c1
   have c1' : (37/100 : ℝ) < y := lt_of_le_of_ne c1 (Ne.symm e2)
   by_cases c2 : y < (13/30 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_2 c1' c2
-  push_neg at c2
+  push Not at c2
   have c2' : (13/30 : ℝ) < y := lt_of_le_of_ne c2 (Ne.symm e3)
   by_cases c3 : y < (37/80 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_3 c2' c3
-  push_neg at c3
+  push Not at c3
   have c3' : (37/80 : ℝ) < y := lt_of_le_of_ne c3 (Ne.symm e4)
   by_cases c4 : y < (1/2 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_4 c3' c4
-  push_neg at c4
+  push Not at c4
   have c4' : (1/2 : ℝ) < y := lt_of_le_of_ne c4 (Ne.symm e5)
   by_cases c5 : y < (43/80 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_5 c4' c5
-  push_neg at c5
+  push Not at c5
   have c5' : (43/80 : ℝ) < y := lt_of_le_of_ne c5 (Ne.symm e6)
   by_cases c6 : y < (37/60 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_6 c5' c6
-  push_neg at c6
+  push Not at c6
   have c6' : (37/60 : ℝ) < y := lt_of_le_of_ne c6 (Ne.symm e7)
   by_cases c7 : y < (13/20 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_7 c6' c7
-  push_neg at c7
+  push Not at c7
   have c7' : (13/20 : ℝ) < y := lt_of_le_of_ne c7 (Ne.symm e8)
   by_cases c8 : y < (37/40 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_8 c7' c8
-  push_neg at c8
+  push Not at c8
   have c8' : (37/40 : ℝ) < y := lt_of_le_of_ne c8 (Ne.symm e9)
   by_cases c9 : y < (1 : ℝ)
   · exact continuousAt_of_affine AppendixB.qout_9 c8' c9
-  push_neg at c9
+  push Not at c9
   have c9' : (1 : ℝ) < y := lt_of_le_of_ne c9 (Ne.symm e10)
   exact continuousAt_of_affine AppendixB.qout_10 c9' hhi
 
@@ -799,11 +799,11 @@ lemma continuousAt_e0_fract {c x : ℝ} (h0 : Int.fract (c * x) ≠ 0)
   · have hev : ∀ᶠ z in 𝓝 x, Int.fract (c * z) < 1 / 2 := hf (Iio_mem_nhds hlt)
     refine ContinuousAt.congr (f := fun _ : ℝ => (1 : ℝ)) continuousAt_const ?_
     filter_upwards [hev] with z hz
-    rw [AppendixB.e0, if_pos (le_of_lt hz)]
+    rw [AppendixB.e0, ite_eq_left (le_of_lt hz)]
   · have hev : ∀ᶠ z in 𝓝 x, 1 / 2 < Int.fract (c * z) := hf (Ioi_mem_nhds hgt)
     refine ContinuousAt.congr (f := fun _ : ℝ => (-1 : ℝ)) continuousAt_const ?_
     filter_upwards [hev] with z hz
-    rw [AppendixB.e0, if_neg (not_le.2 hz)]
+    rw [AppendixB.e0, ite_eq_right (not_le.2 hz)]
 
 /-- `fract(2u) ≠ 0` rules out both `u ∈ ℤ` and `{u} = 1/2`. -/
 lemma fract_ne_of_two {u : ℝ} (h : Int.fract (2 * u) ≠ 0) :
@@ -1317,7 +1317,7 @@ lemma block2_le {n M : ℕ} (hM : 40 ≤ M) (hK : 200 * M ^ 2 ≤ K n)
   have hin : IsInnerPrime n M p := ⟨hprime, hM, hK, hlo', hhi'⟩
   have hpR : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hprime.pos
   have hLp : Lp n M (Alloc n) p = vS n p + ((Alloc n) p hin).gammaIn := by
-    rw [Lp, if_neg (by omega), dif_pos hin]
+    rw [Lp, ite_eq_right (by omega), dite_eq_left hin]
   have hRR : RR (((K n : ℕ) : ℝ) / (p : ℝ))
       = -Gam (((K n : ℕ) : ℝ) / (p : ℝ)) - NR (((K n : ℕ) : ℝ) / (p : ℝ)) := rfl
   have hbound : ((-(Lp n M (Alloc n) p) : ℤ) : ℝ)
@@ -1358,13 +1358,12 @@ lemma block3_le {n M : ℕ} (hM : 40 ≤ M) (hn : 0 < n)
   have hnotin : ¬ IsInnerPrime n M p := fun hcon => by
     have := hcon.upper; omega
   have hLp : Lp n M (Alloc n) p = vS n p + gammaOut n p := by
-    rw [Lp, if_neg hnotB1, dif_neg hnotin]
+    rw [Lp, ite_eq_right hnotB1, dite_eq_right hnotin]
   have hbound : ((-(Lp n M (Alloc n) p) : ℤ) : ℝ)
       ≤ ((K n : ℕ) : ℝ) * AppendixB.Tout ((p : ℝ) / ((K n : ℕ) : ℝ)) + C := by
     have h1 := abs_le.1 (hout n p hn hprime hlo3 hhi)
     rw [hLp]
     push_cast
-    push_cast at h1
     linarith [h1.2]
   have hlog : (0 : ℝ) ≤ Real.log (p : ℝ) := log_nonneg_of_prime hprime
   calc ((-(Lp n M (Alloc n) p) : ℤ) : ℝ) * Real.log (p : ℝ)

@@ -19,7 +19,7 @@ open Real Finset
 theorem UomR_le_log {a b t : ℝ} (ha : 0 < a) (hab : a < b) (hbt : b < t) :
     UomR a b t ≤ Real.log t := by
   unfold UomR
-  rw [if_neg (by intro h; linarith [h.2])]
+  rw [ite_eq_right (by intro h; linarith [h.2])]
   have hf := outside_facts hab (Or.inr hbt)
   have hsq : Real.sqrt ((t - a) * (t - b)) ≤ t - (a + b) / 2 := by
     rw [Real.sqrt_le_left (by linarith)]; nlinarith [sq_nonneg (a - b)]

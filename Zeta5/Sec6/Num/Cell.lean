@@ -42,17 +42,17 @@ theorem UomR_anti {a b t s : ℝ} (hab : a < b) (hts : t ≤ s) (hsb : s ≤ b) 
     UomR a b s ≤ UomR a b t := by
   unfold UomR
   by_cases hs : a ≤ s
-  · rw [if_pos ⟨hs, hsb⟩]
+  · rw [ite_eq_left ⟨hs, hsb⟩]
     by_cases ht : a ≤ t
-    · rw [if_pos ⟨ht, by linarith⟩]
-    · rw [if_neg (by tauto)]
+    · rw [ite_eq_left ⟨ht, by linarith⟩]
+    · rw [ite_eq_right (by tauto)]
       push Not at ht
       have h1 := outside_facts hab (Or.inl ht)
       apply Real.log_le_log (by linarith)
       have := Real.sqrt_nonneg ((t - a) * (t - b))
       linarith [h1.1]
   · push Not at hs
-    rw [if_neg (by intro h; linarith [h.1]), if_neg (by intro h; linarith [h.1])]
+    rw [ite_eq_right (by intro h; linarith [h.1]), ite_eq_right (by intro h; linarith [h.1])]
     have h1 := outside_facts hab (Or.inl hs)
     have h2 := outside_facts hab (Or.inl (lt_of_le_of_lt hts hs))
     apply Real.log_le_log (by linarith [Real.sqrt_nonneg ((s - a) * (s - b))])
@@ -67,17 +67,17 @@ theorem UomR_mono {a b t s : ℝ} (hab : a < b) (hat : a ≤ t) (hts : t ≤ s) 
     UomR a b t ≤ UomR a b s := by
   unfold UomR
   by_cases ht : t ≤ b
-  · rw [if_pos ⟨hat, ht⟩]
+  · rw [ite_eq_left ⟨hat, ht⟩]
     by_cases hs : s ≤ b
-    · rw [if_pos ⟨by linarith, hs⟩]
-    · rw [if_neg (by tauto)]
+    · rw [ite_eq_left ⟨by linarith, hs⟩]
+    · rw [ite_eq_right (by tauto)]
       push Not at hs
       have h1 := outside_facts hab (Or.inr hs)
       apply Real.log_le_log (by linarith)
       have := Real.sqrt_nonneg ((s - a) * (s - b))
       linarith [h1.1]
   · push Not at ht
-    rw [if_neg (by intro h; linarith [h.2]), if_neg (by intro h; linarith [h.2])]
+    rw [ite_eq_right (by intro h; linarith [h.2]), ite_eq_right (by intro h; linarith [h.2])]
     have h1 := outside_facts hab (Or.inr ht)
     apply Real.log_le_log (by linarith [Real.sqrt_nonneg ((t - a) * (t - b))])
     have e1 : |t - (a + b) / 2| ≤ |s - (a + b) / 2| := by
@@ -90,11 +90,11 @@ theorem UomUp_sound {a b t : ℚ} (hab : a < b) : UomR a b t ≤ (UomUp a b t : 
   have habR : (a : ℝ) < b := by exact_mod_cast hab
   by_cases h : a ≤ t ∧ t ≤ b
   · have h' : (a : ℝ) ≤ t ∧ (t : ℝ) ≤ b := by exact_mod_cast h
-    rw [UomR, if_pos h', UomUp, if_pos h]
+    rw [UomR, ite_eq_left h', UomUp, ite_eq_left h]
     have := logUp_sound (q := (b - a) / 4) (by linarith)
     push_cast at this; exact this
   · have h' : ¬ ((a : ℝ) ≤ t ∧ (t : ℝ) ≤ b) := by exact_mod_cast h
-    rw [UomR, if_neg h', UomUp, if_neg h]
+    rw [UomR, ite_eq_right h', UomUp, ite_eq_right h]
     have ho : (t : ℝ) < a ∨ (b : ℝ) < t := by
       by_contra hc; push Not at hc; exact h' ⟨hc.1, hc.2⟩
     have hf := outside_facts habR ho

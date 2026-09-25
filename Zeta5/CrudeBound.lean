@@ -238,7 +238,7 @@ lemma qb_pullback_int (i : ℕ) (z : ℤ) :
   have hval : ((qb (e + 1)).comp (-(X ^ 2) : ℚ[X])).eval (z : ℚ)
       * (((2 * e + 2).factorial : ℚ))
       = 2 * (z : ℚ) * ((z : ℚ) * ∏ j ∈ Icc 1 e, ((z : ℚ) ^ 2 - (j : ℚ) ^ 2)) := by
-    rw [qb, if_neg (by omega)]
+    rw [qb, ite_eq_right (by omega)]
     simp only [Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp, Polynomial.eval_mul,
       Polynomial.eval_C, Polynomial.eval_neg, Polynomial.eval_pow, Polynomial.eval_X]
     rw [Nat.add_sub_cancel, hDcomp, hprodQ,
@@ -428,7 +428,7 @@ lemma S_eq_change_of_basis (n : ℕ) :
       have hterm : ∀ i ∈ Icc 1 m, qlead i ^ 2 = 4 / (((2 * i).factorial : ℚ)) ^ 2 := by
         intro i hi
         have hi1 : 1 ≤ i := (Finset.mem_Icc.1 hi).1
-        rw [qlead, if_neg (by omega), div_pow, mul_pow, ← pow_mul, mul_comm i 2, pow_mul]
+        rw [qlead, ite_eq_right (by omega), div_pow, mul_pow, ← pow_mul, mul_comm i 2, pow_mul]
         norm_num
       rw [Finset.prod_congr rfl hterm, Finset.prod_div_distrib, Finset.prod_const,
         Nat.card_Icc]
@@ -614,7 +614,7 @@ example : qb 2 = C (1 / 12 : ℚ) * (X * (X + C (1 : ℚ)))
   refine ⟨h2, ?_⟩
   rw [h2]
   simp only [Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp, Polynomial.add_comp,
-    Polynomial.neg_comp, Polynomial.pow_comp, Polynomial.eval_mul, Polynomial.eval_add,
+    Polynomial.eval_mul, Polynomial.eval_add,
     Polynomial.eval_C, Polynomial.eval_neg, Polynomial.eval_pow, Polynomial.eval_X]
   norm_num
 

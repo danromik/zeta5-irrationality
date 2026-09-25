@@ -585,8 +585,8 @@ lemma sum_eIdx_two (n p A : ℕ) (hv : vOut n p < p) :
       = (if (a ≤ vOut n p ∧ p ≤ vOut n p + a) then (1 : ℤ) else 0) := by
     intro a _
     by_cases hc : a ≤ vOut n p ∧ p ≤ vOut n p + a
-    · rw [if_pos ((eIdx_eq_two_iff n p a).2 hc), if_pos hc]
-    · rw [if_neg (fun hcon => hc ((eIdx_eq_two_iff n p a).1 hcon)), if_neg hc]
+    · rw [ite_eq_left ((eIdx_eq_two_iff n p a).2 hc), ite_eq_left hc]
+    · rw [ite_eq_right (fun hcon => hc ((eIdx_eq_two_iff n p a).1 hcon)), ite_eq_right hc]
   rw [Finset.sum_congr rfl hterm, ← Finset.sum_filter, Finset.sum_const,
     card_both_v A (vOut n p) p hv]
   simp
@@ -881,7 +881,7 @@ lemma one_le_eIdx_of_le_N (hp : OuterHyp n p) (h0 : mFloor p (K n) = 0) {a : ℕ
     unfold vOut
     exact Nat.mod_eq_of_lt hKp
   unfold eIdx
-  rw [hv, if_pos (le_trans ha (N_le_K n))]
+  rw [hv, ite_eq_left (le_trans ha (N_le_K n))]
   split <;> omega
 
 /-- **The zero-weight count in the branch `p > K`**: every row is a zero weight, so the count
@@ -896,8 +896,8 @@ theorem sum_class_zeros_none (hp : OuterHyp n p) (h0 : mFloor p (K n) = 0) :
     have hl : ell p (K n) a = eIdx n p a := by rw [ell_split hp a ha, h0]; ring
     have hed : (if a ≤ N n then 1 else 0 : ℕ) ≤ eIdx n p a := by
       by_cases hc : a ≤ N n
-      · rw [if_pos hc]; exact one_le_eIdx_of_le_N hp h0 hc
-      · rw [if_neg hc]; omega
+      · rw [ite_eq_left hc]; exact one_le_eIdx_of_le_N hp h0 hc
+      · rw [ite_eq_right hc]; omega
     rw [hl, outerZeroCt_none _ _ (eIdx_le_two n p a) (delta_le_one a (N n)) hed, cast_delta]
   rw [Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, sum_eIdx_mHalf hp, sum_delta hp]
 
@@ -970,7 +970,7 @@ lemma sum_outerWeight_split (n p : ℕ) :
   refine Finset.sum_congr rfl fun a ha => ?_
   have ha0 : a ≠ 0 := by
     rw [Finset.mem_Icc] at ha; omega
-  simp only [outerDim, if_neg ha0, outerCost]
+  simp only [outerDim, ite_eq_right ha0, outerCost]
 
 private lemma sum_ite_eq_card (k : ℕ) (g : ℕ → ℤ) :
     ∑ i ∈ Finset.range k, (if g i = 0 then (1 : ℤ) else 0)
@@ -1005,7 +1005,7 @@ lemma outerZeroCount_split (n p : ℕ) :
   · refine Finset.sum_congr rfl fun a ha => ?_
     have ha0 : a ≠ 0 := by
       rw [Finset.mem_Icc] at ha; omega
-    simp only [outerDim, if_neg ha0]
+    simp only [outerDim, ite_eq_right ha0]
     rw [sum_ite_eq_card]
     rfl
 
@@ -1038,9 +1038,9 @@ theorem sum_outerWeight_eq (hp : OuterHyp n p) :
   rw [sum_outerWeight_split]
   by_cases hK0 : K n < p
   · have h0 : mFloor p (K n) = 0 := Nat.div_eq_of_lt hK0
-    rw [if_pos hK0, sum_class_cost_none hp h0, h0, sum_outerWZero_none]
+    rw [ite_eq_left hK0, sum_class_cost_none hp h0, h0, sum_outerWZero_none]
     norm_num
-  · rw [if_neg hK0]
+  · rw [ite_eq_right hK0]
     have hpK : p ≤ K n := by omega
     by_cases hK1 : K n < 2 * p
     · have h1 : mFloor p (K n) = 1 := hp.mFloor_eq_one hpK hK1
@@ -1048,7 +1048,7 @@ theorem sum_outerWeight_eq (hp : OuterHyp n p) :
         have hKe := hp.K_eq
         rw [h1] at hKe
         omega
-      rw [if_pos hK1, sum_class_cost_one hp h1, h1, sum_outerWZero_one, hv]
+      rw [ite_eq_left hK1, sum_class_cost_one hp h1, h1, sum_outerWZero_one, hv]
       ring
     · have h2 : mFloor p (K n) = 2 := hp.mFloor_eq_two (by omega)
       have hv : (vOut n p : ℤ) = (K n : ℤ) - 2 * (p : ℤ) := by
@@ -1056,7 +1056,7 @@ theorem sum_outerWeight_eq (hp : OuterHyp n p) :
         rw [h2] at hKe
         omega
       have hm : 2 * (mHalf p : ℤ) + 1 = (p : ℤ) := by exact_mod_cast hp.two_mHalf
-      rw [if_neg hK1, sum_class_cost_two hp h2, h2, sum_outerWZero_two, hv]
+      rw [ite_eq_right hK1, sum_class_cost_two hp h2, h2, sum_outerWZero_two, hv]
       linarith
 
 /-- **`z` in closed form**: `z = p − 1 − N + u` for `K < 2p` and `z = p + u` for `K ≥ 2p`
@@ -1073,18 +1073,18 @@ theorem outerZeroCount_eq (hp : OuterHyp n p) :
       have hKe := hp.K_eq
       rw [h0] at hKe
       omega
-    rw [if_pos hK0, sum_class_zeros_none hp h0, h0, zeroCt_outerWZero_none, hv]
+    rw [ite_eq_left hK0, sum_class_zeros_none hp h0, h0, zeroCt_outerWZero_none, hv]
     norm_num
-  · rw [if_neg hK0]
+  · rw [ite_eq_right hK0]
     have hpK : p ≤ K n := by omega
     have hm : 2 * (mHalf p : ℤ) + 1 = (p : ℤ) := by exact_mod_cast hp.two_mHalf
     by_cases hK1 : K n < 2 * p
     · have h1 : mFloor p (K n) = 1 := hp.mFloor_eq_one hpK hK1
-      rw [if_pos hK1, sum_class_zeros_one hp h1, h1, zeroCt_outerWZero_one]
+      rw [ite_eq_left hK1, sum_class_zeros_one hp h1, h1, zeroCt_outerWZero_one]
       push_cast
       linarith
     · have h2 : mFloor p (K n) = 2 := hp.mFloor_eq_two (by omega)
-      rw [if_neg hK1, sum_class_zeros_two hp h2, h2, zeroCt_outerWZero_two]
+      rw [ite_eq_right hK1, sum_class_zeros_two hp h2, h2, zeroCt_outerWZero_two]
       push_cast
       linarith
 
@@ -1098,14 +1098,14 @@ theorem gammaOut_eq (hp : OuterHyp n p) :
       = gammaOut n p := by
   rw [sum_outerWeight_eq hp, outerZeroCount_eq hp, gammaOut]
   by_cases hK0 : K n < p
-  · rw [if_pos hK0, if_pos hK0, if_pos hK0, rOut_eq_zero_of_lt n p hK0]
+  · rw [ite_eq_left hK0, ite_eq_left hK0, ite_eq_left hK0, rOut_eq_zero_of_lt n p hK0]
     have hNK : (N n : ℤ) ≤ (K n : ℤ) := by exact_mod_cast N_le_K n
     rw [min_eq_left (by linarith : (0 : ℤ) ≤ (K n : ℤ) - (N n : ℤ))]
     ring
-  · rw [if_neg hK0, if_neg hK0, if_neg hK0]
+  · rw [ite_eq_right hK0, ite_eq_right hK0, ite_eq_right hK0]
     by_cases hK1 : K n < 2 * p
-    · rw [if_pos hK1, if_pos hK1, if_pos hK1]
-    · rw [if_neg hK1, if_neg hK1, if_neg hK1]
+    · rw [ite_eq_left hK1, ite_eq_left hK1, ite_eq_left hK1]
+    · rw [ite_eq_right hK1, ite_eq_right hK1, ite_eq_right hK1]
 
 /-- **The dimension identity of the outer range**: the basis (4.11) together with the
 zero-class rows has exactly `h` elements,
@@ -1125,9 +1125,9 @@ theorem outerRows_card (hp : OuterHyp n p) : Fintype.card (OuterRows n p) = h n 
     have ha0 : a ≠ 0 := by omega
     have hle : (if a ≤ N n then 1 else 0 : ℕ) ≤ ell p (K n) a := by
       by_cases hc : a ≤ N n
-      · rw [if_pos hc]; exact one_le_ell p (K n) a ha.1 (le_trans hc (N_le_K n))
-      · rw [if_neg hc]; omega
-    simp only [outerDim, if_neg ha0, outerRowCt]
+      · rw [ite_eq_left hc]; exact one_le_ell p (K n) a ha.1 (le_trans hc (N_le_K n))
+      · rw [ite_eq_right hc]; omega
+    simp only [outerDim, ite_eq_right ha0, outerRowCt]
     rw [Nat.cast_sub hle, cast_delta]
   have hmK : mFloor p (K n) ≤ K n := Nat.div_le_self _ _
   have hs : ∑ a ∈ Icc 1 (mHalf p), (ell p (K n) a : ℤ)
@@ -1425,7 +1425,7 @@ for `p > K` by (5.1) ("For `p > K`, put `γ_p^out = 0`"), so this is the `p > K`
 theorem prop_4_3_large (n p : ℕ) (hprime : p.Prime) (hpK : K n < p) :
     vGAtLeast p (Delta n) 0 := by
   have : Fact p.Prime := ⟨hprime⟩
-  have hgam : gammaOut n p = 0 := by rw [gammaOut, if_pos hpK]
+  have hgam : gammaOut n p = 0 := by rw [gammaOut, ite_eq_left hpK]
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · have hempty : IsEmpty (Fin (h 0)) := by
       have h0 : h 0 = 0 := rfl

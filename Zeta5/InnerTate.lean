@@ -179,7 +179,7 @@ lemma Tate_C {c : ℚ} {e : ℤ} (hc : vge p c e) : Tate p (C c) e := by
   intro k
   rcases Nat.eq_zero_or_pos k with rfl | hk
   · simpa using hc
-  · rw [coeff_C, if_neg (by omega)]
+  · rw [coeff_C, ite_eq_right (by omega)]
     exact vge_zero _
 
 lemma Tate_one : Tate p 1 0 := by
@@ -209,7 +209,7 @@ lemma Tate_lin {b : ℚ} (hb : vge p b 0) : Tate p (C b + C (p : ℚ) * X) 0 := 
   rcases k with _ | _ | k
   · simpa using hb
   · simpa using vge_p (p := p)
-  · simp only [if_neg (show k + 1 + 1 ≠ 0 by omega), if_neg (show 1 ≠ k + 1 + 1 by omega),
+  · simp only [ite_eq_right (show k + 1 + 1 ≠ 0 by omega), ite_eq_right (show 1 ≠ k + 1 + 1 by omega),
       mul_zero, add_zero]
     exact vge_zero _
 
@@ -281,7 +281,7 @@ theorem tau_Tate (h7 : 7 ≤ p) {F : ℚ[X]} {f : ℤ} (hF : Tate p F f) : vge p
     rw [hk, mul_zero]
     exact vge_zero _
   · refine vge_mono ?_ (vge_mul (hF d) (vge_kappa h7 d))
-    push_neg at hd
+    push Not at hd
     have : (3 : ℤ) ≤ (d : ℤ) := by exact_mod_cast hd
     omega
 
@@ -368,7 +368,7 @@ lemma LamD_X_pow (m : ℕ) (k : ℕ) : LamD m (X ^ k) = 0 := by
     rw [hcomp] at hsh
     have hdeg1 : ((X + 1 : ℚ[X]) ^ (k + 1)).natDegree < k + 2 := by
       have h1 : (X + 1 : ℚ[X]).natDegree = 1 := by
-        simpa using natDegree_X_add_C (1 : ℚ)
+        simp
       have : ((X + 1 : ℚ[X]) ^ (k + 1)).natDegree = k + 1 := by
         rw [natDegree_pow, h1, mul_one]
       omega
@@ -386,7 +386,7 @@ lemma LamD_X_pow (m : ℕ) (k : ℕ) : LamD m (X ^ k) = 0 := by
     rw [Finset.sum_eq_zero hlow, Finset.sum_eq_zero hlow2] at hsh
     rw [coeff_X_add_one_pow, coeff_X_add_one_pow, coeff_X_pow, coeff_X_pow, Nat.choose_self,
       Nat.choose_succ_self_right] at hsh
-    simp only [if_neg (show k ≠ k + 1 by omega), ↓reduceIte, Nat.cast_one, one_mul,
+    simp only [ite_eq_right (show k ≠ k + 1 by omega), ↓reduceIte, Nat.cast_one, one_mul,
       zero_mul, zero_add] at hsh
     have hk : ((k + 1 : ℕ) : ℚ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
     have : ((k + 1 : ℕ) : ℚ) * LamD m (X ^ k) = 0 := by linarith
@@ -519,10 +519,10 @@ theorem class_bound (h7 : 7 ≤ p) {π T U Nf D R F : ℚ[X]} {e f : ℤ}
     obtain ⟨s, hs⟩ := hdvd
     by_cases hk : k < n
     · have : (q ^ n).coeff k = 0 := by
-        rw [hs, coeff_X_pow_mul', if_neg (by omega)]
+        rw [hs, coeff_X_pow_mul', ite_eq_right (by omega)]
       rw [this]
       exact vge_zero _
-    · have hk' : (n : ℤ) ≤ (k : ℤ) := by push_neg at hk; exact_mod_cast hk
+    · have hk' : (n : ℤ) ≤ (k : ℤ) := by push Not at hk; exact_mod_cast hk
       exact vge_mono (by omega) (Tate_pow hqT n k)
   -- the main identity: `π = p^e((U·N_f I) div T + (q^n R) div T) + (π q^n − F I)`
   have hmain : π = C ((p : ℚ) ^ e) * ((U * (Nf * I)) /ₘ T + (q ^ n * R) /ₘ T)

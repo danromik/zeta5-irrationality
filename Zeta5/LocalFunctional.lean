@@ -59,7 +59,7 @@ lemma Lfun_eq_range (P : ℚ[X]) {n : ℕ} (hn : P.natDegree < n) :
     Lfun (monomial k a) = a * _root_.bernoulli k := by
   rw [Lfun_eq_range (monomial k a) (n := k + 1)
     (lt_of_le_of_lt (natDegree_monomial_le a) (by omega))]
-  simp [Polynomial.coeff_monomial, Finset.sum_ite_eq' (range (k + 1)) k]
+  simp [Polynomial.coeff_monomial]
 
 lemma Lfun_add (P Q : ℚ[X]) : Lfun (P + Q) = Lfun P + Lfun Q := by
   set n := max (max P.natDegree Q.natDegree) (P + Q).natDegree + 1 with hn
@@ -68,7 +68,7 @@ lemma Lfun_add (P Q : ℚ[X]) : Lfun (P + Q) = Lfun P + Lfun Q := by
   exact Finset.sum_congr rfl (fun k _ => by rw [Polynomial.coeff_add]; ring)
 
 lemma Lfun_neg (P : ℚ[X]) : Lfun (-P) = - Lfun P := by
-  rw [Lfun_eq_range (-P) (n := P.natDegree + 1) (by simpa using Nat.lt_succ_self _),
+  rw [Lfun_eq_range (-P) (n := P.natDegree + 1) (by simp),
     Lfun, ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl (fun k _ => by rw [Polynomial.coeff_neg]; ring)
 
@@ -118,9 +118,9 @@ lemma tau_sum {ι : Type*} (s : Finset ι) (f : ι → ℚ[X]) :
 (`kappa` is the paper's `κ_d`, already in `Arithmetic.lean`.) -/
 lemma tau_monomial (d : ℕ) (a : ℚ) : tau (monomial d a) = a * kappa d := by
   match d with
-  | 0 => simp [tau, derivative_monomial, kappa]
-  | 1 => simp [tau, derivative_monomial, kappa]
-  | 2 => simp [tau, derivative_monomial, kappa]
+  | 0 => simp [tau, kappa]
+  | 1 => simp [tau, kappa]
+  | 2 => simp [tau, kappa]
   | (e + 3) =>
     have hd : derivative (derivative (derivative (monomial (e + 3) a)))
         = monomial e (a * ((e : ℚ) + 3) * ((e : ℚ) + 2) * ((e : ℚ) + 1)) := by
@@ -129,9 +129,9 @@ lemma tau_monomial (d : ℕ) (a : ℚ) : tau (monomial d a) = a * kappa d := by
       try ring
     rw [tau, hd, Lfun_monomial, kappa]
     have h3 : ¬ (e + 3 < 3) := by omega
-    rw [if_neg h3]
+    rw [ite_eq_right h3]
     have hn : ((e + 3) * (e + 3 - 1) * (e + 3 - 2) : ℕ) = (e + 3) * (e + 2) * (e + 1) := by
-      congr 1 <;> omega
+      congr 1
     have he : (e + 3 - 3) = e := by omega
     rw [hn, he]
     push_cast
@@ -162,7 +162,7 @@ lemma Lfun_comp_one_add (P : ℚ[X]) :
     rw [Polynomial.monomial_comp, Lfun_C_mul, Lfun_monomial]
     -- `L((X+1)^k) = B_k + [k = 1]`
     have hdeg : ((X : ℚ[X]) + 1).natDegree = 1 := by
-      simpa using Polynomial.natDegree_X_add_C (1 : ℚ)
+      simp
     have hpow : (((X : ℚ[X]) + 1) ^ k).natDegree < k + 1 := by
       have := Polynomial.natDegree_pow ((X : ℚ[X]) + 1) k
       rw [this, hdeg]
@@ -198,7 +198,7 @@ lemma Lfun_comp_neg_one_sub (P : ℚ[X]) : Lfun (P.comp (-1 - X)) = Lfun P := by
     rw [Polynomial.monomial_comp, Lfun_C_mul, Lfun_monomial]
     have hneg : ((-1 : ℚ[X]) - X) = -(X + 1) := by ring
     have hdeg : ((X : ℚ[X]) + 1).natDegree = 1 := by
-      simpa using Polynomial.natDegree_X_add_C (1 : ℚ)
+      simp
     have hpow : (((X : ℚ[X]) + 1) ^ k).natDegree < k + 1 := by
       rw [Polynomial.natDegree_pow, hdeg]; omega
     have hL1 : Lfun (((X : ℚ[X]) + 1) ^ k) = _root_.bernoulli k + (if k = 1 then 1 else 0) := by
@@ -221,7 +221,7 @@ lemma Lfun_comp_neg_one_sub (P : ℚ[X]) : Lfun (P.comp (-1 - X)) = Lfun P := by
     | 1 => norm_num [_root_.bernoulli_one]
     | (e + 2) =>
       have hne : e + 2 ≠ 1 := by omega
-      rw [if_neg hne, add_zero]
+      rw [ite_eq_right hne, add_zero]
       rcases Nat.even_or_odd (e + 2) with hev | hod
       · rw [hev.neg_one_pow, one_mul]
       · rw [_root_.bernoulli_eq_zero_of_odd hod (by omega)]
@@ -269,7 +269,7 @@ def dIdx (r : ℤ) : ℕ := if 0 ≤ r then r.toNat else (-r - 1).toNat
 lemma dIdx_neg_natCast (j : ℕ) (hj : 1 ≤ j) : dIdx (-(j : ℤ)) = j - 1 := by
   have hj' : (1 : ℤ) ≤ (j : ℤ) := by exact_mod_cast hj
   unfold dIdx
-  rw [if_neg (by omega)]
+  rw [ite_eq_right (by omega)]
   omega
 
 /-- `d(-1-r) = d(r)`: the symmetry of the index that makes the reflection identity (3.2)
@@ -306,7 +306,7 @@ lemma kappa_two_mul_add_five (e : ℕ) :
     kappa (2 * e + 5)
       = ((2 * (e : ℚ) + 5) * (2 * (e : ℚ) + 4) * (2 * (e : ℚ) + 3))
           * _root_.bernoulli (2 * e + 2) / 24 := by
-  rw [kappa, if_neg (by omega)]
+  rw [kappa, ite_eq_right (by omega)]
   have h1 : (2 * e + 5 - 1) = 2 * e + 4 := by omega
   have h2 : (2 * e + 5 - 2) = 2 * e + 3 := by omega
   have h3 : (2 * e + 5 - 3) = 2 * e + 2 := by omega
@@ -325,7 +325,6 @@ theorem eq_3_1_mono (e : ℕ) : muMono e = tau (X ^ 5 * (-(X ^ 2)) ^ e) := by
     rw [this]
     ring
   rw [hx, tau_C_mul, tau_X_pow, kappa_two_mul_add_five, muMono]
-  push_cast
   ring
 
 /-- **The partial fraction displayed on p. 6**,
@@ -479,10 +478,10 @@ def ZpSub (p : ℕ) [Fact p.Prime] : Subring ℚ where
   zero_mem' := by simp
   one_mem' := by simp
   add_mem' := fun hx hy => le_trans padicNorm.nonarchimedean (max_le hx hy)
-  neg_mem' := fun hx => by simpa only [Set.mem_setOf_eq, padicNorm.neg] using hx
+  neg_mem' := fun hx => by simpa only [Set.mem_ofPred_eq, padicNorm.neg] using hx
   mul_mem' := fun hx hy => by
-    simp only [Set.mem_setOf_eq, padicNorm.mul] at *
-    exact mul_le_one₀ hx (padicNorm.nonneg _) hy
+    simp only [Set.mem_ofPred_eq, padicNorm.mul] at *
+    exact (mul_le_of_le_one_left (padicNorm.nonneg _) hx).trans hy
 
 lemma coeffs_subset_ZpSub {A : ℚ[X]} (h : vGAtLeast p A 0) :
     (↑A.coeffs : Set ℚ) ⊆ ZpSub p := by
@@ -738,7 +737,7 @@ theorem lemma_3_1 (h7 : 7 ≤ p) {s : Finset ℤ}
       have hp1 : padicValRat p ((p : ℚ)) = 1 := by
         have : ((p : ℚ)) = ((p : ℤ) : ℚ) := by push_cast; ring
         rw [this, padicValRat.of_int]
-        simp [padicValInt, padicValNat.self hpf.out.one_lt]
+        simp [padicValInt]
       omega
     · rw [Polynomial.coeff_C, ite_eq_right hne] at hi
       exact absurd rfl hi

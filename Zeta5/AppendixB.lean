@@ -208,7 +208,7 @@ theorem ellR_eq (x z : ℝ) (hz0 : 0 < z) (hz1 : z < 1/2) (hne : z ≠ d0 (Int.f
   have hx : (⌊x⌋ : ℝ) + Int.fract x = x := Int.floor_add_fract x
   rcases le_or_gt (Int.fract x) (1/2) with hA | hB
   · have hd : d0 (Int.fract x) = Int.fract x := min_eq_left (by linarith)
-    have he : e0 (Int.fract x) = 1 := if_pos hA
+    have he : e0 (Int.fract x) = 1 := ite_eq_left hA
     rw [hd] at hne ⊢
     rw [he]
     rcases lt_or_gt_of_ne hne with hzf | hzf
@@ -216,18 +216,17 @@ theorem ellR_eq (x z : ℝ) (hz0 : 0 < z) (hz1 : z < 1/2) (hne : z ≠ d0 (Int.f
         rw [Int.floor_eq_iff]; constructor <;> [linarith; linarith]
       have h2 : ⌊x + z⌋ = ⌊x⌋ := by
         rw [Int.floor_eq_iff]; constructor <;> [linarith; linarith]
-      simp only [ellR, h1, h2, if_pos hzf]
-      push_cast
+      simp only [ellR, h1, h2, ite_eq_left hzf]
       linarith
     · have h1 : ⌊x - z⌋ = ⌊x⌋ - 1 := by
         rw [Int.floor_eq_iff]; push_cast; constructor <;> linarith
       have h2 : ⌊x + z⌋ = ⌊x⌋ := by
         rw [Int.floor_eq_iff]; constructor <;> [linarith; linarith]
-      simp only [ellR, h1, h2, if_neg (not_lt.2 (le_of_lt hzf))]
+      simp only [ellR, h1, h2, ite_eq_right (not_lt.2 (le_of_lt hzf))]
       push_cast
       linarith
   · have hd : d0 (Int.fract x) = 1 - Int.fract x := min_eq_right (by linarith)
-    have he : e0 (Int.fract x) = -1 := if_neg (by push_neg; linarith)
+    have he : e0 (Int.fract x) = -1 := ite_eq_right (by push Not; linarith)
     rw [hd] at hne ⊢
     rw [he]
     rcases lt_or_gt_of_ne hne with hzf | hzf
@@ -235,14 +234,13 @@ theorem ellR_eq (x z : ℝ) (hz0 : 0 < z) (hz1 : z < 1/2) (hne : z ≠ d0 (Int.f
         rw [Int.floor_eq_iff]; constructor <;> [linarith; linarith]
       have h2 : ⌊x + z⌋ = ⌊x⌋ := by
         rw [Int.floor_eq_iff]; constructor <;> [linarith; linarith]
-      simp only [ellR, h1, h2, if_pos hzf]
-      push_cast
+      simp only [ellR, h1, h2, ite_eq_left hzf]
       linarith
     · have h1 : ⌊x - z⌋ = ⌊x⌋ := by
         rw [Int.floor_eq_iff]; constructor <;> [linarith; linarith]
       have h2 : ⌊x + z⌋ = ⌊x⌋ + 1 := by
         rw [Int.floor_eq_iff]; push_cast; constructor <;> linarith
-      simp only [ellR, h1, h2, if_neg (not_lt.2 (le_of_lt hzf))]
+      simp only [ellR, h1, h2, ite_eq_right (not_lt.2 (le_of_lt hzf))]
       push_cast
       linarith
 
@@ -296,13 +294,13 @@ theorem Gam_eq (x : ℝ) :
     refine intervalIntegral.integral_congr_ae ?_
     have h1 : ∀ᵐ z : ℝ, z ≠ dF x := by
       rw [MeasureTheory.ae_iff]
-      simpa using (measure_singleton (μ := (volume : Measure ℝ)) (dF x))
+      simp
     have h2 : ∀ᵐ z : ℝ, z ≠ dG x := by
       rw [MeasureTheory.ae_iff]
-      simpa using (measure_singleton (μ := (volume : Measure ℝ)) (dG x))
+      simp
     have h3 : ∀ᵐ z : ℝ, z ≠ (1/2 : ℝ) := by
       rw [MeasureTheory.ae_iff]
-      simpa using (measure_singleton (μ := (volume : Measure ℝ)) (1/2 : ℝ))
+      simp
     filter_upwards [h1, h2, h3] with z hz1 hz2 hz3 hzmem
     rw [Set.uIoc_of_le (by norm_num : (0:ℝ) ≤ 1/2)] at hzmem
     have hzlt : z < 1/2 := lt_of_le_of_ne hzmem.2 hz3
@@ -318,7 +316,7 @@ theorem Gam_eq (x : ℝ) :
     clear hIg
     by_cases hgz : z < d0 (Int.fract ((alpha : ℝ) * x)) <;>
       by_cases hfz : z < d0 (Int.fract x) <;>
-        simp only [hgz, hfz, if_true, if_false, ite_true, ite_false, reduceIte] <;>
+        simp only [hgz, hfz, ite_true, ite_false] <;>
         first
           | linear_combination (-9 : ℝ) * hegsq
           | ring
@@ -356,7 +354,7 @@ lemma e_d_of_le {x : ℝ} {n : ℤ} (h1 : (n:ℝ) ≤ x) (h2 : x ≤ (n:ℝ) + 1
     e0 (Int.fract x) = 1 ∧ d0 (Int.fract x) = x - n := by
   have hfr : Int.fract x = x - n := fract_eq h1 (by linarith)
   refine ⟨?_, ?_⟩
-  · rw [hfr, e0, if_pos (by linarith)]
+  · rw [hfr, e0, ite_eq_left (by linarith)]
   · rw [hfr, d0, min_eq_left (by linarith)]
 
 /-- `e({x}) = -1` and `d₀({x}) = n + 1 - x` when `n + 1/2 < x < n + 1`. -/
@@ -364,7 +362,7 @@ lemma e_d_of_gt {x : ℝ} {n : ℤ} (h1 : (n:ℝ) + 1/2 < x) (h2 : x < (n:ℝ) +
     e0 (Int.fract x) = -1 ∧ d0 (Int.fract x) = (n:ℝ) + 1 - x := by
   have hfr : Int.fract x = x - n := fract_eq (by linarith) h2
   refine ⟨?_, ?_⟩
-  · rw [hfr, e0, if_neg (by push_neg; linarith)]
+  · rw [hfr, e0, ite_eq_right (by push Not; linarith)]
   · rw [hfr, d0, min_eq_right (by linarith)]; ring
 
 /-- The affine slope of `R` on an interval of (B.2), from the integer parts and the branches. -/
@@ -441,8 +439,8 @@ theorem RR_affine (x : ℝ) (n m k j i ef eg : ℤ) (dm ts : Bool)
         else (eg:ℝ) * (alpha:ℝ) * x + ((1 - (eg:ℝ))/2 - (eg:ℝ) * m) := by
     rw [hdF, hdG]
     cases dm with
-    | false => simp only [Bool.false_eq_true, if_false] at hdm ⊢; exact min_eq_left hdm
-    | true => simp only [if_true] at hdm ⊢; exact min_eq_right hdm
+    | false => simp only [Bool.false_eq_true, ite_false] at hdm ⊢; exact min_eq_left hdm
+    | true => simp only [ite_true] at hdm ⊢; exact min_eq_right hdm
   -- the positive part
   have hsR : sR x = (Hcst:ℝ) * x - (k:ℝ) / 2 := by rw [sR, hTR]
   have hsn : sR x - nPlus x = ((Hcst:ℝ) - 1) * x + ((j:ℝ) - k) / 2 := by
@@ -452,10 +450,10 @@ theorem RR_affine (x : ℝ) (n m k j i ef eg : ℤ) (dm ts : Bool)
     rw [hsn]
     cases ts with
     | false =>
-      simp only [Bool.false_eq_true, if_false] at hts ⊢
+      simp only [Bool.false_eq_true, ite_false] at hts ⊢
       exact max_eq_left (by linarith)
     | true =>
-      simp only [if_true] at hts ⊢
+      simp only [ite_true] at hts ⊢
       exact max_eq_right (by linarith)
   -- assemble
   rw [RR, Gam_eq, NR, JR]
@@ -464,7 +462,7 @@ theorem RR_affine (x : ℝ) (n m k j i ef eg : ℤ) (dm ts : Bool)
   simp only [hdF, hdG, heF, heG, hTR, hqR, hfln, hflm, hfli, affA, affB]
   rcases hefv with h1 | h1 <;> rcases hegv with h2 | h2 <;> cases dm <;> cases ts <;>
     · rw [h1, h2]
-      simp only [Bool.false_eq_true, if_true, if_false, reduceIte]
+      simp only [Bool.false_eq_true, ite_true, ite_false]
       push_cast [lam, alpha, Hcst]
       ring
 
@@ -539,22 +537,22 @@ theorem RR_affine_on {l r : ℝ} {n m k j i ef eg : ℤ} {dm ts : Bool} {A B : �
     · exact Or.inr ⟨he, by linarith⟩
   · cases dm with
     | false =>
-      simp only [Bool.false_eq_true, if_false] at cdm ⊢
+      simp only [Bool.false_eq_true, ite_false] at cdm ⊢
       obtain ⟨u, v⟩ := cdm
       exact affine_le_of_endpoints u v hx1.le hx2.le
     | true =>
-      simp only [if_true] at cdm ⊢
+      simp only [ite_true] at cdm ⊢
       obtain ⟨u, v⟩ := cdm
       exact affine_le_of_endpoints u v hx1.le hx2.le
   · cases ts with
     | false =>
-      simp only [Bool.false_eq_true, if_false] at cts ⊢
+      simp only [Bool.false_eq_true, ite_false] at cts ⊢
       obtain ⟨u, v⟩ := cts
       have := affine_le_of_endpoints (p := 2 * ((Hcst:ℝ) - 1)) (q := 0)
         (c := (j:ℝ) - k) (d := 0) (by linarith) (by linarith) hx1.le hx2.le
       linarith
     | true =>
-      simp only [if_true] at cts ⊢
+      simp only [ite_true] at cts ⊢
       obtain ⟨u, v⟩ := cts
       have := affine_le_of_endpoints (p := 0) (q := 2 * ((Hcst:ℝ) - 1))
         (c := 0) (d := (j:ℝ) - k) (by linarith) (by linarith) hx1.le hx2.le
@@ -582,7 +580,7 @@ theorem piece_value {l r A B : ℝ} (hl : 0 < l) (hlr : l ≤ r)
     (∫ x in l..r, RR x / x ^ 3) = A * (1/l - 1/r) + B / 2 * (1/l^2 - 1/r^2) := by
   have hne : ∀ᵐ y : ℝ, y ≠ r := by
     rw [MeasureTheory.ae_iff]
-    simpa using (measure_singleton (μ := (volume : Measure ℝ)) r)
+    simp
   rw [intervalIntegral.integral_congr_ae
     (g := fun x : ℝ => (A * x + B) / x ^ 3) ?_, integral_affine_div_cube A B l r hl hlr]
   filter_upwards [hne] with y hyr hymem
@@ -2183,7 +2181,7 @@ theorem intervalIntegrable_RR_div {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) :
       exact le_trans (abs_add_le _ _) (by linarith)
     have hy3 : (0:ℝ) < y ^ 3 := by positivity
     have ha3 : (0:ℝ) < a ^ 3 := by positivity
-    have hcube : a ^ 3 ≤ y ^ 3 := by gcongr <;> linarith
+    have hcube : a ^ 3 ≤ y ^ 3 := by gcongr
     have hbig : (0:ℝ) ≤ b * 17 + 10 := by nlinarith
     rw [Real.norm_eq_abs, abs_div, abs_of_pos hy3, div_le_iff₀ hy3]
     have hfrac : (0:ℝ) ≤ (b * 17 + 10) / a ^ 3 := div_nonneg hbig (le_of_lt ha3)
@@ -2351,7 +2349,7 @@ lemma piece_out {l r b c : ℝ} (hlr : l ≤ r)
   refine ⟨(hcont.intervalIntegrable).congr_uIoo hEq, ?_⟩
   have hne : ∀ᵐ t : ℝ, t ≠ r := by
     rw [MeasureTheory.ae_iff]
-    simpa using (measure_singleton (μ := (volume : Measure ℝ)) r)
+    simp
   rw [intervalIntegral.integral_congr_ae (g := fun y : ℝ => b + c * y) ?_,
     integral_affine_plain]
   filter_upwards [hne] with t htr htmem
@@ -2384,7 +2382,7 @@ lemma qout_0 : ∀ y : ℝ, (1/3 : ℝ) < y → y < (43/120 : ℝ) → Tout y = 
   have c3 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 3*y := by rw [hl]; linarith
   have c4 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 4*y := by rw [hl]; linarith
   have c5 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 5*y := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_pos (show y < (1:ℝ)/2 by linarith), min_eq_left b1, max_eq_right b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_right c4, max_eq_right c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_left (show y < (1:ℝ)/2 by linarith), min_eq_left b1, max_eq_right b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_right c4, max_eq_right c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2406,7 +2404,7 @@ lemma qout_1 : ∀ y : ℝ, (43/120 : ℝ) < y → y < (37/100 : ℝ) → Tout y
   have c3 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 3*y := by rw [hl]; linarith
   have c4 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 4*y := by rw [hl]; linarith
   have c5 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 5*y := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_pos (show y < (1:ℝ)/2 by linarith), min_eq_left b1, max_eq_left b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_right c4, max_eq_right c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_left (show y < (1:ℝ)/2 by linarith), min_eq_left b1, max_eq_left b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_right c4, max_eq_right c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2428,7 +2426,7 @@ lemma qout_2 : ∀ y : ℝ, (37/100 : ℝ) < y → y < (13/30 : ℝ) → Tout y 
   have c3 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 3*y := by rw [hl]; linarith
   have c4 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 4*y := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_pos (show y < (1:ℝ)/2 by linarith), min_eq_left b1, max_eq_left b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_right c4, max_eq_left c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_left (show y < (1:ℝ)/2 by linarith), min_eq_left b1, max_eq_left b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_right c4, max_eq_left c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2450,7 +2448,7 @@ lemma qout_3 : ∀ y : ℝ, (13/30 : ℝ) < y → y < (37/80 : ℝ) → Tout y =
   have c3 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 3*y := by rw [hl]; linarith
   have c4 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 4*y := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_pos (show y < (1:ℝ)/2 by linarith), min_eq_left b1, max_eq_left b2, max_eq_left b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_right c4, max_eq_left c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_left (show y < (1:ℝ)/2 by linarith), min_eq_left b1, max_eq_left b2, max_eq_left b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_right c4, max_eq_left c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2472,7 +2470,7 @@ lemma qout_4 : ∀ y : ℝ, (37/80 : ℝ) < y → y < (1/2 : ℝ) → Tout y = (
   have c3 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 3*y := by rw [hl]; linarith
   have c4 : 2*((lam:ℚ):ℝ) - 4*y ≤ 0 := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_pos (show y < (1:ℝ)/2 by linarith), min_eq_right b1, max_eq_left b2, max_eq_left b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_left c4, max_eq_left c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_left (show y < (1:ℝ)/2 by linarith), min_eq_right b1, max_eq_left b2, max_eq_left b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_left c4, max_eq_left c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2494,7 +2492,7 @@ lemma qout_5 : ∀ y : ℝ, (1/2 : ℝ) < y → y < (43/80 : ℝ) → Tout y = (
   have c3 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 3*y := by rw [hl]; linarith
   have c4 : 2*((lam:ℚ):ℝ) - 4*y ≤ 0 := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_neg (show ¬ (y < (1:ℝ)/2) by push_neg; linarith), if_pos (show y < (1:ℝ) by linarith), min_eq_left b1, max_eq_right b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_left c4, max_eq_left c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_right (show ¬ (y < (1:ℝ)/2) by push Not; linarith), ite_eq_left (show y < (1:ℝ) by linarith), min_eq_left b1, max_eq_right b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_left c4, max_eq_left c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2516,7 +2514,7 @@ lemma qout_6 : ∀ y : ℝ, (43/80 : ℝ) < y → y < (37/60 : ℝ) → Tout y =
   have c3 : (0:ℝ) ≤ 2*((lam:ℚ):ℝ) - 3*y := by rw [hl]; linarith
   have c4 : 2*((lam:ℚ):ℝ) - 4*y ≤ 0 := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_neg (show ¬ (y < (1:ℝ)/2) by push_neg; linarith), if_pos (show y < (1:ℝ) by linarith), min_eq_left b1, max_eq_left b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_left c4, max_eq_left c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_right (show ¬ (y < (1:ℝ)/2) by push Not; linarith), ite_eq_left (show y < (1:ℝ) by linarith), min_eq_left b1, max_eq_left b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_right c3, max_eq_left c4, max_eq_left c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2538,7 +2536,7 @@ lemma qout_7 : ∀ y : ℝ, (37/60 : ℝ) < y → y < (13/20 : ℝ) → Tout y =
   have c3 : 2*((lam:ℚ):ℝ) - 3*y ≤ 0 := by rw [hl]; linarith
   have c4 : 2*((lam:ℚ):ℝ) - 4*y ≤ 0 := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_neg (show ¬ (y < (1:ℝ)/2) by push_neg; linarith), if_pos (show y < (1:ℝ) by linarith), min_eq_left b1, max_eq_left b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_left c3, max_eq_left c4, max_eq_left c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_right (show ¬ (y < (1:ℝ)/2) by push Not; linarith), ite_eq_left (show y < (1:ℝ) by linarith), min_eq_left b1, max_eq_left b2, max_eq_right b3, max_eq_right c1, max_eq_right c2, max_eq_left c3, max_eq_left c4, max_eq_left c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2560,7 +2558,7 @@ lemma qout_8 : ∀ y : ℝ, (13/20 : ℝ) < y → y < (37/40 : ℝ) → Tout y =
   have c3 : 2*((lam:ℚ):ℝ) - 3*y ≤ 0 := by rw [hl]; linarith
   have c4 : 2*((lam:ℚ):ℝ) - 4*y ≤ 0 := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_neg (show ¬ (y < (1:ℝ)/2) by push_neg; linarith), if_pos (show y < (1:ℝ) by linarith), min_eq_left b1, max_eq_left b2, max_eq_left b3, max_eq_right c1, max_eq_right c2, max_eq_left c3, max_eq_left c4, max_eq_left c5]
+  simp only [Tout, R0, dRank, hfl, ite_eq_right (show ¬ (y < (1:ℝ)/2) by push Not; linarith), ite_eq_left (show y < (1:ℝ) by linarith), min_eq_left b1, max_eq_left b2, max_eq_left b3, max_eq_right c1, max_eq_right c2, max_eq_left c3, max_eq_left c4, max_eq_left c5]
   simp only [alpha, lam]
   push_cast
   ring
@@ -2582,8 +2580,8 @@ lemma qout_9 : ∀ y : ℝ, (37/40 : ℝ) < y → y < (1 : ℝ) → Tout y = (1 
   have c3 : 2*((lam:ℚ):ℝ) - 3*y ≤ 0 := by rw [hl]; linarith
   have c4 : 2*((lam:ℚ):ℝ) - 4*y ≤ 0 := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_neg (show ¬ (y < (1:ℝ)/2) by push_neg; linarith), if_pos (show y < (1:ℝ) by linarith), min_eq_right b1, max_eq_left b2, max_eq_left b3, max_eq_right c1, max_eq_left c2, max_eq_left c3, max_eq_left c4, max_eq_left c5]
-  simp only [alpha, lam]
+  simp only [Tout, R0, dRank, hfl, ite_eq_right (show ¬ (y < (1:ℝ)/2) by push Not; linarith), ite_eq_left (show y < (1:ℝ) by linarith), min_eq_right b1, max_eq_left b2, max_eq_left b3, max_eq_right c1, max_eq_left c2, max_eq_left c3, max_eq_left c4, max_eq_left c5]
+  simp only [lam]
   push_cast
   ring
 
@@ -2601,8 +2599,8 @@ lemma qout_10 : ∀ y : ℝ, (1 : ℝ) < y → y < (37/20 : ℝ) → Tout y = (3
   have c3 : 2*((lam:ℚ):ℝ) - 3*y ≤ 0 := by rw [hl]; linarith
   have c4 : 2*((lam:ℚ):ℝ) - 4*y ≤ 0 := by rw [hl]; linarith
   have c5 : 2*((lam:ℚ):ℝ) - 5*y ≤ 0 := by rw [hl]; linarith
-  simp only [Tout, R0, dRank, hfl, if_neg (show ¬ (y < (1:ℝ)/2) by push_neg; linarith), if_neg (show ¬ (y < (1:ℝ)) by push_neg; linarith), max_eq_right c1, max_eq_left c2, max_eq_left c3, max_eq_left c4, max_eq_left c5]
-  simp only [alpha, lam]
+  simp only [Tout, R0, dRank, hfl, ite_eq_right (show ¬ (y < (1:ℝ)/2) by push Not; linarith), ite_eq_right (show ¬ (y < (1:ℝ)) by push Not; linarith), max_eq_right c1, max_eq_left c2, max_eq_left c3, max_eq_left c4, max_eq_left c5]
+  simp only [lam]
   push_cast
   ring
 
