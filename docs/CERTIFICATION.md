@@ -52,13 +52,13 @@ From the repository root, after `lake exe cache get`:
 
 ## Results
 
-On 24–25 September 2026 (Lean 4.34.0, Mathlib v4.34.0, macOS, 12 cores), for commit `d8238e5`:
+On 25 September 2026 (Lean 4.34.0, Mathlib v4.34.0, macOS, 12 cores), for commit `a87234f`:
 
-* A build from scratch (with `.lake/build` removed) completed in 6 min 40 s with
+* A build from scratch (with `.lake/build` removed) completed in 6 min 13 s with
   `Build completed successfully (8995 jobs)` and no `sorry` warning.
 * `cert/Check.lean` compiled and printed the axiom list above.
 * `leanchecker` replayed all 70 modules of the project and the root module, and exited with
-  status 0 (55 minutes).
+  status 0 (53 minutes).
 
 ## Scope
 
