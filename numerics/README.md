@@ -1,10 +1,10 @@
-# Numerical controls
+# Numerical tests used during development
 
-Before each of the four large interface statements of the development (`docs/STATUS.md` §3)
-was proved in Lean, it was broken into intermediate lemma statements, and each of those was
-tested in **exact arithmetic** against the paper's own data. The scripts in this folder are
-those tests, with their recorded outputs. Nothing in the Lean library depends on them: they
-are evidence that the statements being proved are the right ones, not part of the proof.
+Before the larger intermediate statements were proved in Lean, they were broken into lemma
+statements, and these were tested numerically, mostly in exact arithmetic, against the paper's
+data, to catch false statements before attempting to prove them. The scripts in this folder are
+those tests, with their recorded outputs. They are not part of the verification: nothing in
+the Lean library depends on them, and the correctness of the formalization rests on Lean alone.
 
 Two kinds of test appear throughout:
 
@@ -155,12 +155,12 @@ python3 numerics/lemma33/l33check.py        # ~20 s -> l33check.out
 
 ---
 
-## §6 blueprint (2026-09-24) — `sec6/`
+## §6 and Appendix A — `sec6/`
 
-For the leaves of `Zeta5/Sec6/` (the proof of (6.14); route in `Zeta5/Sec6/Final.lean`).
+For `Zeta5/Sec6/` (the proof of (6.14); route in `Zeta5/Sec6/Final.lean`).
 
 * `sec6/check_leaves.py` (with `sec6/common.py`; output `sec6/check_leaves.out`, about 10 s):
-  the leaves, while they were still `sorry`s, are tested at sample points with `mpmath`/`scipy`
+  the intermediate statements of `Zeta5/Sec6/` are tested at sample points with `mpmath`/`scipy`
   quadrature (all except the bilinear expansion `kE_rhoM_expand`; the two branches of (A.1)
   are tested together, through `integral_log_abs_sub_cos`) — the
   Frullani identity, Gaussian positive definiteness and the zero-mass inequality for the
@@ -181,13 +181,11 @@ For the leaves of `Zeta5/Sec6/` (the proof of (6.14); route in `Zeta5/Sec6/Final
 
 ---
 
-## Axiom reduction (2026-09-24) — `axioms/`
+## The analytic inputs — `axioms/`
 
-For the two former axioms of `Zeta5/Axioms.lean`, now the theorems `Zeta5.PNT.prime_riemann_sum`
-(`Zeta5/PNT.lean`) and `Zeta5.Hermite.pole_integral` (`Zeta5/Hermite.lean`), and for the one
-axiom that replaced them, `Zeta5.Axioms.chebyshev_theta_asymptotic` (`θ(x)/x → 1`). Both
-scripts are floating-point sanity checks, not certificates; the Lean proofs do not depend on
-them.
+For `Zeta5.PNT.prime_riemann_sum` (`Zeta5/PNT.lean`), `Zeta5.Hermite.pole_integral`
+(`Zeta5/Hermite.lean`) and the axiom `Zeta5.Axioms.chebyshev_theta_asymptotic`
+(`θ(x)/x → 1`). Both scripts are floating-point computations.
 
 ```
 python3 numerics/axioms/pnt_theta.py          # sieve to 10^7, about 1 s   -> pnt_theta.out
