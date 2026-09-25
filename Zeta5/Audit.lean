@@ -278,3 +278,11 @@ proved there are no `sorry`s at all, so this prints that the (empty) list is com
 
 #print axioms Zeta5.zeta5_irrational
 #print axioms Zeta5.theorem_1_1
+
+/-! ### The two former axioms, now theorems (2026-09-24)
+
+`Zeta5.Hermite.pole_integral` must print only Lean's three standard axioms;
+`Zeta5.PNT.prime_riemann_sum` must add exactly `Zeta5.Axioms.chebyshev_theta_asymptotic`. -/
+
+#print axioms Zeta5.Hermite.pole_integral
+#print axioms Zeta5.PNT.prime_riemann_sum

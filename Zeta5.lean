@@ -12,6 +12,8 @@ import Zeta5.RealBound
 import Zeta5.AppendixB
 import Zeta5.Normalization
 import Zeta5.Axioms
+import Zeta5.Hermite
+import Zeta5.PNT
 import Zeta5.Positivity
 import Zeta5.PrimeSum
 import Zeta5.Interface

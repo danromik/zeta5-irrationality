@@ -2,13 +2,24 @@
 
 [![Lean Action CI](https://github.com/danromik/zeta5-irrationality/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/danromik/zeta5-irrationality/actions/workflows/lean_action_ci.yml)
 
+> **Update, branch `axioms` (2026-09-24): one axiom, the prime number theorem as stated in
+> textbooks.** The two former axioms of `Zeta5/Axioms.lean`, each stronger than its citation,
+> are now theorems with the identical statements. `Zeta5.Hermite.pole_integral`
+> (`Zeta5/Hermite.lean`, formerly the axiom `hermite_pole_integral`) is proved from Mathlib
+> alone, with no axiom. `Zeta5.PNT.prime_riemann_sum` (`Zeta5/PNT.lean`, formerly the axiom
+> `pnt_prime_riemann_sum`) is proved from the single new axiom
+> `Zeta5.Axioms.chebyshev_theta_asymptotic`, θ(x)/x → 1 with Mathlib's own `Chebyshev.theta`.
+> `Zeta5.zeta5_irrational` now rests on Lean's three standard axioms and that one axiom. This
+> state has **not yet been re-certified**; the certification described below is of the
+> previous state (see the addendum in `docs/CERTIFICATION.md`).
+>
 > **Update, branch `eq614` (2026-09-24): (6.14) is proved; the project has no `sorry`.**
 > `Zeta5.RealBound.eq_6_14` (statement unchanged) is proved in `Zeta5/Sec6/Final.lean`
 > through the §6 blueprint of 19 leaf statements in `Zeta5/Sec6/*.lean`, all of which are
 > now proved. `lake build` completes with no `declaration uses 'sorry'` warning, and the
 > assumption report of `Zeta5/Audit.lean` lists **no `sorry`**: `Zeta5.zeta5_irrational`
-> rests on Lean's three standard axioms and the two external axioms of `Zeta5/Axioms.lean`,
-> and on nothing else. The §6 proof takes a different route from the paper at several places
+> rested on Lean's three standard axioms and the two external axioms that `Zeta5/Axioms.lean`
+> then declared, and on nothing else. The §6 proof takes a different route from the paper at several places
 > (a real-line regularisation of the kernel instead of circles, and its own certified
 > partition instead of Table 2); see [(6.14): how it is proved](#614-how-it-is-proved). This
 > state was re-certified on 2026-09-24 (`docs/CERTIFICATION.md`): five independent
@@ -22,31 +33,34 @@ library, of the proof in A. Fauzan's preprint *"ζ(5) is irrational"* (dated 17 
 objects (the functional μ_X, the Hankel matrices G_K and their determinants Δ_K, the
 normalized polynomials Q_{K,M}, the allocations of §4, the limiting functions of §5, the
 constants of Appendix A), states the paper's propositions and lemmas, and proves them, up to
-Theorem 1.1. Two classical results that Mathlib does not yet contain are entered as axioms.
+Theorem 1.1. One classical result that Mathlib does not yet contain, the prime number theorem,
+is entered as an axiom.
 Every statement on the paper's route to Theorem 1.1 is proved in Lean; there is no `sorry`.
 (Until 2026-09-24 one inequality of the paper, (6.14), was an explicitly marked unproved step.)
 Several of the proved steps use a different argument from the paper's (see
-[Deviations from the paper](#deviations-from-the-paper)). The development has 69 Lean files
-under `Zeta5/` (37 of them in `Zeta5/Sec6/`, the proof of (6.14)), about 29,000 lines, and
+[Deviations from the paper](#deviations-from-the-paper)). The development has 71 Lean files
+under `Zeta5/` (37 of them in `Zeta5/Sec6/`, the proof of (6.14)), about 29,700 lines, and
 builds with Lean 4.34.0 and Mathlib v4.34.0.
 
 ## The result
 
 **Lean verifies an implication.** Lean checks a proof that ζ(5) is irrational **assuming**
-two statements:
+one statement:
 
-1. **Hermite's integral formula** for the Hurwitz zeta function (DLMF 25.11.29), in the form
-   displayed on p. 5 of the paper. This is the axiom `Zeta5.Axioms.hermite_pole_integral`.
-2. **The prime number theorem**, in the Riemann-sum form that the proof of Proposition 5.2
-   uses. This is the axiom `Zeta5.Axioms.pnt_prime_riemann_sum`.
+* **The prime number theorem**, in Chebyshev's form θ(x) ~ x, where
+  θ(x) = Σ_{p ≤ x} log p. This is the axiom `Zeta5.Axioms.chebyshev_theta_asymptotic`,
+  stated with Mathlib's own `Chebyshev.theta`.
 
-Both are classical results that are not yet in Mathlib; neither is a claim of the paper. So
-this repository contains a machine-checked proof of the implication
+It is a classical result that is not yet in Mathlib, and not a claim of the paper. So this
+repository contains a machine-checked proof of the implication
 
-> (1) and (2) ⟹ ζ(5) is irrational.
+> the prime number theorem ⟹ ζ(5) is irrational.
 
-(Until 2026-09-24 there was a third assumption, the paper's inequality (6.14), a `sorry`. It is
-now proved; see [(6.14): how it is proved](#614-how-it-is-proved).)
+Until 2026-09-24 there were two further assumptions. The paper's inequality (6.14) was a
+`sorry`; it is now proved (see [(6.14): how it is proved](#614-how-it-is-proved)). And the
+axioms were two stronger statements: Hermite's integral formula already carried through the
+integrations by parts of p. 5, and the prime number theorem already carried through partial
+summation. Both are now theorems (see [The axiom](#the-axiom)).
 
 ### The main theorem
 
@@ -92,9 +106,10 @@ Here `M0 = -1329/200`, and `Irho` is the closed form (A.2) of the logarithmic en
 computed from the entries of Table 1. The hypothesis `0 < Δ_K(ζ(5))` follows from
 Proposition 2.2 and is proved (`Zeta5.delta_pos`). The statement is the one that was a
 `sorry` until 2026-09-24 (it was then in `Zeta5/RealBound.lean`), unchanged.
-`#print axioms Zeta5.RealBound.eq_6_14` gives `[propext, Classical.choice, Quot.sound,
-Zeta5.Axioms.hermite_pole_integral]`: the external axiom enters through Proposition 2.2's
-integral representation of the moments, which (6.10) uses.
+`#print axioms Zeta5.RealBound.eq_6_14` gives `[propext, Classical.choice, Quot.sound]`.
+(Until the Hermite axiom was replaced by a theorem, it also listed
+`Zeta5.Axioms.hermite_pole_integral`, which entered through Proposition 2.2's integral
+representation of the moments, used by (6.10).)
 
 The proof is in `Zeta5/Sec6/` (the route, with every step, is in the module docstring of
 `Zeta5/Sec6/Final.lean`):
@@ -147,32 +162,46 @@ Before it was proved, the Lean statement of (6.14) was evaluated at n = 1, 2, 3 
 referee audit described under [Provenance](#provenance). The inequality holds with a large
 margin (`cert/c3/eq_6_14_control.py`, `cert/c3/eq_6_14_control.out`).
 
-### The two axioms
+### The axiom
 
-Both axioms are in `Zeta5/Axioms.lean`, the only file of the project that declares any axiom.
-Each docstring gives the precise statement, a literature citation, and the reason Mathlib
-lacks it.
+`Zeta5/Axioms.lean` is the only file of the project that declares any axiom, and it now
+declares one. Its docstring gives the precise statement, a literature citation, and the reason
+Mathlib lacks it.
 
-* **`hermite_pole_integral`.** For a > 0,
-  ∫₀^∞ w(y)/(y² + a²) dy = a⁴ ζ(5, a) − 1/(2a) − 1/4. Here
-  w(y) = (2π)⁴ y⁵ Σ_{ℓ≥1} ℓ⁴ e^{−2πℓy}/12 is the weight of (2.10), and
-  ζ(5, a) = Σ_{k≥0} (k + a)^{−5}. This is the display on p. 5 of the paper, which the paper
-  derives from Hermite's formula (DLMF 25.11.29) by four integrations by parts. Those
-  integrations by parts are not formalized, so the axiom is Hermite's formula already carried
-  through them. It is used only for Proposition 2.2.
-* **`pnt_prime_riemann_sum`.** For 0 ≤ a < b and φ bounded on [a, b] and continuous off a
-  finite set, X⁻¹ Σ_{aX < p ≤ bX, p prime} φ(p/X) log p → ∫_a^b φ(y) dy as X → ∞. This is the
-  prime number theorem (θ(x) ~ x) combined with partial summation, in the form the paper
-  invokes on p. 15. The partial-summation step is not formalized. It is used only for
-  Proposition 5.2.
+* **`chebyshev_theta_asymptotic`.** θ(x)/x → 1 as x → ∞, where θ is Mathlib's
+  `Chebyshev.theta`, θ(x) = Σ_{p ≤ x, p prime} log p. This is the prime number theorem
+  (Hadamard, de la Vallée Poussin, 1896) in Chebyshev's form, as stated in textbooks (e.g.
+  Apostol, *Introduction to Analytic Number Theory*, Thm. 4.4 with Ch. 13); the paper cites it
+  as DLMF 27.12.2–27.12.4 (p. 15). It mentions no definition of this project. Mathlib v4.34.0
+  has θ, ψ and Chebyshev-type bounds, but no proof of θ(x) ~ x or ψ(x) ~ x. It is used only
+  for Proposition 5.2, through `Zeta5.PNT.prime_riemann_sum`.
 
-Both axioms are stated for general parameters, and neither contains information specific to
-the paper's construction. The only definition of this project that either one mentions is the
-explicit weight w of (2.10), written out above. Both were checked numerically: the first to
-about 40 digits at values of a from 0.01 to 1000, and the second on several test functions up
-to X = 10⁷ (`cert/c3/axioms_numeric.py` and its output). It was also checked in Lean that the
-second axiom implies (θ(2X) − θ(X))/X → 1, so it is not vacuous (`cert/C3Attack.lean`; see
-`docs/CERTIFICATION.md`).
+The two axioms that the project declared until 2026-09-24 are now theorems, with the
+identical statements:
+
+* **`Zeta5.Hermite.pole_integral`** (`Zeta5/Hermite.lean`), formerly the axiom
+  `hermite_pole_integral`: for a > 0, ∫₀^∞ w(y)/(y² + a²) dy = a⁴ ζ(5, a) − 1/(2a) − 1/4,
+  with w the weight of (2.10) and ζ(5, a) = Σ_{k≥0} (k + a)^{−5}. This is the display on p. 5
+  of the paper, which the paper derives from Hermite's formula (DLMF 25.11.29) by four
+  integrations by parts. The Lean proof uses **no axiom**, and it does not follow the paper:
+  it expands w, substitutes u = 2πl·y/a in each term, sums over l with the Mittag-Leffler
+  expansion of the cotangent (Mathlib's `cot_series_rep'`), and evaluates the remaining Laplace
+  integrals as a geometric series; every interchange of a sum with an integral is for
+  nonnegative terms. It is used only for Proposition 2.2.
+* **`Zeta5.PNT.prime_riemann_sum`** (`Zeta5/PNT.lean`), formerly the axiom
+  `pnt_prime_riemann_sum`: for 0 ≤ a < b and φ bounded on [a, b] and continuous off a finite
+  set, X⁻¹ Σ_{aX < p ≤ bX, p prime} φ(p/X) log p → ∫_a^b φ(y) dy as X → ∞. This is the
+  partial-summation step of p. 15. It is proved from `chebyshev_theta_asymptotic` by a
+  Darboux-type sandwich: a uniform partition of [a, b] on which the oscillations of φ have small
+  total weight, and on each piece the prime sum is compared with θ(vX) − θ(uX).
+
+That each theorem has the same type as the axiom it replaces was checked in Lean on the
+integrated build: the old `Axioms.lean` of commit `bfd4249`, re-declared in a scratch namespace
+on top of `import Zeta5`, gives types syntactically equal (`Expr ==`) to those of the two
+theorems, and equal by `rfl`.
+Numerical sanity checks are in `numerics/axioms/` (see `numerics/README.md`); the checks of the
+former axioms made at the certification of 2026-09-23 (`cert/c3/axioms_numeric.py`) refer to
+the old statements, which are the statements of the two theorems.
 
 ### The assumption report
 
@@ -188,8 +217,7 @@ info: Zeta5/Audit.lean:203:0: ASSUMPTION REPORT for Zeta5.zeta5_irrational
     propext
 
   (B) explicit external axioms of this project (Zeta5/Axioms.lean):
-    Zeta5.Axioms.hermite_pole_integral
-    Zeta5.Axioms.pnt_prime_riemann_sum
+    Zeta5.Axioms.chebyshev_theta_asymptotic
 
   (C) sorry(s) — unfinished steps of the paper's own argument, 0 in all:
     (none)
@@ -197,7 +225,7 @@ info: Zeta5/Audit.lean:203:0: ASSUMPTION REPORT for Zeta5.zeta5_irrational
   (D) any other axiom (must be empty):
     (none)
 
-  [self-check: walker agrees with Lean.collectAxioms, 5 axiom(s)]
+  [self-check: walker agrees with Lean.collectAxioms, 4 axiom(s)]
 ```
 
 The last line records that the walker's result agrees with Lean's own `Lean.collectAxioms`.
@@ -214,8 +242,7 @@ info: Zeta5/Audit.lean:275:0: every sorry of the Zeta5 namespace is used by Zeta
 'Zeta5.zeta5_irrational' depends on axioms: [propext,
  Classical.choice,
  Quot.sound,
- Zeta5.Axioms.hermite_pole_integral,
- Zeta5.Axioms.pnt_prime_riemann_sum]
+ Zeta5.Axioms.chebyshev_theta_asymptotic]
 ```
 
 `propext`, `Classical.choice` and `Quot.sound` are the three standard axioms of Lean's logic
@@ -225,12 +252,15 @@ all of Mathlib uses them.
 `Audit.lean` also reports, for each named intermediate statement, whether it depends on a
 `sorry`. All of them, including Theorem 2.1, Proposition 6.3, (6.14) and (7.1), print
 `depends on NO sorry`, and `Zeta5.theorem_1_1` (Theorem 2.1 ⟹ Theorem 1.1) depends only on
-the three standard axioms.
+the three standard axioms. At its end it prints the axioms of the two former axioms, now
+theorems: `Zeta5.Hermite.pole_integral` depends only on the three standard axioms, and
+`Zeta5.PNT.prime_riemann_sum` on those and `Zeta5.Axioms.chebyshev_theta_asymptotic`.
 
 ### What is machine-checked
 
 Everything on the paper's route to Theorem 1.1 is machine-checked. That
-covers §2 (the functional μ_X, (2.9), and Proposition 2.2 modulo Hermite's formula), §3
+covers §2 (the functional μ_X, (2.9), and Proposition 2.2, including the pole integral of
+p. 5), §3
 (Lemma 3.3, (3.11), (3.12)) and §4 (Propositions 4.1 and 4.3 with both p-adic local
 analyses). It covers §5 (Propositions 5.1 and 5.2, the latter modulo the prime number
 theorem; (5.7) with an explicit uniform constant; the tail estimates (5.15)–(5.17); all of
@@ -276,9 +306,10 @@ space. Most of that space is for the compiled Mathlib library.
    lake build
    ```
 
-   This compiles the 69 files of this project and the root file. A clean rebuild of the
+   This compiles the 71 files of this project and the root file. A clean rebuild of the
    project on top of the Mathlib cache takes about 8 minutes on a 12-core machine (four clean
-   builds on 2026-09-24 took 7 min 26 s to 8 min 1 s). The numerical modules
+   builds on 2026-09-24, before `Hermite.lean` and `PNT.lean` were added, took 7 min 26 s to
+   8 min 1 s). The numerical modules
    `Zeta5/Sec6/Num/` need up to about 8 GB of memory. What to look for in the output:
    * the assumption report shown above, among many `info:` lines (the other `info:` lines are
      `#print axioms` checks on intermediate results, and they are expected);
@@ -287,7 +318,7 @@ space. Most of that space is for the compiled Mathlib library.
      included section variable(s) unused" and 3 "Variable name … is not explicitly
      referenced". Removing them would change the signatures of the theorems concerned, so
      they are left as they are;
-   * the final line `Build completed successfully (8994 jobs).`
+   * the final line `Build completed successfully (8996 jobs).`
 
    Running `lake build` again after a successful build replays the stored messages, including
    the assumption report, without recompiling.
@@ -310,8 +341,7 @@ space. Most of that space is for the compiled Mathlib library.
    'Zeta5.zeta5_irrational' depends on axioms: [propext,
     Classical.choice,
     Quot.sound,
-    Zeta5.Axioms.hermite_pole_integral,
-    Zeta5.Axioms.pnt_prime_riemann_sum]
+    Zeta5.Axioms.chebyshev_theta_asymptotic]
    ```
 
    `#print axioms` works the same way for any declaration of the project.
@@ -327,8 +357,8 @@ space. Most of that space is for the compiled Mathlib library.
 
 7. **Kernel replay (optional, about 50 minutes).** `lake env leanchecker --verbose Zeta5`
    re-checks every declaration of every module with Lean's kernel, independently of the
-   elaborator. The recorded run of 2026-09-24 (all 70 modules, exit 0) is
-   `cert/final/leanchecker.out`.
+   elaborator. The recorded run of 2026-09-24 (all 70 modules of the state before the axiom
+   reduction, exit 0) is `cert/final/leanchecker.out`.
 
 ## Map from the paper to the files
 
@@ -342,7 +372,8 @@ can be checked against the paper without reading any proof.
 | Definitions throughout | `Basic.lean` | Definitions only: the parameters (2.1), D_m, H^{(5)}_j, μ_X (2.2)–(2.3), G_K, Δ_K, F_K, S_K (2.4)–(2.6), the weight w of (2.10), the allocations and weights of §4, the functions of §5, and ζ(5) itself. Also the exact margins (7.2). |
 | §1.1, Theorem 2.1 ⟹ Theorem 1.1 | `Skeleton.lean` | The irrationality criterion: integer polynomials of degree ≤ 37n, positive at ξ and smaller than exp(−139n²/5). |
 | §2 | `Functional.lean` | μ_X is well defined (partial fractions, uniqueness), affine in X, and has leading coefficient (2.9), so deg Δ_K = h. It also identifies (2.2) with values of ζ at even integers via Euler's formula. |
-| §2.4, Proposition 2.2 | `Positivity.lean` | (2.10) and positive definiteness of G_K(ζ(5)). Uses the axiom `hermite_pole_integral`. |
+| §2.4, the pole integral of p. 5 | `Hermite.lean` | `Hermite.pole_integral`, ∫₀^∞ w(y)/(y²+a²) dy = a⁴ζ(5,a) − 1/(2a) − 1/4, proved with no axiom via the Mittag-Leffler expansion of the cotangent (formerly the axiom `hermite_pole_integral`). |
+| §2.4, Proposition 2.2 | `Positivity.lean` | (2.10) and positive definiteness of G_K(ζ(5)). Uses `Hermite.pole_integral`. |
 | §3.1–3.2 | `LocalFunctional.lean` | The functionals L and τ, τ(x^d) = κ_d, (3.1)–(3.3), the extension τ^ext, and Lemma 3.1 for partial sums. |
 | §3.2 and Proposition 4.1 | `Section3.lean` | What is and is not formalized of Lemma 3.2, the derivation of (4.2)/(4.3), and the statement and assembly of Proposition 4.1. |
 | §3.3, Lemma 3.3 | `Lemma33.lean` | Lemma 3.3 as printed, and the pullback (3.1) for every μ_X(B/D_tail). |
@@ -358,7 +389,8 @@ can be checked against the paper without reading any proof.
 | §4.2, Proposition 4.3 | `OuterRange.lean` | The table on p. 13, (4.14), and Proposition 4.3 (both assertions). |
 | §5, Proposition 5.1 | `Normalization.lean` | The Gauss valuation, v_p(m_{K,M}), and Proposition 5.1 prime by prime. |
 | §5.1–5.2, (5.7) | `Uniformity.lean` | (5.7) and the two displays of §5.2, with the explicit constant C = 400M². |
-| §5, Proposition 5.2 | `PrimeSum.lean` | The three-range decomposition of log m_{K,M} and (5.11). Uses the axiom `pnt_prime_riemann_sum`. |
+| §5, the prime number theorem in partial-summation form | `PNT.lean` | `PNT.prime_riemann_sum`, the prime Riemann sums X⁻¹Σ φ(p/X) log p → ∫φ, from θ(x) ~ x by a Darboux-type sandwich (formerly the axiom `pnt_prime_riemann_sum`). |
+| §5, Proposition 5.2 | `PrimeSum.lean` | The three-range decomposition of log m_{K,M} and (5.11). Uses `PNT.prime_riemann_sum`. |
 | §5.3, (5.15)–(5.17) | `Tail.lean` | The two integrations by parts, on finite intervals. |
 | Appendix B, (5.8)–(5.18) | `AppendixB.lean` | (B.1), the 143 affine pieces of (B.2), Tables 3 and 4, (5.10), and (5.18) exactly. |
 | §6 and Appendix A | `RealBound.lean` | Table 1, (A.10)/(6.4), Table 2's tiling, (6.11), (6.15), and (6.16) from (6.14). |
@@ -374,7 +406,7 @@ can be checked against the paper without reading any proof.
 | §6.1, (6.2), (6.7), (6.8); Lemma 6.1 | `Sec6/Potential.lean`, `Sec6/Num/*.lean` | 2U^ρ − V ≤ M₀: certified interval arithmetic on 1049 cells of [0, 2] and 2 of [2, 4] (`Num/Cell`, `Eval`, `Sound`, `Seg1`–`Seg6`, `Final`, all cells `decide +kernel`), the tail t ≥ 4 (`Num/Tail`), and the transfer to V (`Potential.lean`). |
 | §7, (5.21) and (7.1) | `Asymptotics.lean` | (5.21) from (5.11), and (7.1) from (5.21) and (6.16). |
 | §7, Theorems 2.1 and 1.1 | `Interface.lean` | The named statements, Theorem 2.1 at M = 200, and `zeta5_irrational`. |
-| (not in the paper) | `Axioms.lean` | The two axioms. |
+| (not in the paper) | `Axioms.lean` | The one axiom, the prime number theorem θ(x) ~ x. |
 | (not in the paper) | `Audit.lean` | The assumption report, recomputed on every build. |
 | (not in the paper) | `Checks.lean`, `AppendixBCheck.lean` | Known-answer controls on the definitions (values computed by hand from the paper and re-derived by Lean), and type-level checks that `AppendixB.lean` proves exactly the statement in `Interface.lean`. |
 
@@ -473,8 +505,10 @@ refer to this section.
   none.
 * **Only standard external facts may be axioms.** Each one is declared in `Zeta5/Axioms.lean`
   with (i) its precise statement, (ii) a literature citation, and (iii) the reason Mathlib
-  lacks it. Where an axiom is stronger than the bare citation (both current axioms are, as
-  explained above), the docstring says so.
+  lacks it. Where an axiom is stronger than the bare citation, the docstring says so. (Both
+  axioms declared until 2026-09-24 were, and both are now theorems. The one current axiom,
+  `chebyshev_theta_asymptotic`, is the textbook statement of the prime number theorem, with
+  nothing added.)
 * **Finite computations are never axioms.** Every finite verification the proof uses is
   carried out in Lean by exact rational arithmetic (`norm_num`, `decide`) or certified
   enclosures. The files in `Zeta5/` contain no `native_decide`, `implemented_by` or `extern`.
@@ -514,10 +548,11 @@ Only two things need human review:
 * **The faithfulness of the statements:** whether the formal statements say what the paper
   says. These are the definitions in `Zeta5/Basic.lean`, the statements in
   `Zeta5/Interface.lean`, and the statement of (6.14).
-* **The assumption list:** whether the two axioms are correct statements of known results, and
-  whether nothing else is assumed.
+* **The assumption list:** whether the axiom is a correct statement of a known result (the
+  prime number theorem), and whether nothing else is assumed.
 
-`docs/CERTIFICATION.md` describes how these were checked, most recently on 2026-09-24: clean
+`docs/CERTIFICATION.md` describes how these were checked, most recently on 2026-09-24 (before
+the axiom reduction; the reduced state is pending re-certification, see its addendum): clean
 rebuilds, independent dependency walkers, a scan of the compiled `.olean` files, a kernel
 replay, a kernel-level comparison of every statement and definition with the previous
 certified state, attacks on the axioms, a check of the main statement at the level of Lean
@@ -546,10 +581,12 @@ numbers in this repository refer to v1. The preprint itself is not included here
   what remains to be done.
 * `docs/CERTIFICATION.md`: the adversarial certification of the present state (2026-09-24,
   no `sorry`). It checks that the main theorem is faithfully stated and that it depends on
-  exactly the two axioms and Lean's standard axioms. It also records the earlier certification
-  of 2026-09-23, when (6.14) was still a `sorry`.
+  exactly the two axioms then declared and Lean's standard axioms. It also records the earlier
+  certification of 2026-09-23, when (6.14) was still a `sorry`, and, in an addendum, the
+  axiom reduction of 2026-09-24 (pending certification).
 * `docs/lean-status.pdf` (source `docs/lean-status.tex`): a readable summary of what the
-  formalization proves and assumes (2026-09-24).
+  formalization proves and assumes (2026-09-24, before the axiom reduction: it still describes
+  the two former axioms).
 * `docs/zeta5-audit.pdf` (source `docs/zeta5-audit.tex`): the referee audit of the preprint.
   It gives a section-by-section and lemma-by-lemma assessment, the exact determinant data, and
   a proof of the inequality on p. 10.

@@ -178,3 +178,29 @@ For the leaves of `Zeta5/Sec6/` (the proof of (6.14); route in `Zeta5/Sec6/Final
   (greedy: widest cell whose bound clears `M₀` by `10⁻⁴`, shrunk by 3%; `gen24.py` for the two
   cells of `[2,4]`).  The Lean kernel re-checks every cell (`decide +kernel`), so these scripts
   need not be trusted.
+
+---
+
+## Axiom reduction (2026-09-24) — `axioms/`
+
+For the two former axioms of `Zeta5/Axioms.lean`, now the theorems `Zeta5.PNT.prime_riemann_sum`
+(`Zeta5/PNT.lean`) and `Zeta5.Hermite.pole_integral` (`Zeta5/Hermite.lean`), and for the one
+axiom that replaced them, `Zeta5.Axioms.chebyshev_theta_asymptotic` (`θ(x)/x → 1`). Both
+scripts are floating-point sanity checks, not certificates; the Lean proofs do not depend on
+them.
+
+```
+python3 numerics/axioms/pnt_theta.py          # sieve to 10^7, about 1 s   -> pnt_theta.out
+python3 numerics/axioms/hermite_full_chain.py # mpmath, 30 digits, about 2 min -> hermite_full_chain.out
+```
+
+* `pnt_theta.py`: `θ(x)/x = 0.95625, 0.98960, 0.99685, 0.99848, 0.99952` at
+  `x = 10³, …, 10⁷` (Mathlib's `Chebyshev.theta`, i.e. `Σ_{p ≤ x} log p`), and the prime
+  Riemann sum of `prime_riemann_sum` for a discontinuous `φ` on `[0.2, 1]` at `X = 10⁷`:
+  `−0.36887` against the integral `−0.36933`.
+* `hermite_full_chain.py`: each link of the axiom-free proof of `Hermite.pole_integral`
+  (see the header of `Zeta5/Hermite.lean`) at `a = 0.3, 1, 2.5`: `T_l = R_l` (the substitution
+  `u = 2πl y/a`), the Mittag-Leffler identity `Σ_{l≥1} 2u/(u²+4π²l²) = 1/(eᵘ−1) − 1/u + 1/2`,
+  the Laplace form of the right side, and `Σ_l R_l` equal to `a⁴ζ(5,a) − 1/(2a) − 1/4`; these
+  agree to about 30 digits. Direct quadrature of the left side agrees to about `10⁻¹⁸`
+  (quadrature error near `y = 0`).

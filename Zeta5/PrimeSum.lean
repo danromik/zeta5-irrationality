@@ -24,9 +24,12 @@ three branches of (5.1) split that sum into three blocks:
 
 WHAT IS ASSUMED HERE, AND WHY.
 
-*  `Zeta5.Axioms.pnt_prime_riemann_sum` — the prime number theorem in the partial-summation
-   form the proof consumes.  Allowed by the ground rules of this formalization (README,
-   "Ground rules"); see its docstring.
+*  `Zeta5.PNT.prime_riemann_sum` — the prime number theorem in the partial-summation
+   form the proof consumes.  Until 2026-09-24 this was the axiom
+   `Zeta5.Axioms.pnt_prime_riemann_sum`; it is now a theorem (same statement), proved in
+   `Zeta5/PNT.lean` from the bare prime number theorem `θ(x)/x → 1`, which is the axiom
+   `Zeta5.Axioms.chebyshev_theta_asymptotic` (allowed by the ground rules of this
+   formalization, README, "Ground rules"; see its docstring).
 *  `Zeta5.PrimeSum.eq_5_7_uniformity` — the conjunction of the four statements of §§5.1–5.2
    that the paper asserts with an informal justification rather than a proof: (5.7) (two
    halves), and the two displays of §5.2 for the outer range.  Formerly the single `sorry`
@@ -34,13 +37,13 @@ WHAT IS ASSUMED HERE, AND WHY.
    file imports.  Its statement is unchanged.
 
 Everything else — the exact decomposition of `log m_{K,M}`, the three-way split, the whole
-branch-1 estimate, the regularity of `T` needed to feed the axiom, the change of variables
+branch-1 estimate, the regularity of `T` needed to feed `PNT.prime_riemann_sum`, the change of variables
 `x = 1/y`, and the assembly — is proved.
 
 IMPORT DISCIPLINE.  This file must not import `Zeta5.Interface`, which imports it.
 -/
 import Zeta5.Basic
-import Zeta5.Axioms
+import Zeta5.PNT
 import Zeta5.AppendixB
 import Zeta5.Uniformity
 
@@ -158,7 +161,7 @@ lemma mem_B3 {n M p : ℕ} (hM : 40 ≤ M) :
     · have : p * 3 ≤ p * M := Nat.mul_le_mul_left p (by omega)
       omega
 
-/-! ## 3.  Matching the branches with the index set of the axiom -/
+/-! ## 3.  Matching the branches with the index set of `PNT.prime_riemann_sum` -/
 
 lemma floor_inv_mul (m j : ℕ) : ⌊(1 / (m : ℝ)) * (j : ℝ)⌋₊ = j / m := by
   rw [show (1 / (m : ℝ)) * (j : ℝ) = (j : ℝ) / (m : ℝ) by ring, Nat.floor_div_natCast,
@@ -213,7 +216,8 @@ lemma tendsto_K : Tendsto (fun n : ℕ => ((K n : ℕ) : ℝ)) atTop atTop := by
   have : (n : ℕ) ≤ K n := by simp only [K]; omega
   exact_mod_cast this
 
-/-- The axiom `Zeta5.Axioms.pnt_prime_riemann_sum`, transported to the sequence `K = 40n`. -/
+/-- The prime number theorem in the form `Zeta5.PNT.prime_riemann_sum`, transported to the
+sequence `K = 40n`. -/
 lemma tendsto_primeSum (a b : ℝ) (ha : 0 ≤ a) (hab : a < b) (φ : ℝ → ℝ)
     (hbdd : ∃ C : ℝ, ∀ y ∈ Icc a b, |φ y| ≤ C)
     (hpc : ∃ D : Finset ℝ, ∀ y ∈ Icc a b, y ∉ D → ContinuousAt φ y) :
@@ -222,7 +226,7 @@ lemma tendsto_primeSum (a b : ℝ) (ha : 0 ≤ a) (hab : a < b) (φ : ℝ → �
         (∑ p ∈ (Finset.Ioc ⌊a * ((K n : ℕ) : ℝ)⌋₊ ⌊b * ((K n : ℕ) : ℝ)⌋₊).filter Nat.Prime,
             φ ((p : ℝ) / ((K n : ℕ) : ℝ)) * Real.log p) / ((K n : ℕ) : ℝ))
       atTop (𝓝 (∫ y in a..b, φ y)) :=
-  (Axioms.pnt_prime_riemann_sum a b ha hab φ hbdd hpc).comp tendsto_K
+  (PNT.prime_riemann_sum a b ha hab φ hbdd hpc).comp tendsto_K
 
 /-! ## 5.  Branch 1: the small primes and the prime number theorem
 
@@ -570,7 +574,7 @@ lemma tendsto_S3 {M : ℕ} (hM : 40 ≤ M) :
 
 Table 4 (`Zeta5.AppendixB.qout_0 … qout_10`) exhibits `T` as an affine function on each of
 eleven open intervals covering `(1/3, 2λ)`; that gives both hypotheses the prime-number-theorem
-axiom needs, with no new assumption. -/
+input `PNT.prime_riemann_sum` needs, with no new assumption. -/
 
 /-- A function that is affine on an open interval is continuous at its interior points. -/
 lemma continuousAt_of_affine {f : ℝ → ℝ} {l r b c : ℝ}
@@ -698,7 +702,7 @@ lemma Tout_piecewise :
 
 /-! ## 9.  The inner integrand in the variable `y = p/K`, and the substitution `x = 1/y`
 
-The paper works the inner range in `x = K/p`; the axiom is stated in `y = p/K`.  The two are
+The paper works the inner range in `x = K/p`; `PNT.prime_riemann_sum` is stated in `y = p/K`.  The two are
 related by `p R(K/p) = K · φ(p/K)` with `φ(y) = y R(1/y)`, and by the change of variables
 `x = 1/y`, which turns `∫_{1/M}^{1/3} φ(y) dy` into `∫_3^M R(x) x^{-3} dx`. -/
 
@@ -763,7 +767,7 @@ lemma integral_inv_subst {M : ℕ} (hM : 40 ≤ M) :
 
 The paper's sentence after (5.6), p. 14: *"These functions are bounded and piecewise
 polynomial on each compact subinterval of `[3,∞)`."*  This section **proves** it, in the form
-the prime-number-theorem axiom needs, from Appendix B's closed form `Gam_eq` for `Γ`. -/
+the prime-number-theorem input `PNT.prime_riemann_sum` needs, from Appendix B's closed form `Gam_eq` for `Γ`. -/
 
 /-- `⌊·⌋ : ℝ → ℝ` is continuous away from the integers. -/
 lemma continuousAt_floorR {x : ℝ} (h : Int.fract x ≠ 0) :

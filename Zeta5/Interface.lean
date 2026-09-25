@@ -18,18 +18,20 @@ statement below is discharged by a proof elsewhere in the project:
 
   (2.9)   leading coefficient of `Δ_K`         ← `Zeta5.Functional.eq_2_9`
   Prop. 2.2  (2.10) and the "Hence" clause     ← `Zeta5.Positivity.prop_2_2_moment`,
-                                                 `Zeta5.Positivity.prop_2_2`, modulo the
-                                                 single external axiom
-                                                 `Zeta5.Axioms.hermite_pole_integral`
+                                                 `Zeta5.Positivity.prop_2_2`, via the
+                                                 pole integral
+                                                 `Zeta5.Hermite.pole_integral` (proved;
+                                                 no axiom since 2026-09-24)
   Prop. 4.1  the inner range                   ← `Zeta5.Section3.prop_4_1`
   Prop. 4.3  the outer range (both assertions) ← `Zeta5.Outer.prop_4_3`,
                                                  `Zeta5.Outer.prop_4_3_large`
   Prop. 5.1  integrality of `Q_{K,M}`          ← `Zeta5.prop_5_1_of` (Normalization.lean)
                                                  applied to (3.12) and Props 4.1, 4.3
   (3.12)  the crude valuation bound            ← `Zeta5.CrudeBound.eq_3_12'`
-  Prop. 5.2  (5.11), the prime-sum bound       ← `Zeta5.PrimeSum.prop_5_2`, modulo the
-                                                 external axiom
-                                                 `Zeta5.Axioms.pnt_prime_riemann_sum`
+  Prop. 5.2  (5.11), the prime-sum bound       ← `Zeta5.PrimeSum.prop_5_2`, via
+                                                 `Zeta5.PNT.prime_riemann_sum`, modulo the
+                                                 external axiom (the PNT, `θ(x) ~ x`)
+                                                 `Zeta5.Axioms.chebyshev_theta_asymptotic`
   (5.16)–(5.18) the constant bookkeeping       ← `Zeta5.AppendixB.eq_5_16_5_18`
   (5.21)  `limsup K^{-2}log m_{K,M} ≤ A_M`     ← `eq_5_21_of_prop_5_2` (Asymptotics.lean)
   Prop. 6.3  (6.16), the real bound            ← `Zeta5.RealBound.prop_6_3`
@@ -48,7 +50,9 @@ internal to §6 and Appendix A of the paper (Lemma 6.2 for the regularised kerne
 (A.2), (A.5), the smoothing error), all of them now proved; (6.2)/(6.7) themselves are the
 kernel-checked certified partition of `Zeta5/Sec6/Num/`.  The module docstring of
 `Zeta5/Sec6/Final.lean` gives the route and where it deviates from the paper.  Theorem 1.1
-therefore assumes nothing beyond the two axioms of `Zeta5/Axioms.lean`.
+therefore assumes nothing beyond the axiom of `Zeta5/Axioms.lean` (since 2026-09-24 a single
+one, the prime number theorem `θ(x) ~ x`; the two axioms it replaced are now the theorems
+`Zeta5.Hermite.pole_integral` and `Zeta5.PNT.prime_riemann_sum`, statements unchanged).
 
 Four further steps, `sorry`s until 2026-09-23, are now PROVED, statements unchanged:
 
@@ -107,8 +111,9 @@ rational function occurring in (2.4).
 interchange of `∑` and `∫`, the moment identity `∫_0^∞ y^{2e}w = μ(t^e)` (via Mathlib's
 `hasSum_zeta_nat` for Euler's formula), the pole values including both correction terms
 `−1/4 + 1/(2j)`, integrability throughout, and the ℚ-linearity of `μ_X` through polynomial
-division and simple partial fractions.  The single external input is Hermite's formula for
-the Hurwitz zeta function, `Zeta5.Axioms.hermite_pole_integral`. -/
+division and simple partial fractions.  The pole integral (Hermite's formula for the Hurwitz
+zeta function, in the form of p. 5) is `Zeta5.Hermite.pole_integral`, also proved (formerly the
+axiom `Zeta5.Axioms.hermite_pole_integral`), so Proposition 2.2 has no external input. -/
 theorem prop_2_2_moment (n : ℕ) (A : ℚ[X]) :
     evalZeta5 (muOver n A)
       = ∫ y in Set.Ioi (0 : ℝ),
@@ -272,10 +277,11 @@ the same argument in `y = p/K` giving (5.10) for the outer range.
 
 `PrimeSum.lean` proves all of that.  It rests on
 
-*  the **prime number theorem**, `Zeta5.Axioms.pnt_prime_riemann_sum`, in the
-   partial-summation form the proof consumes — allowed by the ground rules of this
-   formalization (README, "Ground rules"), and the only
-   external input of Proposition 5.2; and
+*  the **prime number theorem**, in the partial-summation form the proof consumes,
+   `Zeta5.PNT.prime_riemann_sum` — proved in `Zeta5/PNT.lean` from the bare prime number
+   theorem `θ(x)/x → 1`, the axiom `Zeta5.Axioms.chebyshev_theta_asymptotic` (allowed by the
+   ground rules of this formalization, README, "Ground rules"), which is the only external
+   input of Proposition 5.2; and
 *  `Zeta5.PrimeSum.eq_5_7_uniformity`, which is **(5.7)** together with the two
    displays of §5.2 for the outer range — i.e. exactly the three assertions §5 makes with an
    informal justification rather than a proof, with the `O_M(1)` constants now quantified
@@ -464,8 +470,9 @@ def stdAlloc : ∀ n, InnerAllocFamily n 200 :=
 /-- **Theorem 1.1**: `ζ(5)` is irrational.
 
 Depends on no `sorry` (since 2026-09-24): beyond Lean's three standard axioms it rests
-exactly on the two axioms of `Zeta5/Axioms.lean`, as `Zeta5/Audit.lean` prints on every
-build; `#print axioms` shows no `sorryAx`.  The deduction from Theorem 2.1 (`Zeta5.theorem_1_1` in `Skeleton.lean`) and
+exactly on the axiom of `Zeta5/Axioms.lean` (the prime number theorem `θ(x) ~ x`,
+`Zeta5.Axioms.chebyshev_theta_asymptotic`, since 2026-09-24), as `Zeta5/Audit.lean` prints on
+every build; `#print axioms` shows no `sorryAx`.  The deduction from Theorem 2.1 (`Zeta5.theorem_1_1` in `Skeleton.lean`) and
 the assembly of Theorem 2.1 above are complete. -/
 theorem zeta5_irrational : Irrational zeta5 :=
   theorem_1_1 stdAlloc (theorem_2_1 stdAlloc)

@@ -7,10 +7,12 @@ Zeta5/Sec6/Final.lean  —  (6.14) and Proposition 6.3, assembled.  THIS FILE CO
 
 **Status (2026-09-24): no `sorry` anywhere below `eq_6_14`.**  All 19 leaves of the blueprint
 (marked `LEAF` in the route below; their statements were fixed in the blueprint commit and
-have not changed) are proved.  `#print axioms Zeta5.RealBound.eq_6_14` gives
-`[propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]`; the external
-axiom enters through Proposition 2.2's moment representation `Positivity.prop_2_2_moment`,
-which (6.10) uses to write the entries of `G_K(ζ(5))` as integrals (`Sec6/Gram.lean`).
+have not changed) are proved.  `#print axioms Zeta5.RealBound.eq_6_14` gave
+`[propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]` until
+2026-09-24, the external axiom entering through Proposition 2.2's moment representation
+`Positivity.prop_2_2_moment`, which (6.10) uses to write the entries of `G_K(ζ(5))` as
+integrals (`Sec6/Gram.lean`).  That axiom is now the theorem `Zeta5.Hermite.pole_integral`,
+so it gives `[propext, Classical.choice, Quot.sound]`.
 
 ## The route (the §6 blueprint)
 

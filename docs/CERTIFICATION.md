@@ -4,6 +4,12 @@
 branch `eq614`, code commit `808618b` (69 modules under `Zeta5/` plus the root file, 70 in all;
 **no `sorry`**)
 
+> **Addendum (2026-09-24, branch `axioms`): the axioms were reduced after this
+> certification.** The two axioms certified below are now theorems, and `Axioms.lean` declares
+> one axiom, the prime number theorem `θ(x) ~ x`. The reduced state is **pending
+> certification**. See [Addendum: axiom reduction](#addendum-axiom-reduction-2026-09-24-pending-certification)
+> at the end. Everything else in this document is about commit `808618b`.
+
 *This certification was carried out by Claude (Anthropic) in a workflow run separate from the
 runs that wrote the proofs (see README, 'Provenance'). In this document, "the certifiers" means
 the three independent certification agents of that run, one each for the dependency cone, the
@@ -828,3 +834,53 @@ Neither affected the assumption list. The report then was: *"ζ(5) is irrational
 machine-checked conditional on one explicitly named unproved statement of the paper — (6.14) —
 plus Hermite's integral formula and the prime number theorem in partial-summation form."*
 That report is superseded by §9.
+
+---
+
+## Addendum: axiom reduction (2026-09-24, pending certification)
+
+**Status: pending certification.** Nothing in this addendum has been checked by an
+independent certification run. The dependency checks of §§1–5 have **not** yet been re-run on
+the reduced state. What is recorded here was checked by the run that made the change.
+
+**What changed** (branch `axioms`, from `bfd4249`):
+
+* `Zeta5.Axioms.hermite_pole_integral` was removed. The theorem `Zeta5.Hermite.pole_integral`
+  (new file `Zeta5/Hermite.lean`) has the identical statement and is proved from Mathlib alone.
+  The proof uses the Mittag-Leffler expansion of the cotangent, not Hermite's formula.
+* `Zeta5.Axioms.pnt_prime_riemann_sum` was removed. The theorem `Zeta5.PNT.prime_riemann_sum`
+  (new file `Zeta5/PNT.lean`) has the identical statement. It is proved from the new axiom
+  `Zeta5.Axioms.chebyshev_theta_asymptotic : Tendsto (fun x : ℝ => Chebyshev.theta x / x)
+  atTop (nhds 1)`, the prime number theorem in Chebyshev's form, stated with Mathlib's
+  `Chebyshev.theta`.
+* The two use sites now cite the theorems: `Positivity.integral_wt_div_pole` and
+  `PrimeSum.tendsto_primeSum`, with their imports changed accordingly. `Zeta5.lean` imports
+  the two new modules. `Audit.lean` gained two `#print axioms` lines. All other changes to
+  `.lean` files are in comments and docstrings. No other statement or definition was edited.
+
+**Checked by the run that made the change:**
+
+* `lake build` (incremental) succeeded with 8996 jobs, 0 errors and no `sorry` warning. It
+  gave the same 17 lint warnings as before.
+* The assumption report reads `(B) … Zeta5.Axioms.chebyshev_theta_asymptotic`,
+  `(C) … 0 in all`, `(D) (none)` and `[self-check: walker agrees with Lean.collectAxioms, 4
+  axiom(s)]`.
+* `#print axioms Zeta5.zeta5_irrational` gives `[propext, Classical.choice, Quot.sound,
+  Zeta5.Axioms.chebyshev_theta_asymptotic]`.
+* `#print axioms Zeta5.Hermite.pole_integral` gives `[propext, Classical.choice,
+  Quot.sound]`.
+* `#print axioms Zeta5.RealBound.eq_6_14` and `Zeta5.prop_2_2` give only the three standard
+  axioms.
+* The old `Axioms.lean` (commit `bfd4249`) was re-declared in a scratch namespace over
+  `import Zeta5`. Its two axiom types are `Expr ==` to the types of the two theorems, and equal
+  by `rfl`.
+
+**To do at certification.** Several scripts name the removed axioms and must be updated before
+they are re-run:
+* `cert/final/FScan.lean` (the expected project axioms);
+* `cert/final/FWalker.lean` (`#c3mod` targets);
+* `cert/final/fidelity/Fidelity.lean`;
+* `cert/C3Scan.lean`;
+* `cert/C3Attack.lean`, which applies both old axioms.
+
+The recorded outputs in `cert/` all refer to the states before the reduction.
