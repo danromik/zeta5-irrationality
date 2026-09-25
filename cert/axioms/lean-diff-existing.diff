@@ -1,0 +1,285 @@
+diff --git a/Zeta5.lean b/Zeta5.lean
+index 144e7cb..75cdbb4 100644
+--- a/Zeta5.lean
++++ b/Zeta5.lean
+@@ -14,0 +15,2 @@ import Zeta5.Axioms
++import Zeta5.Hermite
++import Zeta5.PNT
+diff --git a/Zeta5/Audit.lean b/Zeta5/Audit.lean
+index 29002ea..e8d3080 100644
+--- a/Zeta5/Audit.lean
++++ b/Zeta5/Audit.lean
+@@ -280,0 +281,8 @@ proved there are no `sorry`s at all, so this prints that the (empty) list is com
++
++/-! ### The two former axioms, now theorems (2026-09-24)
++
++`Zeta5.Hermite.pole_integral` must print only Lean's three standard axioms;
++`Zeta5.PNT.prime_riemann_sum` must add exactly `Zeta5.Axioms.chebyshev_theta_asymptotic`. -/
++
++#print axioms Zeta5.Hermite.pole_integral
++#print axioms Zeta5.PNT.prime_riemann_sum
+diff --git a/Zeta5/Axioms.lean b/Zeta5/Axioms.lean
+index 3448271..ef421d9 100644
+--- a/Zeta5/Axioms.lean
++++ b/Zeta5/Axioms.lean
+@@ -23,76 +23,9 @@ namespace Axioms
+-open MeasureTheory Set in
+-/-- **Hermite's integral formula for the Hurwitz zeta function, at `s = 5`.**
+-(Used by `Zeta5.Positivity`, i.e. by Proposition 2.2.)
+-
+-(i) STATEMENT.  For every real `a > 0`, with `w = Zeta5.wt` the weight of (2.10),
+-`w(y) = (2π)⁴y⁵ ∑_{ℓ≥1} ℓ⁴e^{-2πℓy}/12`,
+-
+-  `∫_0^∞ w(y)/(y² + a²) dy = a⁴ ζ(5,a) − 1/(2a) − 1/4`,
+-
+-where `ζ(5,a) = ∑_{k≥0}(k+a)^{-5}` is the Hurwitz zeta function.  This is the display in
+-the middle of p. 5 of the paper (the line beginning "Hermite's integral formula [9,
+-(25.11.29)], with `a > 0`, yields").
+-
+-(ii) CITATION.  DLMF 25.11.29 — the reference the paper itself gives — is Hermite's formula
+-
+-  `ζ(s,a) = a^{-s}/2 + a^{1-s}/(s−1) + 2∫_0^∞ sin(s arctan(t/a)) (a²+t²)^{-s/2}/(e^{2πt}−1) dt`,
+-
+-valid for `a > 0`, `s ≠ 1` (equivalently Whittaker–Watson §13.2; Erdélyi et al., *Higher
+-Transcendental Functions* I §1.10 (6)).  At `s = 5` its integrand is
+-`Im((a−it)^{-5})/(e^{2πt}−1)`, and the statement assumed here is that formula transported
+-through the four integrations by parts of p. 5: with `f(y) = (e^{2πy}−1)^{-1}` one has
+-`w(y) = y⁵f⁗(y)/12`, the four boundary products are `O(y)` at `0` and exponentially small
+-at infinity, and `(d/dy)⁴(y⁵/(y²+a²)) = 24a⁴Im((a−iy)^{-5})`, whence
+-`∫_0^∞ w(y)/(y²+a²) dy = 2a⁴∫_0^∞ Im((a−iy)^{-5})/(e^{2πy}−1) dy = a⁴(ζ(5,a) − a^{-5}/2 − a^{-4}/4)`.
+-NOTE: those four integrations by parts are *not* formalised; they are absorbed into
+-this axiom, which is therefore slightly stronger than DLMF 25.11.29 alone.
+-
+-Known-answer control (numerical quadrature at 25 significant digits, both sides): equality
+-at `a = 0.3, 1, 2, 2.5, 6`; at `a = 1` both sides are `0.286927755143369926… = ζ(5) − 3/4`.
+-The referee audit of the preprint (see README, "Provenance") independently checked the integer cases
+-`a = 1,…,6` to 24 digits.
+-
+-(iii) WHY NOT MATHLIB.  Mathlib has the Hurwitz zeta function (`HurwitzZeta.hurwitzZeta`)
+-and its functional equation, but no Hermite/Abel–Plana integral representation of it, and
+-no theory of the Eisenstein-type weight `w`. -/
+-axiom hermite_pole_integral (a : ℝ) (ha : 0 < a) :
+-    ∫ y in Ioi (0 : ℝ), wt y / (y ^ 2 + a ^ 2)
+-      = a ^ 4 * (∑' k : ℕ, 1 / ((k : ℝ) + a) ^ 5) - 1 / (2 * a) - 1 / 4
+-
+-open Filter Finset Set in
+-/-- **The prime number theorem, in the partial-summation ("prime Riemann sum") form that
+-Proposition 5.2 consumes.**  (Used by `Zeta5.PrimeSum`, i.e. by Proposition 5.2.)
+-
+-(i) STATEMENT.  Let `0 ≤ a < b` and let `φ : ℝ → ℝ` be bounded on `[a,b]` and continuous at
+-every point of `[a,b]` outside some finite set.  Then
+-
+-  `(1/X) · Σ_{p prime, aX < p ≤ bX} φ(p/X) log p  ⟶  ∫_a^b φ(y) dy`   as `X → ∞`.
+-
+-This is exactly the fact Fauzan invokes on p. 15 in the sentence *"For a bounded piecewise
+-continuous function `f` on `[3,M]`, partial summation and the prime number theorem give
+-`K^{-2} Σ_{K/M<p≤K/3} p f(K/p) log p ⟶ ∫_3^M f(x)x^{-3}dx`"* (put `φ(y) = y f(1/y)` and
+-`X = K`; the substitution `x = 1/y` is carried out in Lean, in
+-`Zeta5.PrimeSum.integral_inv_subst`), and again in the sentence *"The same argument in the
+-variable `y = p/K` gives (5.10) for the outer range"* (put `φ = T` of §B.2 directly).
+-Taking `a = 0` and `φ ≡ 1` it specialises to the prime number theorem itself in Chebyshev's
+-form, `θ(x) = Σ_{p ≤ x} log p ~ x`, which is how `Zeta5.PrimeSum` uses it for the range
+-`p ≤ K/M` and for all the `O_M(1)·θ` error terms.
+-
+-(ii) CITATION.  The prime number theorem, Hadamard and de la Vallée Poussin (1896), in the
+-form `θ(x) ~ x`; the paper's own citation for it is [9, §27.12] (DLMF 27.12.2–27.12.4, "We
+-use only its asymptotic form", p. 15).  The passage from `θ(x) ~ x` to the displayed
+-Riemann-sum limit is Abel summation together with the Darboux criterion — a bounded function
+-with finitely many discontinuities is Riemann integrable, so it is squeezed between step
+-functions whose prime sums telescope into differences `θ(uX) − θ(vX)`.  Standard references:
+-Apostol, *Introduction to Analytic Number Theory*, Thm. 4.4 and §4.3 (Abel's identity, Thm.
+-4.2); Tenenbaum, *Introduction to Analytic and Probabilistic Number Theory*, I.0 §2 and I.3.
+-
+-NOTE: this is *more* than the bare prime number theorem.  It is the PNT already
+-transported through Abel summation and the Darboux sandwich, i.e. the "partial summation"
+-half of the sentence quoted above is absorbed into the axiom.  The ground rules of this
+-formalization (README, "Ground rules") allow the prime number theorem in whatever form the
+-proof actually consumes (Chebyshev `ψ`, `θ`, or the partial-summation corollary), and this
+-is the partial-summation corollary, stated precisely.  It contains no information about
+-Fauzan's functions `Γ`, `𝒩`, `R`, `R₀`, `d` or `T`: the hypotheses on `φ` are discharged,
+-for `T`, from Appendix B's Table 4 inside
+-`Zeta5.PrimeSum` (`Tout_bdd`, `Tout_piecewise`).
++/-
++HISTORY.  Until 2026-09-24 this file declared two axioms, each stronger than its citation:
++`hermite_pole_integral` (Hermite's formula DLMF 25.11.29 at `s = 5` already carried through
++the four integrations by parts of p. 5) and `pnt_prime_riemann_sum` (the prime number theorem
++already carried through partial summation and a Darboux sandwich).  Both are now theorems with
++the identical statements: `Zeta5.Hermite.pole_integral` (`Zeta5/Hermite.lean`, proved from
++Mathlib alone, with no axiom) and `Zeta5.PNT.prime_riemann_sum` (`Zeta5/PNT.lean`, proved from
++the single axiom below).
++-/
+@@ -100,12 +33,25 @@ for `T`, from Appendix B's Table 4 inside
+-(iii) WHY NOT MATHLIB.  Mathlib has Chebyshev-type bounds only — `Nat.primorial_le_4_pow`
+-(`∏_{p ≤ n} p ≤ 4^n`, i.e. `θ(n) ≤ n log 4`) and `Nat.primeCounting` — and, as of
+-Mathlib v4.34.0, no proof of `ψ(x) ~ x` or `θ(x) ~ x`, hence none of its partial-summation
+-corollaries either. -/
+-axiom pnt_prime_riemann_sum (a b : ℝ) (ha : 0 ≤ a) (hab : a < b) (φ : ℝ → ℝ)
+-    (hbdd : ∃ C : ℝ, ∀ y ∈ Icc a b, |φ y| ≤ C)
+-    (hpc : ∃ D : Finset ℝ, ∀ y ∈ Icc a b, y ∉ D → ContinuousAt φ y) :
+-    Tendsto
+-      (fun X : ℝ =>
+-        (∑ p ∈ (Finset.Ioc ⌊a * X⌋₊ ⌊b * X⌋₊).filter Nat.Prime,
+-            φ ((p : ℝ) / X) * Real.log p) / X)
+-      atTop (nhds (∫ y in a..b, φ y))
++open Filter in
++/-- **The prime number theorem, in Chebyshev's form `θ(x) ~ x`.**  (Used by `Zeta5.PNT`,
++hence by `Zeta5.PrimeSum`, i.e. by Proposition 5.2.)
++
++(i) STATEMENT.  `θ(x)/x → 1` as `x → ∞`, where `θ(x) = Σ_{p ≤ x, p prime} log p` is
++Mathlib's own `Chebyshev.theta` (`Mathlib/NumberTheory/Chebyshev.lean`:
++`θ x = ∑ p ∈ Ioc 0 ⌊x⌋₊ with p.Prime, log p`).  This is the textbook statement with nothing
++added: it mentions no function, constant or definition of this project.
++
++(ii) CITATION.  The prime number theorem, Hadamard and de la Vallée Poussin (1896), in
++Chebyshev's form `θ(x) ~ x`; e.g. Apostol, *Introduction to Analytic Number Theory*, Thm. 4.4
++(equivalence of `π(x) ~ x/log x`, `ψ(x) ~ x` and `θ(x) ~ x`) together with the prime number
++theorem of Ch. 13.  The paper's own citation for it is [9, §27.12] (DLMF 27.12.2–27.12.4,
++"We use only its asymptotic form", p. 15).  The passage from `θ(x) ~ x` to the prime
++Riemann sums that Proposition 5.2 consumes (the "partial summation" of p. 15) is *proved*,
++in `Zeta5.PNT.prime_riemann_sum`.
++
++Numerical sanity check (`numerics/axioms/pnt_theta.py`): `θ(x)/x = 0.95625, 0.98960,
++0.99685, 0.99848, 0.99952` at `x = 10³,…,10⁷`.
++
++(iii) WHY NOT MATHLIB.  As of Mathlib v4.34.0, `Mathlib/NumberTheory/Chebyshev.lean` defines
++`θ` and `ψ` and proves Chebyshev-type bounds (`θ x ≤ log 4 · x`, `ψ − θ = O(√x)`, lower
++bounds), but not `θ(x) ~ x` or `ψ(x) ~ x`. -/
++axiom chebyshev_theta_asymptotic :
++    Tendsto (fun x : ℝ => Chebyshev.theta x / x) atTop (nhds 1)
+diff --git a/Zeta5/Interface.lean b/Zeta5/Interface.lean
+index 6672152..92f0978 100644
+--- a/Zeta5/Interface.lean
++++ b/Zeta5/Interface.lean
+@@ -21,3 +21,4 @@ statement below is discharged by a proof elsewhere in the project:
+-                                                 `Zeta5.Positivity.prop_2_2`, modulo the
+-                                                 single external axiom
+-                                                 `Zeta5.Axioms.hermite_pole_integral`
++                                                 `Zeta5.Positivity.prop_2_2`, via the
++                                                 pole integral
++                                                 `Zeta5.Hermite.pole_integral` (proved;
++                                                 no axiom since 2026-09-24)
+@@ -30,3 +31,4 @@ statement below is discharged by a proof elsewhere in the project:
+-  Prop. 5.2  (5.11), the prime-sum bound       ← `Zeta5.PrimeSum.prop_5_2`, modulo the
+-                                                 external axiom
+-                                                 `Zeta5.Axioms.pnt_prime_riemann_sum`
++  Prop. 5.2  (5.11), the prime-sum bound       ← `Zeta5.PrimeSum.prop_5_2`, via
++                                                 `Zeta5.PNT.prime_riemann_sum`, modulo the
++                                                 external axiom (the PNT, `θ(x) ~ x`)
++                                                 `Zeta5.Axioms.chebyshev_theta_asymptotic`
+@@ -51 +53,3 @@ kernel-checked certified partition of `Zeta5/Sec6/Num/`.  The module docstring o
+-therefore assumes nothing beyond the two axioms of `Zeta5/Axioms.lean`.
++therefore assumes nothing beyond the axiom of `Zeta5/Axioms.lean` (since 2026-09-24 a single
++one, the prime number theorem `θ(x) ~ x`; the two axioms it replaced are now the theorems
++`Zeta5.Hermite.pole_integral` and `Zeta5.PNT.prime_riemann_sum`, statements unchanged).
+@@ -110,2 +114,3 @@ interchange of `∑` and `∫`, the moment identity `∫_0^∞ y^{2e}w = μ(t^e)
+-division and simple partial fractions.  The single external input is Hermite's formula for
+-the Hurwitz zeta function, `Zeta5.Axioms.hermite_pole_integral`. -/
++division and simple partial fractions.  The pole integral (Hermite's formula for the Hurwitz
++zeta function, in the form of p. 5) is `Zeta5.Hermite.pole_integral`, also proved (formerly the
++axiom `Zeta5.Axioms.hermite_pole_integral`), so Proposition 2.2 has no external input. -/
+@@ -275,4 +280,5 @@ the same argument in `y = p/K` giving (5.10) for the outer range.
+-*  the **prime number theorem**, `Zeta5.Axioms.pnt_prime_riemann_sum`, in the
+-   partial-summation form the proof consumes — allowed by the ground rules of this
+-   formalization (README, "Ground rules"), and the only
+-   external input of Proposition 5.2; and
++*  the **prime number theorem**, in the partial-summation form the proof consumes,
++   `Zeta5.PNT.prime_riemann_sum` — proved in `Zeta5/PNT.lean` from the bare prime number
++   theorem `θ(x)/x → 1`, the axiom `Zeta5.Axioms.chebyshev_theta_asymptotic` (allowed by the
++   ground rules of this formalization, README, "Ground rules"), which is the only external
++   input of Proposition 5.2; and
+@@ -467,2 +473,3 @@ Depends on no `sorry` (since 2026-09-24): beyond Lean's three standard axioms it
+-exactly on the two axioms of `Zeta5/Axioms.lean`, as `Zeta5/Audit.lean` prints on every
+-build; `#print axioms` shows no `sorryAx`.  The deduction from Theorem 2.1 (`Zeta5.theorem_1_1` in `Skeleton.lean`) and
++exactly on the axiom of `Zeta5/Axioms.lean` (the prime number theorem `θ(x) ~ x`,
++`Zeta5.Axioms.chebyshev_theta_asymptotic`, since 2026-09-24), as `Zeta5/Audit.lean` prints on
++every build; `#print axioms` shows no `sorryAx`.  The deduction from Theorem 2.1 (`Zeta5.theorem_1_1` in `Skeleton.lean`) and
+diff --git a/Zeta5/Positivity.lean b/Zeta5/Positivity.lean
+index 5457806..2e9f852 100644
+--- a/Zeta5/Positivity.lean
++++ b/Zeta5/Positivity.lean
+@@ -17,4 +17,6 @@ WHAT IS PROVED HERE, AND WHAT IS ASSUMED.
+-*  The single external input is `Zeta5.Axioms.hermite_pole_integral`: Hermite's formula for
+-   the Hurwitz zeta function at `s = 5` (DLMF 25.11.29), in the form the paper's p. 5
+-   display gives it, i.e. already transported through the four integrations by parts.  See
+-   the docstring there; the four integrations by parts are *not* formalised.
++*  The pole integral of the paper's p. 5 display (Hermite's formula for the Hurwitz zeta
++   function at `s = 5`, DLMF 25.11.29, transported through four integrations by parts) is
++   `Zeta5.Hermite.pole_integral`, **proved** in `Zeta5/Hermite.lean` from Mathlib alone (by a
++   route through Mathlib's Mittag-Leffler expansion of the cotangent rather than Hermite's
++   formula).  Until 2026-09-24 it was the axiom `Zeta5.Axioms.hermite_pole_integral`, with
++   the same statement.  This file therefore has no external input beyond Mathlib.
+@@ -26 +28 @@ the moment `(2e+5)!ζ(2e+2)/(12(2π)^{2e+2})`.
+-POSITION IN THE DEPENDENCY GRAPH.  This file imports `Zeta5.Functional` and `Zeta5.Axioms`
++POSITION IN THE DEPENDENCY GRAPH.  This file imports `Zeta5.Functional` and `Zeta5.Hermite`
+@@ -31 +33 @@ import Zeta5.Functional
+-import Zeta5.Axioms
++import Zeta5.Hermite
+@@ -341 +343 @@ theorem integral_pow_mul_wt (e : ℕ) :
+-This is where `Zeta5.Axioms.hermite_pole_integral` enters, and the only place. -/
++This is where `Zeta5.Hermite.pole_integral` enters, and the only place. -/
+@@ -418 +420 @@ theorem integral_wt_div_pole (j : ℕ) (hj : 0 < j) :
+-  rw [Axioms.hermite_pole_integral _ hja]
++  rw [Hermite.pole_integral _ hja]
+@@ -796,4 +798,4 @@ theorem prop_2_2 (n : ℕ) : Matrix.PosDef ((G n).map evalZeta5) := by
+-These `#print axioms` lines appear in the build log.  Everything up to and including the
+-moment identity is proved from `[propext, Classical.choice, Quot.sound]` alone; the two
+-statements of Proposition 2.2 add exactly one named external input,
+-`Zeta5.Axioms.hermite_pole_integral`, and **no `sorryAx`**. -/
++These `#print axioms` lines appear in the build log.  Everything, including the two
++statements of Proposition 2.2, is proved from `[propext, Classical.choice, Quot.sound]` alone
++(since 2026-09-24, when the axiom `Zeta5.Axioms.hermite_pole_integral` was replaced by the
++theorem `Zeta5.Hermite.pole_integral`), with **no `sorryAx`**. -/
+diff --git a/Zeta5/PrimeSum.lean b/Zeta5/PrimeSum.lean
+index c35360f..e29e4d2 100644
+--- a/Zeta5/PrimeSum.lean
++++ b/Zeta5/PrimeSum.lean
+@@ -27,3 +27,6 @@ WHAT IS ASSUMED HERE, AND WHY.
+-*  `Zeta5.Axioms.pnt_prime_riemann_sum` — the prime number theorem in the partial-summation
+-   form the proof consumes.  Allowed by the ground rules of this formalization (README,
+-   "Ground rules"); see its docstring.
++*  `Zeta5.PNT.prime_riemann_sum` — the prime number theorem in the partial-summation
++   form the proof consumes.  Until 2026-09-24 this was the axiom
++   `Zeta5.Axioms.pnt_prime_riemann_sum`; it is now a theorem (same statement), proved in
++   `Zeta5/PNT.lean` from the bare prime number theorem `θ(x)/x → 1`, which is the axiom
++   `Zeta5.Axioms.chebyshev_theta_asymptotic` (allowed by the ground rules of this
++   formalization, README, "Ground rules"; see its docstring).
+@@ -37 +40 @@ Everything else — the exact decomposition of `log m_{K,M}`, the three-way spli
+-branch-1 estimate, the regularity of `T` needed to feed the axiom, the change of variables
++branch-1 estimate, the regularity of `T` needed to feed `PNT.prime_riemann_sum`, the change of variables
+@@ -43 +46 @@ import Zeta5.Basic
+-import Zeta5.Axioms
++import Zeta5.PNT
+@@ -161 +164 @@ lemma mem_B3 {n M p : ℕ} (hM : 40 ≤ M) :
+-/-! ## 3.  Matching the branches with the index set of the axiom -/
++/-! ## 3.  Matching the branches with the index set of `PNT.prime_riemann_sum` -/
+@@ -216 +219,2 @@ lemma tendsto_K : Tendsto (fun n : ℕ => ((K n : ℕ) : ℝ)) atTop atTop := by
+-/-- The axiom `Zeta5.Axioms.pnt_prime_riemann_sum`, transported to the sequence `K = 40n`. -/
++/-- The prime number theorem in the form `Zeta5.PNT.prime_riemann_sum`, transported to the
++sequence `K = 40n`. -/
+@@ -225 +229 @@ lemma tendsto_primeSum (a b : ℝ) (ha : 0 ≤ a) (hab : a < b) (φ : ℝ → 
+-  (Axioms.pnt_prime_riemann_sum a b ha hab φ hbdd hpc).comp tendsto_K
++  (PNT.prime_riemann_sum a b ha hab φ hbdd hpc).comp tendsto_K
+@@ -573 +577 @@ eleven open intervals covering `(1/3, 2λ)`; that gives both hypotheses the prim
+-axiom needs, with no new assumption. -/
++input `PNT.prime_riemann_sum` needs, with no new assumption. -/
+@@ -701 +705 @@ lemma Tout_piecewise :
+-The paper works the inner range in `x = K/p`; the axiom is stated in `y = p/K`.  The two are
++The paper works the inner range in `x = K/p`; `PNT.prime_riemann_sum` is stated in `y = p/K`.  The two are
+@@ -766 +770 @@ polynomial on each compact subinterval of `[3,∞)`."*  This section **proves**
+-the prime-number-theorem axiom needs, from Appendix B's closed form `Gam_eq` for `Γ`. -/
++the prime-number-theorem input `PNT.prime_riemann_sum` needs, from Appendix B's closed form `Gam_eq` for `Γ`. -/
+diff --git a/Zeta5/Sec6/Final.lean b/Zeta5/Sec6/Final.lean
+index 8e4d4c1..e1aae4c 100644
+--- a/Zeta5/Sec6/Final.lean
++++ b/Zeta5/Sec6/Final.lean
+@@ -10,4 +10,6 @@ Zeta5/Sec6/Final.lean  —  (6.14) and Proposition 6.3, assembled.  THIS FILE CO
+-have not changed) are proved.  `#print axioms Zeta5.RealBound.eq_6_14` gives
+-`[propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]`; the external
+-axiom enters through Proposition 2.2's moment representation `Positivity.prop_2_2_moment`,
+-which (6.10) uses to write the entries of `G_K(ζ(5))` as integrals (`Sec6/Gram.lean`).
++have not changed) are proved.  `#print axioms Zeta5.RealBound.eq_6_14` gave
++`[propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]` until
++2026-09-24, the external axiom entering through Proposition 2.2's moment representation
++`Positivity.prop_2_2_moment`, which (6.10) uses to write the entries of `G_K(ζ(5))` as
++integrals (`Sec6/Gram.lean`).  That axiom is now the theorem `Zeta5.Hermite.pole_integral`,
++so it gives `[propext, Classical.choice, Quot.sound]`.

@@ -1,0 +1,37 @@
+changed .lean files: ['Zeta5.lean', 'Zeta5/Audit.lean', 'Zeta5/Axioms.lean', 'Zeta5/Hermite.lean', 'Zeta5/Interface.lean', 'Zeta5/PNT.lean', 'Zeta5/Positivity.lean', 'Zeta5/PrimeSum.lean', 'Zeta5/Sec6/Final.lean']
+  of which pre-existing: ['Zeta5.lean', 'Zeta5/Audit.lean', 'Zeta5/Axioms.lean', 'Zeta5/Interface.lean', 'Zeta5/Positivity.lean', 'Zeta5/PrimeSum.lean', 'Zeta5/Sec6/Final.lean']
+== Zeta5.lean: 2 changed code lines after stripping comments
+    +import Zeta5.Hermite
+    +import Zeta5.PNT
+== Zeta5/Audit.lean: 2 changed code lines after stripping comments
+    +#print axioms Zeta5.Hermite.pole_integral
+    +#print axioms Zeta5.PNT.prime_riemann_sum
+== Zeta5/Axioms.lean: 16 changed code lines after stripping comments
+    -open MeasureTheory Set in
+    -axiom hermite_pole_integral (a : ℝ) (ha : 0 < a) :
+    -    ∫ y in Ioi (0 : ℝ), wt y / (y ^ 2 + a ^ 2)
+    -      = a ^ 4 * (∑' k : ℕ, 1 / ((k : ℝ) + a) ^ 5) - 1 / (2 * a) - 1 / 4
+    -open Filter Finset Set in
+    -axiom pnt_prime_riemann_sum (a b : ℝ) (ha : 0 ≤ a) (hab : a < b) (φ : ℝ → ℝ)
+    -    (hbdd : ∃ C : ℝ, ∀ y ∈ Icc a b, |φ y| ≤ C)
+    -    (hpc : ∃ D : Finset ℝ, ∀ y ∈ Icc a b, y ∉ D → ContinuousAt φ y) :
+    -    Tendsto
+    -      (fun X : ℝ =>
+    -        (∑ p ∈ (Finset.Ioc ⌊a * X⌋₊ ⌊b * X⌋₊).filter Nat.Prime,
+    -            φ ((p : ℝ) / X) * Real.log p) / X)
+    -      atTop (nhds (∫ y in a..b, φ y))
+    +open Filter in
+    +axiom chebyshev_theta_asymptotic :
+    +    Tendsto (fun x : ℝ => Chebyshev.theta x / x) atTop (nhds 1)
+== Zeta5/Interface.lean: 0 changed code lines after stripping comments
+== Zeta5/Positivity.lean: 4 changed code lines after stripping comments
+    -import Zeta5.Axioms
+    +import Zeta5.Hermite
+    -  rw [Axioms.hermite_pole_integral _ hja]
+    +  rw [Hermite.pole_integral _ hja]
+== Zeta5/PrimeSum.lean: 4 changed code lines after stripping comments
+    -import Zeta5.Axioms
+    +import Zeta5.PNT
+    -  (Axioms.pnt_prime_riemann_sum a b ha hab φ hbdd hpc).comp tendsto_K
+    +  (PNT.prime_riemann_sum a b ha hab φ hbdd hpc).comp tendsto_K
+== Zeta5/Sec6/Final.lean: 0 changed code lines after stripping comments

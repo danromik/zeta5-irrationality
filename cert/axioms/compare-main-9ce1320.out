@@ -1,0 +1,76 @@
+main: 3272 constants in Zeta5 modules; HEAD: 3940
+removed (on main, not on HEAD): 2
+  REMOVED axiom  Zeta5.Axioms.hermite_pole_integral  [Zeta5.Axioms]
+  REMOVED axiom  Zeta5.Axioms.pnt_prime_riemann_sum  [Zeta5.Axioms]
+common: 3270; changed kind/lparams/type/value/extra: 16
+  CHANGED thm    Zeta5.InnerEntries.class_bound._proof_1_3  fields=['tsha']  [Zeta5.InnerTate -> Zeta5.InnerTate]
+  CHANGED thm    Zeta5.InnerEntries.class_bound._proof_1_4  fields=['tsha']  [Zeta5.InnerTate -> Zeta5.InnerTate]
+  CHANGED thm    Zeta5.InnerEntries.class_bound._proof_1_5  fields=['tsha']  [Zeta5.InnerTate -> Zeta5.InnerTate]
+  CHANGED thm    Zeta5.InnerEntries.gram_entry_bound._proof_1_1  fields=['tsha']  [Zeta5.InnerEntries -> Zeta5.InnerEntries]
+  CHANGED thm    Zeta5.InnerEntries.padicNorm_ge_of_not_sq_dvd._proof_1_1  fields=['tsha']  [Zeta5.InnerGeneral -> Zeta5.InnerGeneral]
+  CHANGED thm    Zeta5.InnerEntries.padicNorm_ge_of_not_sq_dvd._proof_1_2  fields=['tsha']  [Zeta5.InnerGeneral -> Zeta5.InnerGeneral]
+  CHANGED thm    Zeta5.InnerEntries.rowW_le_halfB._proof_1_2  fields=['tsha']  [Zeta5.InnerEntries -> Zeta5.InnerEntries]
+  CHANGED thm    Zeta5.InnerEntries.rowW_le_halfB._proof_1_3  fields=['tsha']  [Zeta5.InnerEntries -> Zeta5.InnerEntries]
+  CHANGED thm    Zeta5.InnerEntries.rowW_le_halfB._proof_1_4  fields=['tsha']  [Zeta5.InnerEntries -> Zeta5.InnerEntries]
+  CHANGED thm    Zeta5.InnerEntries.rowW_le_halfB._proof_1_5  fields=['tsha']  [Zeta5.InnerEntries -> Zeta5.InnerEntries]
+  CHANGED thm    Zeta5.InnerEntries.rowW_le_halfB._proof_1_6  fields=['tsha']  [Zeta5.InnerEntries -> Zeta5.InnerEntries]
+  CHANGED thm    Zeta5.InnerEntries.rowW_le_halfB._proof_1_7  fields=['tsha']  [Zeta5.InnerEntries -> Zeta5.InnerEntries]
+  CHANGED thm    Zeta5.InnerEntries.tau_Tate._proof_1_1  fields=['tsha']  [Zeta5.InnerTate -> Zeta5.InnerTate]
+  CHANGED thm    Zeta5.InnerEntries.vge_H5._proof_1_3  fields=['tsha']  [Zeta5.InnerGeneral -> Zeta5.InnerGeneral]
+  CHANGED thm    Zeta5.lemma_3_1._proof_1_1  fields=['tsha']  [Zeta5.LocalFunctional -> Zeta5.LocalFunctional]
+  CHANGED thm    Zeta5.tau_monomial._proof_1_5  fields=['tsha']  [Zeta5.LocalFunctional -> Zeta5.LocalFunctional]
+common but defining module changed: 2
+  MOVED   thm    Zeta5.RealBound.eq_6_14  Zeta5.RealBound -> Zeta5.Sec6.Final
+  MOVED   thm    Zeta5.RealBound.prop_6_3  Zeta5.RealBound -> Zeta5.Sec6.Final
+added on HEAD: 670  by kind: {'axiom': 1, 'def': 96, 'thm': 573}
+added, by module (* = module that also existed on main):
+  * Zeta5.Axioms: 1
+    Zeta5.Hermite: 63
+    Zeta5.PNT: 16
+    Zeta5.Sec6.Antideriv: 1
+    Zeta5.Sec6.ArcComm: 2
+    Zeta5.Sec6.ArcsinePot: 9
+    Zeta5.Sec6.Bilinear: 4
+    Zeta5.Sec6.CND: 3
+    Zeta5.Sec6.Defs: 34
+    Zeta5.Sec6.Energy: 29
+    Zeta5.Sec6.Field: 2
+    Zeta5.Sec6.Frullani: 3
+    Zeta5.Sec6.GaussPD: 13
+    Zeta5.Sec6.Gram: 60
+    Zeta5.Sec6.IrhoSum: 2
+    Zeta5.Sec6.LogCos: 1
+    Zeta5.Sec6.LogCosInt: 1
+    Zeta5.Sec6.LogCosOff: 8
+    Zeta5.Sec6.LogCosOn: 2
+    Zeta5.Sec6.Measures: 39
+    Zeta5.Sec6.Num.Cell: 40
+    Zeta5.Sec6.Num.Eval: 61
+    Zeta5.Sec6.Num.Final: 6
+    Zeta5.Sec6.Num.Seg1: 10
+    Zeta5.Sec6.Num.Seg2: 10
+    Zeta5.Sec6.Num.Seg3: 10
+    Zeta5.Sec6.Num.Seg4: 10
+    Zeta5.Sec6.Num.Seg5: 10
+    Zeta5.Sec6.Num.Seg6: 10
+    Zeta5.Sec6.Num.Sound: 54
+    Zeta5.Sec6.Num.Tail: 41
+    Zeta5.Sec6.PairEnergy: 12
+    Zeta5.Sec6.Potential: 74
+    Zeta5.Sec6.RhoCross: 4
+    Zeta5.Sec6.RhoEnergy: 1
+    Zeta5.Sec6.SmoothArc: 9
+    Zeta5.Sec6.SmoothAux: 10
+    Zeta5.Sec6.SmoothErr: 2
+    Zeta5.Sec6.Swap: 3
+added constants in modules that existed on main:
+  ADDED   axiom  Zeta5.Axioms.chebyshev_theta_asymptotic  [Zeta5.Axioms]
+added axioms / opaques / unsafe or partial defs on HEAD:
+  axiom Zeta5.Axioms.chebyshev_theta_asymptotic [Zeta5.Axioms] unsafe=false
+  def Zeta5.Sec6.Num.UUpR._unsafe_rec [Zeta5.Sec6.Num.Eval] safety=partial hints=opaque all=[Zeta5.Sec6.Num.UUpR._unsafe_rec]
+  def Zeta5.Sec6.Num.aser._unsafe_rec [Zeta5.Sec6.Num.Eval] safety=partial hints=opaque all=[Zeta5.Sec6.Num.aser._unsafe_rec]
+  def Zeta5.Sec6.Num.chainOK._unsafe_rec [Zeta5.Sec6.Num.Eval] safety=partial hints=opaque all=[Zeta5.Sec6.Num.chainOK._unsafe_rec]
+  def Zeta5.Sec6.Num.isqrtIter._unsafe_rec [Zeta5.Sec6.Num.Eval] safety=partial hints=opaque all=[Zeta5.Sec6.Num.isqrtIter._unsafe_rec]
+  def Zeta5.Sec6.Num.lser._unsafe_rec [Zeta5.Sec6.Num.Eval] safety=partial hints=opaque all=[Zeta5.Sec6.Num.lser._unsafe_rec]
+all axioms on HEAD (Zeta5 modules):
+  Zeta5.Axioms.chebyshev_theta_asymptotic [Zeta5.Axioms] identical-to-main=False

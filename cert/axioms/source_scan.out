@@ -1,0 +1,118 @@
+files scanned: 72; lines: 29755
+== sorry: 0
+== admit: 0
+== sorryAx: 3
+    Zeta5/Audit.lean:94: if consts.contains ``sorryAx then
+    Zeta5/Audit.lean:113: | some v => if v.getUsedConstants.contains ``sorryAx then acc.push n else acc
+    Zeta5/Audit.lean:137: !(Zeta5.Audit.standardAxioms.contains a) && a.getRoot != `Zeta5 && a != ``sorryAx)
+== native_decide: 0
+== implemented_by: 0
+== extern: 0
+== unsafe: 0
+== partial def: 1
+    Zeta5/Audit.lean:85: partial def visit (env : Environment) (target : Name) : StateM WalkState Unit := do
+== opaque: 0
+== axiom: 1
+    Zeta5/Axioms.lean:56: axiom chebyshev_theta_asymptotic :
+== constant: 0
+== skipKernelTC: 0
+== ofReduceBool/Nat: 0
+== reduceBool: 0
+== Decidable.decide trust: 0
+== set_option: 0
+== macro: 0
+== elab: 3
+    Zeta5/Audit.lean:129: elab "                   " i:ident : command => do
+    Zeta5/Audit.lean:160: elab "                " i:ident : command => do
+    Zeta5/Audit.lean:172: elab "            " i:ident : command => do
+== syntax: 0
+== notation: 0
+== attribute: 0
+== run_cmd/tac/elab: 0
+== #eval: 0
+== initialize: 0
+== open private: 0
+== export: 0
+== csimp: 0
+== instance: 5
+    Zeta5/Sec6/Defs.lean:98: instance (m r : ℝ) : IsFiniteMeasure (arcsine m r) := by
+    Zeta5/Sec6/Defs.lean:104: instance (j : ℕ) : IsFiniteMeasure (arc j) := by unfold arc; infer_instance
+    Zeta5/Sec6/Defs.lean:106: instance : IsFiniteMeasure rhoM := by unfold rhoM; infer_instance
+    Zeta5/Sec6/Defs.lean:108: instance {m : ℕ} (K : ℝ) (t : Fin m → ℝ) : IsFiniteMeasure (pts K t) := by
+    Zeta5/Sec6/Measures.lean:34: instance (m r : ℝ) : IsProbabilityMeasure (arcsine m r) := ⟨arcsine_univ m r⟩
+== debug options: 0
+== Lean.Elab/Meta import: 0
+== unsafeCast/ptrEq: 0
+== distinct imports:
+    import Mathlib
+    import Zeta5.AppendixB
+    import Zeta5.AppendixBCheck
+    import Zeta5.Arithmetic
+    import Zeta5.Asymptotics
+    import Zeta5.Audit
+    import Zeta5.Axioms
+    import Zeta5.Basic
+    import Zeta5.Checks
+    import Zeta5.Counting
+    import Zeta5.CrudeBound
+    import Zeta5.Functional
+    import Zeta5.Hermite
+    import Zeta5.HermiteBasis
+    import Zeta5.HermiteBasisCore
+    import Zeta5.InnerEntries
+    import Zeta5.InnerGeneral
+    import Zeta5.InnerTate
+    import Zeta5.Interface
+    import Zeta5.Lemma33
+    import Zeta5.Lemma42
+    import Zeta5.LocalFunctional
+    import Zeta5.Normalization
+    import Zeta5.OuterBasis
+    import Zeta5.OuterLocal
+    import Zeta5.OuterRange
+    import Zeta5.PNT
+    import Zeta5.Positivity
+    import Zeta5.PrimeSum
+    import Zeta5.RealBound
+    import Zeta5.Sec6.Antideriv
+    import Zeta5.Sec6.ArcComm
+    import Zeta5.Sec6.ArcsinePot
+    import Zeta5.Sec6.Bilinear
+    import Zeta5.Sec6.CND
+    import Zeta5.Sec6.Defs
+    import Zeta5.Sec6.Energy
+    import Zeta5.Sec6.Field
+    import Zeta5.Sec6.Final
+    import Zeta5.Sec6.Frullani
+    import Zeta5.Sec6.GaussPD
+    import Zeta5.Sec6.Gram
+    import Zeta5.Sec6.IrhoSum
+    import Zeta5.Sec6.LogCos
+    import Zeta5.Sec6.LogCosInt
+    import Zeta5.Sec6.LogCosOff
+    import Zeta5.Sec6.LogCosOn
+    import Zeta5.Sec6.Measures
+    import Zeta5.Sec6.Num.Cell
+    import Zeta5.Sec6.Num.Eval
+    import Zeta5.Sec6.Num.Final
+    import Zeta5.Sec6.Num.Seg1
+    import Zeta5.Sec6.Num.Seg2
+    import Zeta5.Sec6.Num.Seg3
+    import Zeta5.Sec6.Num.Seg4
+    import Zeta5.Sec6.Num.Seg5
+    import Zeta5.Sec6.Num.Seg6
+    import Zeta5.Sec6.Num.Sound
+    import Zeta5.Sec6.Num.Tail
+    import Zeta5.Sec6.PairEnergy
+    import Zeta5.Sec6.Potential
+    import Zeta5.Sec6.RhoCross
+    import Zeta5.Sec6.RhoEnergy
+    import Zeta5.Sec6.SmoothArc
+    import Zeta5.Sec6.SmoothAux
+    import Zeta5.Sec6.SmoothErr
+    import Zeta5.Sec6.Swap
+    import Zeta5.Section3
+    import Zeta5.Section41
+    import Zeta5.Skeleton
+    import Zeta5.Tail
+    import Zeta5.Uniformity

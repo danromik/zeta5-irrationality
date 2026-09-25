@@ -7,9 +7,10 @@
 > new axiom `Zeta5.Axioms.chebyshev_theta_asymptotic` (the prime number theorem as
 > `θ(x)/x → 1`, with Mathlib's `Chebyshev.theta`). Both theorems have exactly the types of the
 > axioms they replace, and no other statement changed. `zeta5_irrational` rests on the three
-> standard Lean axioms and that one axiom (§1, §2 (B)). **This state is pending
-> re-certification**: §4 and §8 describe the certification of the previous state (code commit
-> `808618b`), and their counts refer to it.
+> standard Lean axioms and that one axiom (§1, §2 (B)). **This state (code commit
+> `ca05d77`) was certified on 2026-09-24** (addendum of `CERTIFICATION.md`, scripts and
+> outputs in `cert/axioms/`). §4 and §8 describe the certification of the previous state
+> (code commit `808618b`), and their counts refer to it.
 >
 > **Branch `eq614`, 2026-09-24: (6.14) is proved, and the project contains no `sorry`.**
 > `Zeta5.RealBound.eq_6_14` and `prop_6_3` (same names and types as before) are proved in
@@ -557,10 +558,11 @@ docstrings of `Sec6/Final.lean`, `Sec6/Defs.lean`, `Sec6/Energy.lean`, `Sec6/Gra
 
 ## 7. What to do next, in value order
 
-1. **Re-certify the reduced state** (branch `axioms`): re-run the dependency checks of §4 and
-   `CERTIFICATION.md` on it. Several of the certification scripts name the former axioms
-   (`cert/final/FScan.lean`, `FWalker.lean`, `fidelity/Fidelity.lean`, `cert/C3Scan.lean`,
-   `cert/C3Attack.lean`) and must be updated to the new names first.
+1. *Done 2026-09-24:* the reduced state (branch `axioms`, `ca05d77`) was certified
+   (addendum of `CERTIFICATION.md`). The updated scripts are in `cert/axioms/`. The older
+   scripts that name the former axioms (`cert/final/FScan.lean`, `FWalker.lean`,
+   `fidelity/Fidelity.lean`, `cert/C3Scan.lean`, `cert/C3Attack.lean`) are kept as the
+   record of the earlier certifications.
 2. *Done 2026-09-24:* `pnt_prime_riemann_sum` reduced to `θ(x) ~ x`, and
    `hermite_pole_integral` proved outright (not merely reduced to DLMF 25.11.29). The one
    remaining axiom is the prime number theorem itself; removing it would mean proving the PNT
@@ -585,8 +587,9 @@ docstrings of `Sec6/Final.lean`, `Sec6/Defs.lean`, `Sec6/Energy.lean`, `Sec6/Gra
 ## 8. Certification
 
 *The certification below is of the state before the axiom reduction (two axioms). The
-reduced state (one axiom) is pending re-certification; see the addendum in
-`CERTIFICATION.md`.*
+reduced state (one axiom, `ca05d77`) was certified separately on 2026-09-24; see the addendum
+in `CERTIFICATION.md`. Its verdict: `zeta5_irrational` rests on the three standard axioms and
+`Zeta5.Axioms.chebyshev_theta_asymptotic` only, with no `sorry`, and nothing else changed.*
 
 An adversarial certification of the then-present state was made on 2026-09-24, on code commit
 `808618b` (`CERTIFICATION.md`; scripts and outputs in `cert/final/`). Its verdict: **the
@@ -634,8 +637,7 @@ and about the meaning of the main statement still applied on 2026-09-24 before t
 reduction. After it, every definition that the main statement uses is unchanged, and the two
 statements it examined as axioms are now theorems with the same types.
 
-**How to report this result (2026-09-24, after the axiom reduction, pending its
-re-certification):** *"ζ(5) is irrational, machine-checked conditional on one external result
+**How to report this result (2026-09-24, after the axiom reduction, as certified):** *"ζ(5) is irrational, machine-checked conditional on one external result
 entered as an axiom: the prime number theorem, in Chebyshev's form θ(x) ~ x."* Nothing
 internal to Fauzan's argument is assumed. (As certified before the reduction, the result was
 conditional on two stronger axioms: Hermite's integral formula in the integrated-by-parts form

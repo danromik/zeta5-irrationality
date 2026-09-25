@@ -1,0 +1,10 @@
+replaying Zeta5.Audit
+replaying Zeta5.Sec6.Final
+replaying Zeta5.Interface
+replaying Zeta5.PrimeSum
+replaying Zeta5.Positivity
+replaying Zeta5.PNT
+replaying Zeta5.Hermite
+replaying Zeta5.Axioms
+lake env leanchecker --verbose Zeta5.Axioms Zeta5.Hermite Zeta5.PNT       32.92s user 231.94s system 113% cpu 3:53.52 total
+EXIT 0

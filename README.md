@@ -10,8 +10,11 @@
 > `pnt_prime_riemann_sum`) is proved from the single new axiom
 > `Zeta5.Axioms.chebyshev_theta_asymptotic`, θ(x)/x → 1 with Mathlib's own `Chebyshev.theta`.
 > `Zeta5.zeta5_irrational` now rests on Lean's three standard axioms and that one axiom. This
-> state has **not yet been re-certified**; the certification described below is of the
-> previous state (see the addendum in `docs/CERTIFICATION.md`).
+> state (code commit `ca05d77`) was **certified** on 2026-09-24: five agreeing dependency
+> checks, a kernel replay of the new and edited modules, a declaration-level comparison
+> showing that no other statement or definition changed, and a proof that the axiom is
+> equivalent to the textbook `θ(x) ~ x` (the addendum of `docs/CERTIFICATION.md`; scripts
+> and outputs in `cert/axioms/`).
 >
 > **Update, branch `eq614` (2026-09-24): (6.14) is proved; the project has no `sorry`.**
 > `Zeta5.RealBound.eq_6_14` (statement unchanged) is proved in `Zeta5/Sec6/Final.lean`
@@ -551,8 +554,8 @@ Only two things need human review:
 * **The assumption list:** whether the axiom is a correct statement of a known result (the
   prime number theorem), and whether nothing else is assumed.
 
-`docs/CERTIFICATION.md` describes how these were checked, most recently on 2026-09-24 (before
-the axiom reduction; the reduced state is pending re-certification, see its addendum): clean
+`docs/CERTIFICATION.md` describes how these were checked, most recently on 2026-09-24 (the
+state after the axiom reduction is certified in its addendum): clean
 rebuilds, independent dependency walkers, a scan of the compiled `.olean` files, a kernel
 replay, a kernel-level comparison of every statement and definition with the previous
 certified state, attacks on the axioms, a check of the main statement at the level of Lean
@@ -583,7 +586,7 @@ numbers in this repository refer to v1. The preprint itself is not included here
   no `sorry`). It checks that the main theorem is faithfully stated and that it depends on
   exactly the two axioms then declared and Lean's standard axioms. It also records the earlier
   certification of 2026-09-23, when (6.14) was still a `sorry`, and, in an addendum, the
-  axiom reduction of 2026-09-24 (pending certification).
+  axiom reduction of 2026-09-24 and its certification.
 * `docs/lean-status.pdf` (source `docs/lean-status.tex`): a readable summary of what the
   formalization proves and assumes (2026-09-24, before the axiom reduction: it still describes
   the two former axioms).

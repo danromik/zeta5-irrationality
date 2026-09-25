@@ -1,0 +1,23 @@
+Zeta5.Axioms.chebyshev_theta_asymptotic : Tendsto (fun x => Chebyshev.theta x / x) atTop (𝓝 1)
+def Chebyshev.theta : ℝ → ℝ :=
+fun x => ∑ p ∈ Finset.Ioc 0 ⌊x⌋₊ with Nat.Prime p, Real.log ↑p
+'AAtt.pnt_textbook' depends on axioms: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic]
+'AAtt.axiom_of_textbook' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AAtt.axiom_iff_isEquivalent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AAtt.theta_equiv_id' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.chebyshev_theta_asymptotic]
+'AAtt.hermite_at_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AAtt.pnt_dyadic' depends on axioms: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic]
+'Zeta5.Hermite.pole_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Zeta5.PNT.prime_riemann_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.chebyshev_theta_asymptotic]
+cone size (native walk) 69774
+unsafe or partial constants in the cone (0): []
+_unsafe_rec auxiliaries in the cone: []
+kinds of the five: [(false, true), (false, true), (false, true), (false, true), (false, true)]
+lake env lean cert/axioms/AAttack.lean  7.14s user 9.01s system 82% cpu 19.677 total
+EXIT 0

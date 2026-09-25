@@ -1,0 +1,74 @@
+ASSUMPTION REPORT for Zeta5.zeta5_irrational
+
+  (A) standard Lean axioms:
+    Classical.choice
+    Quot.sound
+    propext
+
+  (B) explicit external axioms of this project (Zeta5/Axioms.lean):
+    Zeta5.Axioms.chebyshev_theta_asymptotic
+
+  (C) sorry(s) — unfinished steps of the paper's own argument, 0 in all:
+    (none)
+
+  (D) any other axiom (must be empty):
+    (none)
+
+  [self-check: walker agrees with Lean.collectAxioms, 4 axiom(s)]
+Zeta5.theorem_2_1 depends on NO sorry.
+Zeta5.prop_5_1 depends on NO sorry.
+Zeta5.prop_2_2 depends on NO sorry.
+Zeta5.prop_4_1 depends on NO sorry.
+Zeta5.prop_4_3 depends on NO sorry.
+Zeta5.prop_6_3 depends on NO sorry.
+Zeta5.prop_5_2 depends on NO sorry.
+Zeta5.eq_3_12 depends on NO sorry.
+Zeta5.eq_5_16_5_18 depends on NO sorry.
+Zeta5.eq_7_1 depends on NO sorry.
+Zeta5.Delta_natDegree depends on NO sorry.
+Zeta5.Q_natDegree depends on NO sorry.
+Zeta5.eq_2_9 depends on NO sorry.
+Zeta5.exists_innerAlloc depends on NO sorry.
+Zeta5.stdAlloc depends on NO sorry.
+Zeta5.theorem_1_1 depends on NO sorry.
+Zeta5.prop_4_1_of_entry_bounds depends on NO sorry.
+Zeta5.lemma_4_2 depends on NO sorry.
+Zeta5.ell_lt_caseSplit depends on NO sorry.
+Zeta5.lemma_3_1 depends on NO sorry.
+Zeta5.AppendixB.eq_5_16_5_17 depends on NO sorry.
+Zeta5.Tail.tail_bound_strong depends on NO sorry.
+Zeta5.CrudeBound.eq_3_11 depends on NO sorry.
+Zeta5.PrimeSum.block1_le depends on NO sorry.
+Zeta5.RealBound.prop_6_3_of depends on NO sorry.
+Zeta5.AppendixB.eq_5_18 depends on NO sorry.
+Zeta5.outer_local_analysis depends on NO sorry.
+Zeta5.PrimeSum.eq_5_7_uniformity depends on NO sorry.
+Zeta5.CrudeBound.crude_entry_bound depends on NO sorry.
+Zeta5.Section3.entry_bounds_4_2_4_3 depends on NO sorry.
+Zeta5.HermiteBasis.det_coeffMatrix_unimodular depends on NO sorry.
+Zeta5.OuterBasis.outer_local_core depends on NO sorry.
+Zeta5.Uniformity.eq_5_7_uniformity depends on NO sorry.
+Zeta5.Lemma33.lemma_3_3 depends on NO sorry.
+Zeta5.Lemma33.pullback depends on NO sorry.
+Zeta5.InnerEntries.raabe_tau depends on NO sorry.
+Zeta5.InnerEntries.general_bound depends on NO sorry.
+Zeta5.InnerEntries.entry_bounds depends on NO sorry.
+Zeta5.RealBound.eq_6_14 depends on NO sorry.
+Zeta5.Sec6.Gram.eq_6_14_of_config depends on NO sorry.
+Zeta5.Sec6.Num.eq_6_7_closed depends on NO sorry.
+Zeta5.Sec6.eq_6_7_closed depends on NO sorry.
+Zeta5.Sec6.configBound depends on NO sorry.
+Zeta5.Sec6.rho_energy_ge depends on NO sorry.
+every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
+'Zeta5.zeta5_irrational' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.chebyshev_theta_asymptotic]
+'Zeta5.theorem_1_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Zeta5.Hermite.pole_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Zeta5.PNT.prime_riemann_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.chebyshev_theta_asymptotic]
+lake env lean Zeta5/Audit.lean  64.37s user 10.43s system 98% cpu 1:15.98 total
+EXIT 0

@@ -1,0 +1,4 @@
+environment constants: 787012; modules: 10816
+wrote 3940 constants from Zeta5 modules to /private/tmp/claude-501/-Users-romik-Library-CloudStorage-Dropbox-Work-projects-AI-claude-code-math-apery/1c63dac1-3ac0-40d6-b70e-8d12de6dcdfe/scratchpad/axcert/head-ca05d77.tsv
+Zeta5-namespace constants defined outside Zeta5 modules: 0 #[]
+lake env lean --run cert/final/nochange/DumpDecls.lean $S/head-ca05d77.tsv   90.58s user 12.49s system 83% cpu 2:03.96 total

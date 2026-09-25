@@ -1,0 +1,72 @@
+modules read: 10816; constants in table: 787012; names stored by two different modules: 1020, of which with DIFFERENT type/value: 342 [Zeta5.vGAtLeast_mul, ite.congr_simp, BialgHomClass.toBialgHom.congr_simp, QuotientAddGroup.lift.congr_simp, ZeroHom.mk.congr_simp, AddMonoidHom.mk.congr_simp, ZeroHom.mk.congr_simp, AddMonoidHom.mk.congr_simp, AddMonoidHom.mk'.congr_simp, RingHom.mk.congr_simp, MulHomClass.toMulHom.congr_simp, ZeroHom.mk.congr_simp, AddMonoidHom.mk.congr_simp, MulHomClass.toMulHom.congr_simp, MulEquiv.mk.congr_simp, HomologicalComplex.extend.congr_simp, AddMonoidHom.mk'.congr_simp, ZeroHom.mk.congr_simp, AddMonoidHom.mk.congr_simp, AddHomClass.toAddHom.congr_simp]
+  ... involving a Zeta5 module (9): [(Zeta5.Q.eq_1, (Zeta5.Asymptotics, Zeta5.Functional)), (Zeta5.F.eq_1, (Zeta5.Functional, Zeta5.RealBound)), (Zeta5.vGAtLeast_mul, (Zeta5.Section41, Zeta5.Normalization)), (Zeta5.S.eq_1, (Zeta5.RealBound, Zeta5.Normalization)), (Zeta5.tOut.eq_1, (Zeta5.OuterRange, Zeta5.Uniformity)), (Zeta5.uOut.eq_1, (Zeta5.OuterRange, Zeta5.Uniformity)), (Zeta5.Sec6.frF.eq_1, (Zeta5.Sec6.Frullani, Zeta5.Sec6.Swap)), (Zeta5.Sec6.mid.eq_1, (Zeta5.Sec6.RhoCross, Zeta5.Sec6.PairEnergy)), (Zeta5.Sec6.rad.eq_1, (Zeta5.Sec6.RhoCross, Zeta5.Sec6.PairEnergy))]
+stored versions examined (incl. alternative versions of duplicated names): 787354
+axiom declarations in all files read (16): [Classical.choice, Lean.ofReduceBool, Lean.ofReduceNat, Lean.trustCompiler, Quot.lcInv, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic, isScalarObj, lcAny, lcCast, lcErased, lcProof, lcUnreachable, lcVoid, propext, sorryAx]
+Zeta5 modules read: 72; constants stored in them: 3941
+  axioms (1): [Zeta5.Axioms.chebyshev_theta_asymptotic]
+  sorryAx mentions (0): []
+  unsafe (0): []
+  partial (10): [Zeta5.AppendixB.ChainOK._unsafe_rec, Zeta5.AppendixB.chainEnd._unsafe_rec, Zeta5.AppendixB.chainVal._unsafe_rec, Zeta5.Audit.visit._unsafe_rec, Zeta5.RealBound.chainB._unsafe_rec, Zeta5.Sec6.Num.UUpR._unsafe_rec, Zeta5.Sec6.Num.aser._unsafe_rec, Zeta5.Sec6.Num.chainOK._unsafe_rec, Zeta5.Sec6.Num.isqrtIter._unsafe_rec, Zeta5.Sec6.Num.lser._unsafe_rec]
+=== Zeta5.zeta5_irrational  (defined in (some Zeta5.Interface))
+  constants reached: 69774
+  axioms (4): [Classical.choice, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+=== Zeta5.theorem_1_1  (defined in (some Zeta5.Skeleton))
+  constants reached: 18322
+  axioms (3): [Classical.choice, Quot.sound, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+=== Zeta5.theorem_2_1  (defined in (some Zeta5.Interface))
+  constants reached: 69749
+  axioms (4): [Classical.choice, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+=== Zeta5.RealBound.eq_6_14  (defined in (some Zeta5.Sec6.Final))
+  constants reached: 60812
+  axioms (3): [Classical.choice, Quot.sound, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+=== Zeta5.RealBound.prop_6_3  (defined in (some Zeta5.Sec6.Final))
+  constants reached: 60887
+  axioms (3): [Classical.choice, Quot.sound, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+=== Zeta5.Hermite.pole_integral  (defined in (some Zeta5.Hermite))
+  constants reached: 51003
+  axioms (3): [Classical.choice, Quot.sound, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+=== Zeta5.PNT.prime_riemann_sum  (defined in (some Zeta5.PNT))
+  constants reached: 35761
+  axioms (4): [Classical.choice, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+=== Zeta5.prop_2_2  (defined in (some Zeta5.Interface))
+  constants reached: 55075
+  axioms (3): [Classical.choice, Quot.sound, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+=== Zeta5.prop_5_2  (defined in (some Zeta5.Interface))
+  constants reached: 47252
+  axioms (4): [Classical.choice, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic, propext]
+  sorryAx carriers (0): []
+  referenced but in no olean read (0): []
+  unsafe/partial constants in the cone (0): []
+--- CONTROL (must report sorryAx, ctl.ax, ctl.s, ctl.missing, and the first target's axioms):
+=== ctl.top  (defined in (some ctl))
+  constants reached: 69779
+  axioms (6): [Classical.choice, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic, ctl.ax, propext, sorryAx]
+  sorryAx carriers (1): [ctl.s]
+  referenced but in no olean read (1): [ctl.missing]
+  unsafe/partial constants in the cone (0): []
+lake env lean --run cert/final/FOlean.lean --control Zeta5  Zeta5.theorem_1_1  27.19s user 10.40s system 89% cpu 41.788 total
+EXIT 0

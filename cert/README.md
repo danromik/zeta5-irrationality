@@ -7,10 +7,15 @@ The findings are written up in [`../docs/CERTIFICATION.md`](../docs/CERTIFICATIO
 these files is part of the Lake library. Nothing imports them, and `lake build` does not
 compile them.
 
-There are two sets:
+There are three sets:
 
+* **`axioms/`** belongs to the certification of the **axiom reduction** (2026-09-24, branch
+  `axioms`, code commit `ca05d77`, one axiom: the prime number theorem `θ(x) ~ x`). This is
+  the current certification.
 * **`final/`** belongs to the certification of **2026-09-24** (branch `eq614`, code commit
-  `808618b`, no `sorry`). This is the current certification.
+  `808618b`, no `sorry`, two axioms). Some of its scripts (`FScan.lean`, `FWalker.lean`,
+  `fidelity/Fidelity.lean`) name the two former axioms and no longer elaborate on branch
+  `axioms`; `FOlean.lean`, `source_scan.py` and `nochange/` still run unchanged.
 * **`C3*.lean` and `c3/`** belong to the certification of **2026-09-23** (`main`, `9ce1320`,
   one `sorry`, `eq_6_14`). The scripts still run against the present build. Their recorded
   outputs in `c3/` refer to the 2026-09-23 state: 33 modules, 3 272 declarations, and
@@ -25,6 +30,24 @@ must be found:
 * a `sorry` hidden in a `where` auxiliary or in an instance field;
 * a reference to a missing name;
 * a deliberately broken walker.
+
+## The certification of the axiom reduction (`axioms/`)
+
+From the repository root, after `lake build`. The recorded outputs are in `axioms/`.
+
+| command | what it checks | time | recorded output |
+|---|---|---|---|
+| `lake env lean cert/axioms/AWalker.lean` | `final/FWalker.lean` with its code and five planted controls verbatim; the targets now include `Hermite.pole_integral`, `PNT.prime_riemann_sum`, the axiom, and Props 2.2 and 5.2; the removed axioms must be absent | ~14 min | `AWalker.out` |
+| `lake env lean cert/axioms/AScan.lean` | `final/FScan.lean` verbatim, with only the expected-axiom list of [4] changed | ~6 min | `AScan.out` |
+| `lake env lean --run cert/final/FOlean.lean --control Zeta5 Zeta5.zeta5_irrational Zeta5.theorem_1_1 Zeta5.theorem_2_1 Zeta5.RealBound.eq_6_14 Zeta5.RealBound.prop_6_3 Zeta5.Hermite.pole_integral Zeta5.PNT.prime_riemann_sum Zeta5.prop_2_2 Zeta5.prop_5_2` | the `.olean` reader, unchanged | ~40 s | `FOlean.out` |
+| `lake env lean Zeta5/Audit.lean` | the project's own assumption report | ~1 min | `Audit.out` |
+| `lake env leanchecker --verbose Zeta5.Axioms Zeta5.Hermite Zeta5.PNT Zeta5.Positivity Zeta5.PrimeSum Zeta5.Interface Zeta5.Sec6.Final Zeta5.Audit` | kernel replay of the new and edited modules | ~4 min | `leanchecker.out` |
+| `lake env lean cert/axioms/AAttack.lean` | the axiom proved equivalent (sorry-free) to the written-out textbook statement and to `θ ~[atTop] id`; non-vacuity of the two new theorems; no unsafe or partial constant in the cone | ~20 s | `AAttack.out` |
+| `python3 cert/axioms/theta_check.py` | independent numerics for θ(x)/x up to 10⁸ | ~1 s | `theta_check.out` |
+| `lake env lean --run cert/final/nochange/DumpDecls.lean <out.tsv> Zeta5`, then `python3 cert/final/nochange/compare.py` against the dumps of `bfd4249` (= `final/nochange/head-808618b.tsv.gz`) and `9ce1320` | no statement or definition changed; only the two old axioms were removed, and only the new modules and the axiom were added | ~2 min | `dump-head.out`, `head-ca05d77.tsv.gz`, `dumps.sha256`, `compare-bfd4249.out`, `compare-main-9ce1320.out` |
+| `python3 cert/axioms/type_match.py <bfd4249.tsv> <ca05d77.tsv>` | each old axiom's stored type is byte-identical to that of the theorem replacing it | seconds | `type_match.out` |
+| `python3 cert/axioms/code_diff.py` | the non-comment changes to pre-existing `.lean` files | seconds | `code_diff.out` |
+| `python3 cert/final/source_scan.py` | forbidden constructs in the 72 library sources | seconds | `source_scan.out` |
 
 ## The 2026-09-24 certification (`final/`)
 

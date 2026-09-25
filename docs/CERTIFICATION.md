@@ -5,10 +5,12 @@ branch `eq614`, code commit `808618b` (69 modules under `Zeta5/` plus the root f
 **no `sorry`**)
 
 > **Addendum (2026-09-24, branch `axioms`): the axioms were reduced after this
-> certification.** The two axioms certified below are now theorems, and `Axioms.lean` declares
-> one axiom, the prime number theorem `θ(x) ~ x`. The reduced state is **pending
-> certification**. See [Addendum: axiom reduction](#addendum-axiom-reduction-2026-09-24-pending-certification)
-> at the end. Everything else in this document is about commit `808618b`.
+> certification, and the reduced state is certified.** The two axioms certified below are now
+> theorems with identical types, and `Axioms.lean` declares one axiom, the prime number theorem
+> `θ(x) ~ x`. The reduced state (code commit `ca05d77`) was certified on 2026-09-24; see
+> [Addendum: axiom reduction and its certification](#addendum-axiom-reduction-and-its-certification-2026-09-24)
+> at the end (scripts and outputs in `cert/axioms/`). Everything else in this document is about
+> commit `808618b`.
 
 *This certification was carried out by Claude (Anthropic) in a workflow run separate from the
 runs that wrote the proofs (see README, 'Provenance'). In this document, "the certifiers" means
@@ -837,13 +839,14 @@ That report is superseded by §9.
 
 ---
 
-## Addendum: axiom reduction (2026-09-24, pending certification)
+## Addendum: axiom reduction and its certification (2026-09-24)
 
-**Status: pending certification.** Nothing in this addendum has been checked by an
-independent certification run. The dependency checks of §§1–5 have **not** yet been re-run on
-the reduced state. What is recorded here was checked by the run that made the change.
+**Status: certified.** The reduced state, branch `axioms` at code commit `ca05d77` (71 modules
+under `Zeta5/` plus the root file, 72 in all), was certified on 2026-09-24 by a certification
+run separate from the run that made the change. Its scripts and recorded outputs are in
+`cert/axioms/`, and `cert/README.md` lists the commands. The run made no web access.
 
-**What changed** (branch `axioms`, from `bfd4249`):
+### A.1 What changed (branch `axioms`, from `bfd4249`)
 
 * `Zeta5.Axioms.hermite_pole_integral` was removed. The theorem `Zeta5.Hermite.pole_integral`
   (new file `Zeta5/Hermite.lean`) has the identical statement and is proved from Mathlib alone.
@@ -855,32 +858,147 @@ the reduced state. What is recorded here was checked by the run that made the ch
   `Chebyshev.theta`.
 * The two use sites now cite the theorems: `Positivity.integral_wt_div_pole` and
   `PrimeSum.tendsto_primeSum`, with their imports changed accordingly. `Zeta5.lean` imports
-  the two new modules. `Audit.lean` gained two `#print axioms` lines. All other changes to
-  `.lean` files are in comments and docstrings. No other statement or definition was edited.
+  the two new modules. `Audit.lean` gained two `#print axioms` lines.
 
-**Checked by the run that made the change:**
+### A.2 Build state
 
-* `lake build` (incremental) succeeded with 8996 jobs, 0 errors and no `sorry` warning. It
-  gave the same 17 lint warnings as before.
-* The assumption report reads `(B) … Zeta5.Axioms.chebyshev_theta_asymptotic`,
-  `(C) … 0 in all`, `(D) (none)` and `[self-check: walker agrees with Lean.collectAxioms, 4
-  axiom(s)]`.
-* `#print axioms Zeta5.zeta5_irrational` gives `[propext, Classical.choice, Quot.sound,
-  Zeta5.Axioms.chebyshev_theta_asymptotic]`.
-* `#print axioms Zeta5.Hermite.pole_integral` gives `[propext, Classical.choice,
-  Quot.sound]`.
-* `#print axioms Zeta5.RealBound.eq_6_14` and `Zeta5.prop_2_2` give only the three standard
-  axioms.
-* The old `Axioms.lean` (commit `bfd4249`) was re-declared in a scratch namespace over
-  `import Zeta5`. Its two axiom types are `Expr ==` to the types of the two theorems, and equal
-  by `rfl`.
+`lake build --no-build` on `ca05d77` reports `All targets up-to-date (8996 jobs)`, so every
+check below ran against oleans built from the committed sources (the working tree was clean).
+No clean rebuild was made. The run that made the change reported an incremental `lake build`
+with 0 errors, no `sorry` warning and the same 17 lint warnings as before.
 
-**To do at certification.** Several scripts name the removed axioms and must be updated before
-they are re-run:
-* `cert/final/FScan.lean` (the expected project axioms);
-* `cert/final/FWalker.lean` (`#c3mod` targets);
-* `cert/final/fidelity/Fidelity.lean`;
-* `cert/C3Scan.lean`;
-* `cert/C3Attack.lean`, which applies both old axioms.
+### A.3 The dependency cone: five methods agree
 
-The recorded outputs in `cert/` all refer to the states before the reduction.
+Every method below gives exactly `propext`, `Classical.choice`, `Quot.sound` and
+`Zeta5.Axioms.chebyshev_theta_asymptotic` for `Zeta5.zeta5_irrational`, with no `sorryAx`.
+
+| method | script / command | result for `zeta5_irrational` | controls |
+|---|---|---|---|
+| walker (FWalker code, verbatim; 36 targets) | `lake env lean cert/axioms/AWalker.lean` → `AWalker.out` | 69 774 constants, 4 axioms, AGREE with `collectAxioms`, 0 sorry leaves; chain `zeta5_irrational → theorem_2_1 → … → PrimeSum.tendsto_primeSum → PNT.prime_riemann_sum → PNT.theta_scaled → Axioms.chebyshev_theta_asymptotic` | all five planted controls found, with the right chains; the two removed axioms are absent from the environment (`contains=false`) |
+| `#print axioms` | in `AWalker.out`, `Audit.out`, `AAttack.out` | `[propext, Classical.choice, Quot.sound, Zeta5.Axioms.chebyshev_theta_asymptotic]` | planted `sorryAx` and axiom printed |
+| module-keyed scan (FScan code, verbatim; only the expected-axiom list changed) | `lake env lean cert/axioms/AScan.lean` → `AScan.out` | 72 Zeta5 modules, 3 940 declarations; one axiom declaration in them; 0 `sorryAx` mentions, 0 unsafe; the axiom's only direct user in the cone is `Zeta5.PNT.theta_scaled`; union cone of all 3 940 declarations reaches the same 4 axioms and no `sorry` | planted control adds `sorryAx` and `FScanCtl.planted_axiom` |
+| the project's audit | `lake env lean Zeta5/Audit.lean` → `Audit.out` | (A) the three standard axioms, (B) `chebyshev_theta_asymptotic`, (C) none, (D) none, `[self-check: walker agrees with Lean.collectAxioms, 4 axiom(s)]` | — |
+| `.olean` reader (no `Environment`) | `lake env lean --run cert/final/FOlean.lean --control Zeta5 …` → `FOlean.out` | 69 774 constants, the same 4 axioms, 0 `sorryAx` carriers, 0 missing names, 0 unsafe/partial | synthetic control reports `sorryAx`, `ctl.ax`, `ctl.s`, `ctl.missing` |
+
+Kernel replay: `lake env leanchecker --verbose Zeta5.Axioms Zeta5.Hermite Zeta5.PNT
+Zeta5.Positivity Zeta5.PrimeSum Zeta5.Interface Zeta5.Sec6.Final Zeta5.Audit` replayed the
+eight new or edited modules and exited 0 (`leanchecker.out`, 4 min). The other 64 modules have
+unchanged sources and, by A.5, byte-identical declarations; they were not replayed again.
+
+Other targets (the walker, `#print axioms` and, where run, the `.olean` reader agree):
+
+| declaration | axioms beyond the standard three |
+|---|---|
+| `Zeta5.Hermite.pole_integral` | none |
+| `Zeta5.prop_2_2`, `Zeta5.Positivity.prop_2_2` | none |
+| `Zeta5.RealBound.eq_6_14`, `Zeta5.RealBound.prop_6_3` | none |
+| `Zeta5.theorem_1_1` | none |
+| `Zeta5.PNT.prime_riemann_sum` | `chebyshev_theta_asymptotic` |
+| `Zeta5.prop_5_2`, `Zeta5.PrimeSum.prop_5_2`, `Zeta5.theorem_2_1` | `chebyshev_theta_asymptotic` |
+
+### A.4 The axiom is the textbook statement
+
+* **Definition used.** `Chebyshev.theta` is Mathlib's (`Mathlib/NumberTheory/Chebyshev.lean`):
+  `#print` gives `fun x => ∑ p ∈ Finset.Ioc 0 ⌊x⌋₊ with Nat.Prime p, Real.log ↑p`. The log
+  is `Real.log` of the cast prime. No project definition occurs in the statement.
+* **Proved equivalent to the written-out statement** (`cert/axioms/AAttack.lean`,
+  `AAttack.out`). `AAtt.pnt_textbook` derives `(∑_{p ≤ ⌊x⌋, p prime} log p)/x → 1`, written
+  with `Finset.range` and no `Chebyshev.*` name, from the axiom. `AAtt.axiom_of_textbook`
+  proves the converse from the three standard axioms alone.
+* **Proved equivalent to `θ(x) ~ x`.** `AAtt.axiom_iff_isEquivalent` proves that the axiom's
+  proposition is equivalent to Mathlib's `Chebyshev.theta ~[atTop] (fun x => x)`, using only
+  the standard axioms. So the axiom is neither stronger nor weaker than the cited result.
+* **Lean conventions.** The statement has no integral, no `tsum` and no `rpow`. Its junk
+  values, `x/0 = 0` and `⌊x⌋₊ = 0` for `x < 0`, occur only at `x ≤ 0`, which `atTop` ignores.
+  It has no hypotheses that could be vacuous.
+* **Mathlib lacks it.** `grep -ri "prime number theorem"` over Mathlib v4.34.0 finds only a
+  comment in `LSeries/Nonvanishing.lean` naming it as future work. No `Tendsto` or `~[atTop]`
+  statement about `θ` or `ψ` exists.
+* **Numerics** (`python3 cert/axioms/theta_check.py`, `theta_check.out`). This is an
+  independent sieve to 10⁸, with π(10⁸) = 5 761 455 reproduced and θ(10⁴) cross-checked with
+  mpmath at 40 digits. It gives θ(x)/x = 0.95625, 0.98960, 0.99685, 0.99848, 0.99952, 0.99988
+  at x = 10³ … 10⁸, which matches the docstring's figures. It also gives
+  sup_{x∈[10⁷,10⁸]} |θ(x)/x − 1| ≈ 5.3·10⁻⁴, and |θ(x) − x| < x/(2 log x) at every sampled
+  x ≥ 563 (Rosser and Schoenfeld). It evaluates θ at non-integer and negative `x` with Lean's
+  conventions.
+* **Citation.** The citation is the prime number theorem of Hadamard and de la Vallée Poussin,
+  with Apostol Thm. 4.4 for the equivalence of the `π`, `ψ` and `θ` forms, and the paper's
+  [9, §27.12]. It is accurate for this statement.
+* **Non-vacuity of the former axioms, now theorems.** The consequences that `C3Attack.lean`
+  derived from the two old axioms are re-derived from the theorems: `AAtt.hermite_at_one`
+  (`∫ w/(y²+1) = ζ(5) − 3/4`, standard axioms only) and `AAtt.pnt_dyadic`. The native cone
+  walk of `C3Attack.lean` (c), copied verbatim, finds 0 unsafe or partial constants and none
+  of the `_unsafe_rec` auxiliaries in the cone of 69 774 constants.
+
+### A.5 No other statement changed
+
+* **Declaration dumps** (`cert/final/nochange/DumpDecls.lean` on `ca05d77` →
+  `cert/axioms/head-ca05d77.tsv.gz`; checksums in `cert/axioms/dumps.sha256`).
+  `compare.py` against the dump of `bfd4249` (which is `cert/final/nochange/head-808618b.tsv.gz`,
+  since `bfd4249` changed only comments, see §5.3) gives the following
+  (`compare-bfd4249.out`):
+  * removed: exactly the two old axioms;
+  * of the 3 860 common constants, 0 have a changed kind, universe parameters, type, value or
+    metadata, and 0 moved module;
+  * 80 added: 63 in `Zeta5.Hermite`, 16 in `Zeta5.PNT`, and the axiom
+    `chebyshev_theta_asymptotic`;
+  * no added opaque, unsafe or partial declaration.
+
+  The comparison against `main-9ce1320` (`compare-main-9ce1320.out`) shows the same 16
+  auxiliary `_proof_` entries and 2 moves already explained and checked for α-equivalence in
+  §5.2. Beyond those it shows only the additions above.
+* **Old axiom type = new theorem type, byte for byte** (`cert/axioms/type_match.py`,
+  `type_match.out`). The full serialisations of the stored types (binder names, binder info,
+  universe levels, literals) of `Axioms.hermite_pole_integral` at `bfd4249` and
+  `Hermite.pole_integral` at `ca05d77` are identical: same SHA-256, same `Expr.hash`
+  3169839243. The same holds for `Axioms.pnt_prime_riemann_sum` and `PNT.prime_riemann_sum`
+  (hash 418062367).
+* **Source diff** (`cert/axioms/code_diff.py`, `code_diff.out`). After comments and strings
+  are stripped, the only code changes in pre-existing `.lean` files are:
+  * the two import lines;
+  * the two use-site lines (`rw [Hermite.pole_integral _ hja]` and
+    `(PNT.prime_riemann_sum …).comp tendsto_K`);
+  * the two new `import` lines of `Zeta5.lean`;
+  * the two `#print axioms` lines of `Audit.lean`;
+  * the replacement of the two axioms by the one in `Axioms.lean`.
+
+  `lakefile`, `lake-manifest.json` and `lean-toolchain` are unchanged, so no new package was
+  added.
+
+### A.6 Forbidden constructs
+
+`python3 cert/final/source_scan.py` (`cert/axioms/source_scan.out`) scanned 72 files and
+29 755 lines. It found 0 `sorry`, `admit`, `native_decide`, `implemented_by`, `extern`,
+`unsafe`, `opaque`, `set_option`, `macro`, `#eval` or `run_cmd`. It found exactly one `axiom`
+(`Zeta5/Axioms.lean:56`). The other hits are the same as at `808618b`: `Audit.lean`'s
+metaprogram, and five `IsFiniteMeasure`/`IsProbabilityMeasure` instances in `Sec6`. The only
+differences from `cert/final/source_scan.out` are the file count, the one axiom in place of
+two, and the imports of the two new modules. `Hermite.lean` and `PNT.lean` contain no
+attribute (`@[…]`) and no `private` declaration.
+
+### A.7 Defects found
+
+None affecting soundness or the assumption list. Two notes:
+
+* `docs/lean-status.tex` and its PDF still describe the two former axioms, as README says.
+* Some historical scripts still name the removed axioms and no longer elaborate on this
+  branch: `cert/final/FScan.lean`, `cert/final/FWalker.lean` (`#c3mod` lines only),
+  `cert/final/fidelity/Fidelity.lean`, `cert/C3Scan.lean` and `cert/C3Attack.lean`. They
+  are kept as the record of the earlier certifications. The updated versions for this branch
+  are `cert/axioms/AWalker.lean`, `AScan.lean` and `AAttack.lean`. `FOlean.lean` names no
+  axiom and ran unchanged.
+
+### A.8 Verdict
+
+> **The claim holds.** On branch `axioms` at `ca05d77`, `Zeta5.zeta5_irrational :
+> Irrational Zeta5.zeta5` rests on `propext`, `Classical.choice`, `Quot.sound` and on
+> exactly one external axiom, `Zeta5.Axioms.chebyshev_theta_asymptotic`, which is the prime
+> number theorem `θ(x)/x → 1` for Mathlib's `Chebyshev.theta`. It rests on **no `sorry`**.
+> The axiom is proved equivalent to the written-out textbook statement and to
+> `θ ~[atTop] id`, and is not stronger than its citation. The two former axioms are theorems
+> with byte-identical types. No other declaration's statement or definition changed.
+>
+> The correct way to report the result is: **"ζ(5) is irrational, machine-checked
+> conditional on one external result entered as an axiom: the prime number theorem, in
+> Chebyshev's form θ(x) ~ x."** Nothing internal to Fauzan's argument is assumed, and
+> Hermite's formula is no longer assumed.
