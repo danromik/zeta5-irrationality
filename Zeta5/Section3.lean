@@ -7,10 +7,9 @@ Part of the Lean formalisation of
 
 **SECTION 3 OF THE PAPER**: the local rational functional.
 
-The paper's §3 is what produces the ENTRY BOUND that Proposition 4.1 consumes.  Before this
-file, none of §3 was stated in Lean: `Arithmetic.lean` had only the two `κ_d` facts of §3.1
-and the binomial-basis lemma of §3.3, and Lemmas 3.1 and 3.2 had not been started
-(`τ_X` is not defined in `Basic.lean`).
+The paper's §3 produces the entry bound that Proposition 4.1 consumes.  §§A–E of the list
+below are in `Zeta5/LocalFunctional.lean`, so that `Zeta5/InnerTate.lean`,
+`Zeta5/InnerGeneral.lean` and `Zeta5/InnerEntries.lean` can use them; §§F–G are in this file.
 
 Contents, in the paper's order:
 
@@ -34,16 +33,12 @@ Contents, in the paper's order:
   §G  pp. 10–11 the per-entry valuation bounds **(4.2)** and **(4.3)**, DERIVED from
                 Lemma 3.1; the verification that Lemma 3.1's hypotheses really hold for
                 §4's data (near poles, harmonic indices, both degrees `≤ p+1`); two
-                certified ingredients of the unimodularity sentence (pairwise coprimality
+                proved ingredients of the unimodularity sentence (pairwise coprimality
                 of the `t + c²` mod `p`, and `deg E_{a,i} < h`); and **Proposition 4.1**.
 
-CONVENTION (README): no statement is weakened.  This file contains NO `sorry` (since
-2026-09-23).  Its former single `sorry`, `Section3.entry_bounds_4_2_4_3` — §4's bookkeeping:
-that the Gram matrix in the basis (4.5) has the entry bounds Lemmas 3.1/3.2 give, and that the
-basis change is unimodular — is now proved in `Zeta5/InnerEntries.lean` (with
-`Zeta5/InnerTate.lean`, `Zeta5/InnerGeneral.lean`), statement unchanged.  §§A–E of this file
-were moved verbatim to `Zeta5/LocalFunctional.lean` on the same date (same names, same
-statements) so that those files could use them without an import cycle.
+§4's bookkeeping, `Section3.entry_bounds_4_2_4_3` (the Gram matrix in the basis (4.5) has
+the entry bounds Lemmas 3.1/3.2 give, and the basis change is unimodular), is proved in
+`Zeta5/InnerEntries.lean`, with `Zeta5/InnerTate.lean` and `Zeta5/InnerGeneral.lean`.
 -/
 import Zeta5.LocalFunctional
 import Zeta5.HermiteBasis
@@ -71,10 +66,10 @@ of its summands, and that is exactly what `eq_4_2_of_lemma_3_1` and `eq_4_3_of_l
 below take as their hypothesis `hshape` and convert into the printed exponents of (4.2)
 and (4.3).  The three ingredients of Lemma 3.2's own proof that are purely algebraic —
 the reflection (3.2), the difference identity (3.3), and `τ(z^d) = κ_d` — are proved in
-§B above; Raabe's multiplication theorem (DLMF 24.4.18), which supplies the exponent
-`p^{-4}`, is not in Mathlib for `ℚ[X]` and is proved in `Zeta5/InnerTate.lean`
-(`InnerEntries.raabe_tau`: `p⁴τ(P) = ∑_{a<p} τ(P(a+pz))`, from `sum_bernoulli`, no axiom).
-Since 2026-09-23 the use §4 makes of (3.7) is proved outright, without the Tate algebra:
+§B (`Zeta5/LocalFunctional.lean`); Raabe's multiplication theorem (DLMF 24.4.18), which
+supplies the exponent `p^{-4}`, is not in Mathlib for `ℚ[X]` and is proved in `Zeta5/InnerTate.lean`
+(`InnerEntries.raabe_tau`: `p⁴τ(P) = ∑_{a<p} τ(P(a+pz))`, from `sum_bernoulli`).
+The use §4 makes of (3.7) is proved without the Tate algebra:
 `InnerEntries.general_bound` (in `InnerGeneral.lean`) gives the valuation bound that (3.7)
 together with Lemma 3.1 yields for a whole summand, by exact finite identities. -/
 
@@ -196,7 +191,7 @@ theorem zero_degree_le_p_add_one {n M p : ℕ} (hp : IsInnerPrime n M p)
   have h5 : 5 + 4 * L0 M + 12 * mFloor p (N n) ≤ p + 1 := by exact_mod_cast h4
   omega
 
-/-! ### Two certified ingredients of the unimodularity sentence (p. 10)
+/-! ### Two ingredients of the unimodularity sentence (p. 10)
 
 > "The factors `t + c²` are pairwise coprime modulo `p`.  In the Chinese remainder
 > decomposition by their powers, the polynomials in (4.5) give triangular local bases whose
@@ -204,7 +199,7 @@ theorem zero_degree_le_p_add_one {n M p : ℕ} (hp : IsInnerPrime n M p)
 > polynomials of degree less than `h`."
 
 The coprimality and the degree bound are proved here; the Chinese-remainder/triangularity
-step is part of the single `sorry` below. -/
+step is part of `entry_bounds_4_2_4_3` below. -/
 
 /-- **p. 10**: *"The factors `t + c²` are pairwise coprime modulo `p`."*
 
@@ -298,7 +293,7 @@ theorem rowPoly_natDegree_lt {n M p : ℕ} (hp : IsInnerPrime n M p) (A : InnerA
     exact hdim
   omega
 
-/-- **§4's bookkeeping — PROVED (2026-09-23), in `Zeta5/InnerEntries.lean`.**
+/-- **§4's bookkeeping**, proved in `Zeta5/InnerEntries.lean`.
 
 PAPER STATEMENT (Proposition 4.1's proof, p. 11), verbatim, in three pieces:
 
@@ -318,7 +313,7 @@ That is: there is a matrix `B` — the Gram matrix of the paper's bilinear form 
 has Gauss valuation at least `w_u + w_v`, the weights (4.6)–(4.7) carried here as
 `A.rowW = 2w`.
 
-PROOF (`Zeta5.InnerEntries.entry_bounds`, no `sorry`, no new axiom).  `B` is the Gram matrix
+PROOF (`Zeta5.InnerEntries.entry_bounds`).  `B` is the Gram matrix
 of `Bil` in the basis (4.5); `c = (det U)^{-2}` with `U` the integer coefficient matrix of the
 rows, a `p`-adic unit by `HermiteBasis.det_coeffMatrix_unimodular`; the entry exponent is
 `min((4.3), min_c (4.2))`.  Lemma 3.2 is not formalised as an identity in the Tate algebra;
@@ -328,8 +323,7 @@ its role is played by two exact finite statements: Raabe's multiplication theore
 inverse with an explicit remainder of valuation `≥ n − 1`.  See the headers of
 `InnerTate.lean`, `InnerGeneral.lean`, `InnerEntries.lean`.
 
-The ingredients listed below, machine-checked before this proof existed, are the ones the
-paper invokes: Lemma 3.1 (`Zeta5.lemma_3_1`), the pullback (3.1)
+The ingredients the paper invokes are proved: Lemma 3.1 (`Zeta5.lemma_3_1`), the pullback (3.1)
 (`Zeta5.eq_3_1_mono`, `Zeta5.eq_3_1_pole`), the identities (3.2), (3.3), the conversion of
 the distribution-formula summands into the printed exponents of (4.2) and (4.3)
 (`eq_4_2_of_lemma_3_1`, `eq_4_3_of_lemma_3_1`), the degree bounds `≤ p+1`
@@ -340,7 +334,7 @@ the p. 10 inequality `b_a < 6αx+3` (`Zeta5.ell_lt_caseSplit`), `Σ_u W_u = γ_p
 (`Zeta5.InnerAlloc.sum_rowW`), and the determinant reduction
 (`Zeta5.prop_4_1_of_entry_bounds`, `Zeta5.lemma_4_2`).
 
-The degree-`≤ p+1` check that the referee audit flagged is `InnerEntries.uW_le`. -/
+The degree-`≤ p+1` check that the audit flags is `InnerEntries.uW_le`. -/
 theorem entry_bounds_4_2_4_3 (n M p : ℕ) (_hp : IsInnerPrime n M p) (A : InnerAlloc n M p) :
     ∃ (B : Matrix A.Rows A.Rows ℚ[X]) (entry : A.Rows → A.Rows → ℤ) (c : ℚ),
       (∀ u v, vGAtLeast p (B u v) (entry u v)) ∧
@@ -352,7 +346,7 @@ theorem entry_bounds_4_2_4_3 (n M p : ℕ) (_hp : IsInnerPrime n M p) (A : Inner
 
 This has exactly the type of `Zeta5.prop_4_1` in `Interface.lean`, which is proved by it.
 It rests on `entry_bounds_4_2_4_3` above (proved in `Zeta5/InnerEntries.lean`), and
-otherwise only on the sorry-free `Zeta5.prop_4_1_of_entry_bounds` and
+otherwise only on `Zeta5.prop_4_1_of_entry_bounds` and
 `Zeta5.InnerAlloc.sum_rowW`. -/
 theorem prop_4_1 (n M p : ℕ) (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) :
     vGAtLeast p (Delta n) A.gammaIn := by
@@ -366,8 +360,7 @@ end Section3
 
 /-! # Known-answer controls
 
-Every number checked here is one the referee audit (see README, "Provenance") computed
-independently. -/
+Every number checked here is also computed in the audit (`docs/zeta5-audit.pdf`). -/
 
 section Controls
 
@@ -406,7 +399,7 @@ example : dIdx 0 = 0 ∧ dIdx (-1) = 0 ∧ dIdx 3 = 3 ∧ dIdx (-3) = 2 := by
 
 end Controls
 
-/-! # Audit trail -/
+/-! # Axiom checks -/
 
 section
 #print axioms Zeta5.eq_3_2

@@ -3,14 +3,10 @@ Zeta5/AppendixBCheck.lean
 
 Known-answer controls tying `Zeta5/AppendixB.lean` to `Zeta5/Interface.lean`.
 
-The first `example` is the whole point of the file: it type-checks
-`Zeta5.AppendixB.eq_5_16_5_18` **against the statement of `Zeta5.eq_5_16_5_18` in
-`Interface.lean`, verbatim**.  If the two statements ever drift apart, this file stops
-compiling.  `Interface.lean` proves `eq_5_16_5_18` by `Zeta5.AppendixB.eq_5_16_5_18`, and
-since 2026-09-23 the whole of Appendix B — (5.16)–(5.17) included, via `Zeta5/Tail.lean` —
-is `sorry`-free.
-
-This file contains no `sorry`.
+The first `example` type-checks `Zeta5.AppendixB.eq_5_16_5_18` against the statement of
+`Zeta5.eq_5_16_5_18` in `Interface.lean`, verbatim; if the two statements differ, this file
+does not compile.  `Interface.lean` proves `eq_5_16_5_18` by `Zeta5.AppendixB.eq_5_16_5_18`;
+(5.16)–(5.17) come from `Zeta5/Tail.lean`.
 -/
 import Zeta5.Interface
 import Zeta5.AppendixB
@@ -20,7 +16,7 @@ namespace Zeta5.AppendixBCheck
 open Zeta5
 
 /-- **The statement check.**  `AppendixB.eq_5_16_5_18` has exactly the type of the
-interface `sorry` `Zeta5.eq_5_16_5_18`: the `example` below states the latter's type and
+interface statement `Zeta5.eq_5_16_5_18`: the `example` below states the latter's type and
 is proved by the former. -/
 example : ∀ (M : ℕ), 40 ∣ M → 0 < M →
     (Iout : ℝ) + 6 * (lam : ℝ) / (M : ℝ)
@@ -64,9 +60,7 @@ example :
       + 4930060867/4724197793280 + (-15199801/11563552000) = I320 := by
   norm_num [I320]
 
-/-- Table 3, row `j = 14`, is `16775764609/955086612480` — *not* `167757646109/955086612480`,
-which a first pass off the rendered page image produced and a 600-dpi render refuted.  The
-computed value settles it. -/
+/-- Table 3, row `j = 14`, is `16775764609/955086612480`. -/
 example : (∫ x in (14:ℝ)..(15:ℝ), RR x / x ^ 3) = (16775764609/955086612480 : ℝ) :=
   (table3_14).2
 
@@ -98,10 +92,9 @@ example : -1600 * (AM 200 + Ubar) - 139 / 5
 example : -1600 * (AM 100000 + Ubar) - 7907 / 100
     = 29873543950273155160680943 / 3679526624532195937500000000 := margin_100000
 
-/-! ## The dependency report for Appendix B
+/-! ## Axiom checks for Appendix B
 
-`AppendixB.eq_5_16_5_18` is **`sorry`-free** (2026-09-23): `eq_5_16_5_17` is now proved from
-`Zeta5.Tail.tail_bound`, and `eq_5_18`, `eq_5_10` and all the piece lemmas always were. -/
+`eq_5_16_5_17` is proved from `Zeta5.Tail.tail_bound`. -/
 
 /-- (5.12)–(5.13): `R(x) = x F(x) + Q(x)`, proved. -/
 example (x : ℝ) : RR x = x * Fcl x + Qcl x := RR_closed x

@@ -3,19 +3,15 @@ Zeta5/Section41.lean
 
 **§4.1 of the paper (pp. 10–11), the inner prime range.**
 
-This is the one substantial argument of
-
-    A. Fauzan, "ζ(5) is irrational", 17 September 2026
-
-that the audit could read but could not cross-check numerically: (4.1) forces `p > 8000`,
+Reference: A. Fauzan, "ζ(5) is irrational", 17 September 2026.  Under (4.1), `p > 8000`,
 so the matrix whose determinant Proposition 4.1 bounds has size `h ≥ 296000`.
 
-WHAT IS PROVED HERE, WITH NO `sorry`, AND WHAT REMAINS HYPOTHESIS.
+CONTENTS.
 
 (a) THE COUNTING FUNCTIONS `ℓ_A(a)` and `m_A = ⌊A/p⌋` of p. 10 and their closed form
     `ℓ_A(a) = 2 m_A + 1_{a ≤ v_A} + 1_{a ≥ p - v_A}`, `v_A = A mod p`.        — proved.
 
-(b) THE GAP THE AUDIT FOUND.  The paper asserts `b_a ≤ 6αx + 3` on p. 10 with no proof and a
+(b) THE INEQUALITY `b_a ≤ 6αx + 3`.  The paper asserts `b_a ≤ 6αx + 3` on p. 10 with no proof and a
     wrong attribution ("From (4.4)"; it is a statement about `ℓ_N`, not about (4.4)).  It is
     proved here by the case split on `v_N` (`ell_lt_caseSplit`, `bCoef_lt_real`), and the
     NECESSITY of that case split is machine-checked from both sides:
@@ -32,8 +28,8 @@ WHAT IS PROVED HERE, WITH NO `sorry`, AND WHAT REMAINS HYPOTHESIS.
 (c) THE ALLOCATION (4.4): existence *and* uniqueness of `T, E` with `mT + E = h - L₀ +
     3(N - m_N)`, `0 ≤ E < m` (`exists_TE`, `unique_TE`), and the two bounds
     `2Hx - 21/20 < T < 2Hx` under (4.1) (`T_gt`, `T_lt`).  The full allocation of (4.4),
-    including the extras `ε_a`, also exists (`exists_innerAlloc_of_inner`) — this is the
-    `sorry` `Zeta5.exists_innerAlloc` of `Interface.lean`, discharged.        — proved.
+    including the extras `ε_a`, also exists (`exists_innerAlloc_of_inner`; this proves
+    `Zeta5.exists_innerAlloc` of `Interface.lean`).                           — proved.
 
 (d) NONNEGATIVITY of `L_a = T - b_a + ε_a` through the paper's chain
     `T - b_a > 2λx - 81/20 ≥ 3/2` for `x ≥ 3` (`T_sub_bCoef_gt`, `two_lam_bound`,
@@ -59,18 +55,15 @@ WHAT IS PROVED HERE, WITH NO `sorry`, AND WHAT REMAINS HYPOTHESIS.
     p. 11 has two halves:
       (i)  an ENTRY BOUND: in the unimodular basis (4.5), the `(u,v)` entry has Gauss
            valuation at least `w_u + w_v` — this is the local analysis of §3 (Lemmas 3.1,
-           3.2, the distribution formula and the near/far pole bookkeeping), and it is NOT
-           formalised here: it enters `prop_4_1_of_entry_bounds` as a hypothesis;
+           3.2, the distribution formula and the near/far pole bookkeeping); it is proved
+           in `InnerEntries.lean` and enters `prop_4_1_of_entry_bounds` as a hypothesis;
       (ii) a REDUCTION: from the entry bound and the unimodularity of (4.5) the determinant
            bound `v_p^G(Δ_K) ≥ 2 ∑ w = γ_p^in` follows (`vGAtLeast_det`,
            `prop_4_1_of_entry_bounds`).                                       — proved.
     The reduction is the `L = 0` case of Lemma 4.2 (p. 12); the general case, with the
     rank-`r` correction `p^{-1}L` and the `min(r,z)` loss, is what §4.2 needs for
-    Proposition 4.3.  (A companion file `Zeta5/Lemma42.lean` treats the general case; this
-    file deliberately stays independent of it, and proves the `L = 0` case it needs from
-    scratch, so that §4.1 can be checked on its own.)
-
-THIS FILE CONTAINS NO `sorry`.
+    Proposition 4.3.  (`Zeta5/Lemma42.lean` treats the general case; this file does not
+    import it and proves the `L = 0` case directly.)
 -/
 import Zeta5.Counting
 
@@ -176,8 +169,8 @@ The paper writes, immediately after (4.4),
 The second inequality does not follow from (4.4) — it is a statement about `ℓ_N` — and no
 proof is given.  Since `x = K/p` and `αx = N/p`, it says `p · ℓ_N(a) ≤ 2N + p`.
 
-`Counting.ell_lt` proves the strict form by a divisibility argument.  Here is the audit's
-own proof, the explicit case split on `v_A = A mod p`. -/
+`Counting.ell_lt` proves the strict form by a divisibility argument.  Here is the proof of
+the audit, the explicit case split on `v_A = A mod p`. -/
 
 /-- **`p · ℓ_A(a) < 2A + p`, by the case split on `v_A = A mod p`** (the audit's proof).
 
@@ -813,11 +806,11 @@ The proof on p. 11 consists of
 
   (i)  the LOCAL ANALYSIS (§3, Lemmas 3.1 and 3.2, together with the near/far pole
        bookkeeping and the degree bounds of (e) above), which produces the ENTRY BOUND
-       `v_p^G(A_{uv}) ≥ w_u + w_v` in the basis (4.5).  This is *not* formalised: it is the
-       hypothesis `hentry`/`hweights` of `prop_4_1_of_entry_bounds`;
+       `v_p^G(A_{uv}) ≥ w_u + w_v` in the basis (4.5).  It is proved in `InnerEntries.lean`
+       and enters here as the hypothesis `hentry`/`hweights` of `prop_4_1_of_entry_bounds`;
 
   (ii) the REDUCTION "every determinant term has valuation at least `2 ∑ w`; the basis change
-       is unimodular", which is proved below with no `sorry`.
+       is unimodular", which is proved below.
 
 The reduction is the `L = 0` case of Lemma 4.2 (p. 12).  The general case of Lemma 4.2 (a
 rank-`r` correction `p^{-1} L` and a loss `min(r,z)`) is used only in §4.2, for
@@ -959,9 +952,8 @@ end GaussValuation
 
 /-- **Proposition 4.1** (p. 11), stated: *"Under (4.1), `v_p^G(Δ_K) ≥ γ_p^in`."*
 
-This is literally the statement of `Zeta5.prop_4_1` in `Interface.lean`, which is one of the
-twelve `sorry`s of the project.  It is spelled out again here, without invoking that `sorry`,
-so that this file stays `sorry`-free while naming its target exactly. -/
+This is the statement of `Zeta5.prop_4_1` in `Interface.lean`, spelled out here so that this
+file does not import `Interface.lean`. -/
 def Prop_4_1 (n M p : ℕ) : Prop :=
   IsInnerPrime n M p → ∀ A : InnerAlloc n M p, vGAtLeast p (Delta n) A.gammaIn
 
@@ -1008,10 +1000,9 @@ theorem prop_4_1_of_entry_bounds {n M p : ℕ} (hprime : p.Prime)
 
 /-! ### Existence of the allocation (4.4), in full
 
-`Zeta5.exists_innerAlloc` is one of the twelve `sorry`s of `Interface.lean`.  It is proved
-here: the paper's one-sentence construction — "Define integers `T, E` by (4.4).  Give
-`ε_a = 1` to the first `E` classes in decreasing order of `ℓ_K(a)`.  Ties may be ordered
-arbitrarily." — is Euclidean division by `m = (p-1)/2 > 0` followed by a choice of `E`
+This proves `Zeta5.exists_innerAlloc` of `Interface.lean`.  The paper's one-sentence
+construction — "Define integers `T, E` by (4.4).  Give `ε_a = 1` to the first `E` classes
+in decreasing order of `ℓ_K(a)`.  Ties may be ordered arbitrarily." — is Euclidean division by `m = (p-1)/2 > 0` followed by a choice of `E`
 maximisers of `ℓ_K`. -/
 
 /-- "The first `E` elements in decreasing order of `f`": a subset of size `E` every element
@@ -1042,8 +1033,7 @@ theorem exists_top_subset {ι : Type*} [DecidableEq ι] (s : Finset ι) (f : ι 
       · exact hStop a ha' c hcsub
 
 /-- **Existence of the allocation (4.4)** (p. 10).  This is exactly the statement of
-`Zeta5.exists_innerAlloc` (a `sorry` in `Interface.lean`); it is proved here, so that
-`sorry` can be replaced by `exists_innerAlloc_of_inner`. -/
+`Zeta5.exists_innerAlloc` in `Interface.lean`. -/
 theorem exists_innerAlloc_of_inner {n M p : ℕ} (hp : IsInnerPrime n M p) :
     Nonempty (InnerAlloc n M p) := by
   classical
@@ -1063,8 +1053,8 @@ theorem exists_innerAlloc_of_inner {n M p : ℕ} (hp : IsInnerPrime n M p) :
 
 /-! # Known-answer controls for this file
 
-Small cases computed by hand from the *definitions* and re-derived by Lean, so that a
-`sorry`-free proof of a mistranscribed statement cannot pass unnoticed. -/
+Small cases computed by hand from the *definitions* and re-derived by Lean, as a check
+against mistranscribed statements. -/
 
 namespace Section41Checks
 
@@ -1090,7 +1080,7 @@ example : ell 5 12 1 + ell 5 12 2 = 12 - mFloor 5 12 := by decide
 closed form: `ℓ_6(1) = 2 = 2⌊6/7⌋ + 2`. -/
 example : ell 7 6 1 = 2 := by decide
 
-/-- **Cross-check on the repaired gap.**  `Counting.ell_lt` (divisibility argument) and
+/-- **Cross-check on the inequality of p. 10.**  `Counting.ell_lt` (divisibility argument) and
 `ell_lt_caseSplit` (case split on `v_A`) prove *the same statement* by different routes; both
 type-check against the same signature. -/
 example : ∀ p A a : ℕ, 1 ≤ a → 2 * a < p → p * ell p A a < 2 * A + p := ell_lt
@@ -1104,11 +1094,9 @@ example : Hcst - 3 * alpha = lam := by norm_num [Hcst, alpha, lam]
 /-- `2λ·3 - 81/20 = 3/2` exactly: the inner range `x ≥ 3` is tight for the sharp bound. -/
 example : 2 * lam * 3 - 81 / 20 = 3 / 2 := by norm_num [lam]
 
-/-! ## Axiom audit
+/-! ## Axiom checks
 
-Every theorem of this file is `sorry`-free; `#print axioms` shows only the three standard
-axioms.  In particular `prop_4_1_of_entry_bounds` — the reduction half of Proposition 4.1 —
-and `ell_lt_caseSplit` — the repair of the gap on p. 10 — depend on no `sorry`. -/
+`#print axioms` shows only the three standard axioms for each theorem below. -/
 
 #print axioms ell_closed
 #print axioms ell_lt_caseSplit

@@ -1,5 +1,5 @@
 /-
-Zeta5/Sec6/CND.lean  —  LEAF: zero-mass energy for the Cauchy kernel (replaces Lemma 6.2).
+Zeta5/Sec6/CND.lean  —  zero-mass energy for the Cauchy kernel (in place of Lemma 6.2).
 
 Paper: Lemma 6.2 (p. 18), `I(ν) ≤ 0` for a compactly supported real measure of mass zero with
 `∬|log|z−w|| d|ν| d|ν| < ∞`.  We need it only for `ν = σ − ρ`, and we apply it to the
@@ -63,29 +63,19 @@ private theorem cauchy_cnd_split (μ ν : Measure ℝ) [IsFiniteMeasure μ] [IsF
           integral_const_mul, smul_eq_mul]
         ring
 
-/-- **LEAF (medium).**  **Conditional negative definiteness of `kC ε`**: for finite measures
+/-- **Conditional negative definiteness of `kC ε`**: for finite measures
 `α, β` on `ℝ` of equal total mass carried by `[−R, R]`,
 
 `I_k(α,α) − 2 I_k(α,β) + I_k(β,β) ≤ 0`,   `I_k(μ,ν) = ∫∫ kC ε (x−y) dν(y) dμ(x)` (`kE`).
 
 Paper: Lemma 6.2 (p. 18), (6.5), for `ν = α − β`.
 
-Proof plan (the paper's proof, with the kernel bounded).  Write `a = (α univ).toReal`,
-`b = (β univ).toReal` (so `a = b` by `hmass`).
-1. By `kC_eq_frullani`, `kC ε (x−y) = log ε + ½Φ(x−y)` with `Φ(d) = ∫_0^∞ frF ε s d ds`.
-   All inner and outer integrands are continuous in `x`, `y` and bounded on `[−R,R]²`
-   (`continuous_kC`; `x ↦ ∫ kC ε (x−y) dν(y)` is continuous, e.g. by
-   `continuous_parametric_integral_of_continuous` after restricting `ν` to `Icc (−R) R`),
-   so `integral_add`, `integral_const`, `integral_const_mul` give
-   `kE ε μ ν = log ε · m_μ m_ν + ½ ∫∫ Φ(x−y) dν dμ`.
-2. `swap_frullani` turns `∫∫ Φ(x−y)` into `∫_0^∞ H_{μν}(s) ds` with
-   `H_{μν}(s) = ∫∫ frF ε s (x−y) dν dμ`, integrable on `Ioi 0`.
-3. For `s > 0`, `frF ε s (x−y) = (e^{-sε²}/s)(1 − e^{-s(x−y)²})`, so
-   `H_{μν}(s) = (e^{-sε²}/s)(m_μ m_ν − gaussE s μ ν)`.
-4. The combination: `log ε (a² − 2ab + b²) = 0`, and
-   `H_{αα} − 2H_{αβ} + H_{ββ} = (e^{-sε²}/s)((a−b)² − [G_s(α,α) − 2G_s(α,β) + G_s(β,β)])
-   = −(e^{-sε²}/s)[…] ≤ 0` by `gauss_pd`.  Conclude with `integral_add`/`integral_sub`
-   (integrability from step 2) and `setIntegral_nonpos`. -/
+Proof (the paper's argument, for a bounded kernel).  With `Φ(d) = ∫_0^∞ frF ε s d ds`,
+`kC ε (x−y) = log ε + ½Φ(x−y)` (`kC_eq_frullani`), so by `cauchy_cnd_split` and `swap_frullani`
+`kE ε μ ν = log ε · m_μ m_ν + ½∫_0^∞ H_{μν}(s) ds`, `H_{μν}(s) = ∫∫ frF ε s (x−y) dν dμ`.
+For `s > 0`, `H_{μν}(s) = (e^{-sε²}/s)(m_μ m_ν − gaussE s μ ν)`.  Since `α` and `β` have equal
+mass, the `log ε` terms cancel and `H_{αα} − 2H_{αβ} + H_{ββ} =
+−(e^{-sε²}/s)[G_s(α,α) − 2G_s(α,β) + G_s(β,β)] ≤ 0` by `gauss_pd`. -/
 theorem cauchy_cnd (α β : Measure ℝ) [IsFiniteMeasure α] [IsFiniteMeasure β] {R : ℝ}
     (hα : ∀ᵐ x ∂α, |x| ≤ R) (hβ : ∀ᵐ x ∂β, |x| ≤ R) (hmass : α univ = β univ)
     {ε : ℝ} (hε : 0 < ε) :
@@ -96,7 +86,7 @@ theorem cauchy_cnd (α β : Measure ℝ) [IsFiniteMeasure α] [IsFiniteMeasure �
     rw [this]
     exact ((continuous_const.add ((continuous_pow 2).div_const _)).log
       (fun d => ne_of_gt (by positivity : (0:ℝ) < 1 + d ^ 2 / ε ^ 2)))
-  -- step 1
+  -- `kE` through the Frullani representation
   have hk : ∀ (μ ν : Measure ℝ) [IsFiniteMeasure μ] [IsFiniteMeasure ν],
       (∀ᵐ x ∂μ, |x| ≤ R) → (∀ᵐ y ∂ν, |y| ≤ R) →
       kE ε μ ν = Real.log ε * μ.real univ * ν.real univ
@@ -107,7 +97,7 @@ theorem cauchy_cnd (α β : Measure ℝ) [IsFiniteMeasure α] [IsFiniteMeasure �
       congr 1; funext x; congr 1; funext y
       rw [kC_eq_frullani hε]; ring
     rw [e1, cauchy_cnd_split μ ν hμ hν hΦc, (swap_frullani μ ν hε hμ hν).2]
-  -- step 3
+  -- the Frullani double integral in terms of `gaussE`
   have hH : ∀ (μ ν : Measure ℝ) [IsFiniteMeasure μ] [IsFiniteMeasure ν],
       (∀ᵐ x ∂μ, |x| ≤ R) → (∀ᵐ y ∂ν, |y| ≤ R) → ∀ s, 0 < s →
       ∫ x, ∫ y, frF ε s (x - y) ∂ν ∂μ

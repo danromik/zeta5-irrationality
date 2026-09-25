@@ -4,7 +4,7 @@ Zeta5/HermiteBasisCore.lean
 **Proof of the shared unimodularity lemma** `Zeta5.HermiteBasis.det_coeffMatrix_unimodular`.
 
 This file imports only Mathlib and is imported by `Zeta5/HermiteBasis.lean`, which holds the
-definitions `hermitePoly`, `coeffMatrix` and the (fixed) statement of the shared lemma.  Since
+definitions `hermitePoly`, `coeffMatrix` and the statement of the shared lemma.  Since
 this file sits *below* `HermiteBasis.lean` in the import graph, it cannot mention those two
 definitions; its statements are written with the definitions unfolded:
 

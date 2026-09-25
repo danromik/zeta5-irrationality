@@ -58,21 +58,20 @@ reduction mod `p` is invertible has determinant prime to `p`.
   basis polynomial (the node is `−u c`, matching the paper's `t + c²`).
 * `coeffMatrix f` — the `hh × hh` matrix whose row `k` holds the coefficients of
   `t⁰, …, t^{hh−1}` in `f k`, i.e. the basis change from the monomial basis.
-* **`det_coeffMatrix_unimodular`** — THE SHARED LEMMA (PROVED 2026-09-23, no `sorry`; the proof
-  is in `Zeta5/HermiteBasisCore.lean`, imported here): for integer polynomials
+* **`det_coeffMatrix_unimodular`** — the shared lemma (the proof is in
+  `Zeta5/HermiteBasisCore.lean`, imported here): for integer polynomials
   `g k` reducing mod `p` to the Hermite basis (rows labelled by `σ : Fin hh ≃ Σ a, Fin (m a)`),
   the rational coefficient matrix `U` has `det U ≠ 0` and `v_p(det U) = 0`.  This is exactly
   the pair of hypotheses of `Zeta5.OuterLocal.Delta_eq_of_basis` (`U.det ≠ 0`) and
   `Zeta5.OuterLocal.padicValRat_unimodular` (`padicValRat p U.det = 0`).
-* Decomposition (all PROVED, via `Zeta5/HermiteBasisCore.lean`): `hermite_linearIndependent` (the core
+* Decomposition (proved in `Zeta5/HermiteBasisCore.lean`): `hermite_linearIndependent` (the core
   `𝔽_p` statement, over any field) ⇒ `det_coeffMatrix_hermite_ne_zero` (the coefficient
   matrix over the field is invertible) ⇒ `det_coeffMatrix_unimodular` (reduce the integer
   matrix mod `p`: `(coeffMatrix g).map (Int.castRingHom (ZMod p))` is the Hermite coefficient
   matrix by `hg` and `Polynomial.coeff_map`; `RingHom.map_det`; `ZMod.intCast_zmod_eq_zero_iff_dvd`;
-  `padicValRat.of_int`).  The statements of all three were fixed before the proof was written;
-  `HermiteBasisCore.lean` states them with `hermitePoly`/`coeffMatrix` unfolded (it sits below
+  `padicValRat.of_int`).  `HermiteBasisCore.lean` states them with `hermitePoly`/`coeffMatrix` unfolded (it sits below
   this file in the import graph), and the proofs here are one-line applications.
-* Proved glue (no `sorry`), for the consumers: `hermitePoly_map`, `hermitePoly_monic`,
+* Auxiliary lemmas for the consumers: `hermitePoly_map`, `hermitePoly_monic`,
   `hermitePoly_natDegree`, `coeffMatrix_row_sum` (`∑_i C(U_{ki}) X^i = f k` when
   `deg f k < hh`, i.e. `Zeta5.OuterLocal.rowPoly U k = f k`), and `sq_injective` (the nodes
   `c²`, `0 ≤ c ≤ M`, are pairwise distinct in `ZMod p` when `2M < p`).
@@ -100,7 +99,7 @@ Both recipes, and the `Fin`-to-`range` reindexing of `A.rowPoly`, are written ou
 compile in `numerics/HermiteConsumerExamples.lean` (not part of the package; from the
 repository root, check with `lake env lean numerics/HermiteConsumerExamples.lean`).
 
-## Numerical sanity of the statement (exact integer arithmetic, 2026-09-23)
+## Numerical tests (exact integer arithmetic; not part of the verification)
 
 `numerics/hermite_check.py` (output `numerics/hermite_check.out`): random primes
 `2 ≤ p ≤ 101`, random distinct nodes, random multiplicities `0..5`, random integer lifts (each
@@ -268,7 +267,7 @@ theorem sq_injective_half {p : ℕ} [hp : Fact p.Prime] :
     Function.Injective (fun c : Fin ((p - 1) / 2 + 1) => (((c : ℕ) : ZMod p)) ^ 2) :=
   sq_injective (by have := hp.out.two_le; omega)
 
-/-! # Axiom audit for this file -/
+/-! # Axiom checks for this file -/
 
 section Audit
 

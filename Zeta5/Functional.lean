@@ -13,8 +13,7 @@ Contents.
   `partial_fraction_unique`:  the statement that `{t^e}_{e≥0} ∪ {1/(t+j²)}_{j>N}` is a basis
   of the space of rational functions `A(t)/D_tail(t)`, so that (2.2)–(2.3) really do *define*
   `μ_X` on the rational functions of (2.4).  This is the content of the paper's one-sentence
-  "extended by polynomial division and simple partial fractions" (the audit found the wording
-  loose but the content correct).
+  "extended by polynomial division and simple partial fractions".
 * **(b)** `muOver_coeff_one`, `muOver_eq_affine`, `G_eq_affine`, `Delta_coeff_h`:
   `μ_X(R)` is affine in `X` with `[X]μ_X(R) = ∑_r c_r r⁴` over the residues `c_r`; hence
   `G_K(X) = A X + B` and `[X^h]Δ_K = det A`.  (`deg Δ_K ≤ h` is `Delta_natDegree_le`
@@ -22,23 +21,13 @@ Contents.
 * **(c)** `eq_2_9`:  the exact leading coefficient
   `[X^h]Δ_K = (-1)^{h(h-1)/2} ∏_{j=N+1}^{K} j⁴ D_N(-j²)⁵`, via
   `det(Vᵀ diag(d) V) = det(V)² ∏ d` with `V` the Vandermonde matrix in the distinct nodes
-  `-j²`.  **This discharges the former `sorry` `Zeta5.eq_2_9` of `Interface.lean`**, whose proof
-  term is now `Zeta5.Functional.eq_2_9 n`.
+  `-j²`.  `Zeta5.eq_2_9` of `Interface.lean` is proved by `Zeta5.Functional.eq_2_9 n`.
 * **(d)** `muMono_eq_zeta`:  (2.2) equals `(2e+5)! ζ(2e+2)/(12(2π)^{2e+2})`, by Euler's
   formula (Mathlib's `hasSum_zeta_nat`).  This is the known-answer control that ties the
   Bernoulli form of (2.2) to the moment interpretation of Proposition 2.2.
 
-THIS FILE CONTAINS NO `sorry`.
-
-POSITION IN THE DEPENDENCY GRAPH.  Nothing here uses anything from `Interface.lean`, and
-this file now sits ABOVE it: `Interface.lean` imports `Zeta5.Functional` and proves
-`Zeta5.eq_2_9` by `Zeta5.Functional.eq_2_9 n`.  (This rewiring was done on
-2026-09-22; before it this file imported `Zeta5.Interface` and carried a `rfl` check
-`eq_2_9_matches_interface : @Zeta5.eq_2_9 = @Zeta5.Functional.eq_2_9`, which is now
-subsumed by the fact that Lean accepts `Zeta5.Functional.eq_2_9 n` as the proof term of
-`Zeta5.eq_2_9`.)  Consequently `Zeta5.eq_2_9`, `Zeta5.eq_2_9_ne_zero`,
-`Zeta5.Delta_natDegree`, `Zeta5.Q_natDegree` and the degree half of `Zeta5.theorem_2_1`
-are `sorry`-free.
+IMPORTS.  This file does not import `Interface.lean`; `Interface.lean` imports
+`Zeta5.Functional` and proves `Zeta5.eq_2_9` by `Zeta5.Functional.eq_2_9 n`.
 -/
 import Zeta5.Basic
 
@@ -129,8 +118,8 @@ lemma cof_eval_ne_zero (n : ℕ) {r : ℕ} (hr : r ∈ Ioc (N n) (K n)) :
   exact hsr (node_inj hs1 hr1 (by unfold node; linarith))
 
 /-- `D_N(-r²) ≠ 0` for `r > N`: the poles of `1/D_tail` are not zeros of the numerator
-`W = D_N⁵`.  (This duplicates the `sorry`-free `Zeta5.D_eval_ne_zero` of `Interface.lean`,
-so that nothing in this file depends on `Interface.lean`; see the header.) -/
+`W = D_N⁵`.  (This duplicates `Zeta5.D_eval_ne_zero` of `Interface.lean`, so that nothing
+in this file depends on `Interface.lean`; see the header.) -/
 lemma D_eval_node_ne_zero (m j : ℕ) (hj : m < j) : (D m).eval (node j) ≠ 0 := by
   rw [D, Polynomial.eval_prod]
   refine Finset.prod_ne_zero_iff.2 fun i hi => ?_
@@ -671,8 +660,8 @@ theorem prod_dFin_mul (n : ℕ) :
 
 /-- **(2.9)** (p. 4): `[X^h]Δ_K = (-1)^{h(h-1)/2} ∏_{j=N+1}^K j⁴ D_N(-j²)⁵`.
 
-This is literally the statement of the former `sorry` `Zeta5.eq_2_9` in `Interface.lean`,
-which is now proved by this theorem (`Zeta5.eq_2_9 n := Zeta5.Functional.eq_2_9 n`). -/
+This is the statement of `Zeta5.eq_2_9` in `Interface.lean`, which is proved by this theorem
+(`Zeta5.eq_2_9 n := Zeta5.Functional.eq_2_9 n`). -/
 theorem eq_2_9 (n : ℕ) :
     (Delta n).coeff (h n)
       = (-1) ^ (h n * (h n - 1) / 2) *
@@ -688,9 +677,8 @@ theorem eq_2_9 (n : ℕ) :
 /-! ### Consequences of (2.9): the degree is exactly `h`
 
 These are the statements `Zeta5.eq_2_9_ne_zero`, `Zeta5.Delta_natDegree`,
-`Zeta5.Q_natDegree` of `Interface.lean`.  Those `Interface.lean`
-versions are themselves `sorry`-free, being derived from `Zeta5.eq_2_9 = this file's
-`eq_2_9`; the duplicates here are kept because this file must stay self-contained. -/
+`Zeta5.Q_natDegree` of `Interface.lean`, which are derived there from `Zeta5.eq_2_9`; they
+are repeated here so that this file does not depend on `Interface.lean`. -/
 
 theorem eq_2_9_ne_zero (n : ℕ) : (Delta n).coeff (h n) ≠ 0 := by
   rw [eq_2_9 n]
@@ -699,7 +687,7 @@ theorem eq_2_9_ne_zero (n : ℕ) : (Delta n).coeff (h n) ≠ 0 := by
   have hjQ : ((j : ℚ)) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
   exact mul_ne_zero (pow_ne_zero _ hjQ) (pow_ne_zero _ (D_eval_node_ne_zero (N n) j hjN))
 
-/-- **`deg Δ_K = h` exactly** (p. 4), now with no `sorry` anywhere underneath. -/
+/-- **`deg Δ_K = h` exactly** (p. 4). -/
 theorem Delta_natDegree (n : ℕ) : (Delta n).natDegree = h n :=
   le_antisymm (Delta_natDegree_le n) (Polynomial.le_natDegree_of_ne_zero (eq_2_9_ne_zero n))
 
@@ -777,10 +765,9 @@ theorem muMono_eq_zeta (e : ℕ) :
   field_simp
   ring
 
-/-! ## Axiom audit
+/-! ## Axiom checks
 
-These `#print axioms` lines appear in the build log.  Everything in this file is proved
-from `[propext, Classical.choice, Quot.sound]` only — no `sorryAx`, without exception. -/
+Everything in this file is proved from `[propext, Classical.choice, Quot.sound]` only. -/
 
 #print axioms Zeta5.Functional.partial_fractions
 #print axioms Zeta5.Functional.partial_fraction_unique

@@ -11,7 +11,7 @@ open Real MeasureTheory Set
 
 noncomputable section
 
-/-- Jordan's inequality on `[d, π − d]`: `sin x ≥ (2/π) d`.  (Proved.) -/
+/-- Jordan's inequality on `[d, π − d]`: `sin x ≥ (2/π) d`. -/
 theorem sin_ge_of_mem {x d : ℝ} (hd : 0 ≤ d) (h1 : d ≤ x) (h2 : d ≤ π - x) :
     2 / π * d ≤ Real.sin x := by
   have hpi := Real.pi_pos
@@ -22,7 +22,7 @@ theorem sin_ge_of_mem {x d : ℝ} (hd : 0 ≤ d) (h1 : d ≤ x) (h2 : d ≤ π -
       (Real.sin_le_sin_of_le_of_le_pi_div_two (by linarith) (by linarith) h2)
     rwa [Real.sin_pi_sub] at this
 
-/-- **`|cos θ₀ − cos θ| ≥ 2(θ − θ₀)²/π²`** on `[0,π]²` (sharp at `(0,π)`).  (Proved.)
+/-- **`|cos θ₀ − cos θ| ≥ 2(θ − θ₀)²/π²`** on `[0,π]²` (sharp at `(0,π)`).
 From `cos θ₀ − cos θ = −2 sin((θ₀+θ)/2) sin((θ₀−θ)/2)` and Jordan's inequality. -/
 theorem cos_sub_cos_ge {θ θ₀ : ℝ} (h1 : 0 ≤ θ) (h2 : θ ≤ π) (h3 : 0 ≤ θ₀) (h4 : θ₀ ≤ π) :
     2 * (θ - θ₀) ^ 2 / π ^ 2 ≤ |Real.cos θ₀ - Real.cos θ| := by
@@ -49,13 +49,11 @@ theorem cos_sub_cos_ge {θ θ₀ : ℝ} (h1 : 0 ≤ θ) (h2 : θ ≤ π) (h3 : 0
   calc 2 * d ^ 2 / π ^ 2 = 2 * (2 / π * (d / 2) * (2 / π * (d / 2))) := by field_simp
     _ ≤ _ := by linarith
 
-/-- **LEAF (easy).**  The nearest point of `[−1,1]` in angle form: for every real `τ` there is
+/-- The nearest point of `[−1,1]` in angle form: for every real `τ` there is
 `θ₀ ∈ [0,π]` with `|cos θ₀ − cos θ| ≤ |τ − cos θ|` for all `θ`.
 
-Proof plan.  `θ₀ = arccos (max (−1) (min 1 τ))`; `Real.cos_arccos` gives
-`cos θ₀ = c := max (−1) (min 1 τ)`, `Real.arccos_nonneg`, `Real.arccos_le_pi` give
-`θ₀ ∈ [0,π]`; and `|c − y| ≤ |τ − y|` for every `y ∈ [−1,1]` (case split on `τ ≤ −1`,
-`−1 ≤ τ ≤ 1`, `1 ≤ τ`; `Real.neg_one_le_cos`, `Real.cos_le_one`; `abs_le`, `le_abs`). -/
+Proof.  `θ₀ = arccos c` with `c = max (−1) (min 1 τ)`, the nearest point of `[−1,1]` to `τ`;
+`|c − y| ≤ |τ − y|` for `y ∈ [−1,1]` by cases on the position of `τ`. -/
 theorem exists_nearest_cos (τ : ℝ) :
     ∃ θ₀ ∈ Icc (0 : ℝ) π, ∀ θ, |Real.cos θ₀ - Real.cos θ| ≤ |τ - Real.cos θ| := by
   set c := max (-1) (min 1 τ) with hc

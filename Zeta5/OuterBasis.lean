@@ -4,8 +4,8 @@ Zeta5/OuterBasis.lean
 **The local analysis of §4.2 (pp. 11–12): the basis (4.11), the splitting (4.10), and the entry
 bounds behind the weights (4.12).**  This file proves `Zeta5.outer_local_analysis`
 (`OuterRange.lean`), as `Zeta5.OuterBasis.outer_local_core`; `OuterRange.lean` imports this file
-and closes its former `sorry` by applying `outer_local_core` with `outerDim`, `outerWeight`
-(definitionally `dimO`, `wtO` below, by `rfl`) and `outerRows_card`.
+and applies `outer_local_core` with `outerDim`, `outerWeight` (definitionally `dimO`, `wtO`
+below, by `rfl`) and `outerRows_card`.
 
 THIS FILE CONTAINS NO `sorry` AND NO `axiom`.  `#print axioms Zeta5.OuterBasis.outer_local_core`
 is `[propext, Classical.choice, Quot.sound]`: the shared lemma
@@ -64,7 +64,7 @@ The hypotheses are `Zeta5.OuterHyp` ((4.9) without `p ≤ K`), carried here as `
   `entry_bound` assembles these into `v_p^G(A_{uv}) ≥ w_u + w_v` for the weights (4.12).
 * **Assembly (§9).**  `outer_local_core`.
 
-## Known-answer controls (exact arithmetic, 2026-09-23)
+## Known-answer controls (exact arithmetic)
 
 `numerics/outerbasis/ob_control.sage` rebuilds, with *the definitions of
 this file* (`cls`, `Tset`, `Eset`, `dimO`, the rows, `c_e`, `muOver0`, `muL`), every intermediate
@@ -1922,7 +1922,7 @@ theorem outer_local_core (n p : ℕ) [Fact p.Prime] (hp : Hyp n p)
   · exact OuterLocal.padicValRat_unimodular U hv
   · rw [OuterLocal.Delta_eq_of_basis U h0, Gram_split n p hp0 U]
 
-/-! # Axiom audit for this file -/
+/-! # Axiom checks -/
 
 section Audit
 

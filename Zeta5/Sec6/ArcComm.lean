@@ -1,6 +1,5 @@
 /-
-Zeta5/Sec6/ArcComm.lean  —  LEAF: symmetry of the kernel energy between two arcsine components
-(routine measure theory).
+Zeta5/Sec6/ArcComm.lean  —  symmetry of the kernel energy between two arcsine components.
 -/
 import Zeta5.Sec6.Measures
 
@@ -30,18 +29,12 @@ private theorem kE_arc_comm_aux (m r m' r' : ℝ) {ε : ℝ} (hε : 0 < ε) :
   rw [integral_integral_swap hint]
   simp_rw [kC_sub_comm ε]
 
-/-- **LEAF (easy–medium).**  Symmetry of the kernel energy between two components:
+/-- Symmetry of the kernel energy between two components:
 `I_k(ω_i, ω_j) = I_k(ω_j, ω_i)`.
 
-Proof plan.  By `integral_arcsine` (twice; the outer function
-`x ↦ ∫ kC ε (x − y) dω(y)` is continuous: write it as
-`π⁻¹ ∫_0^π kC ε (x − (m + r cos θ)) dθ` and use
-`intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'`) both sides are
-`π⁻² ∫_0^π∫_0^π` of a continuous function of `(θ, φ)`; swap with
-`MeasureTheory.integral_integral_swap` (a continuous function on the compact `[0,π]²` is
-integrable for the finite product measure: `ContinuousOn.integrableOn_compact`, or
-`intervalIntegral`-level `integral_integral_swap` after `intervalIntegral.integral_of_le`), and
-use `kC_sub_comm`. -/
+Proof.  `(x, y) ↦ kC ε (x − y)` is continuous, hence bounded on the product of the (compact)
+supports and integrable for the product measure; Fubini (`integral_integral_swap`) and
+`kC_sub_comm` give the symmetry. -/
 theorem kE_arc_comm (i j : ℕ) {ε : ℝ} (hε : 0 < ε) :
     kE ε (arc i) (arc j) = kE ε (arc j) (arc i) :=
   kE_arc_comm_aux _ _ _ _ hε

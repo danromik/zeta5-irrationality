@@ -1,7 +1,6 @@
 /-
 Zeta5/Sec6/Energy.lean  —  §6.1 of the paper: the configuration bound (6.6)–(6.9), via the
-Cauchy-regularised kernel.  THIS FILE CONTAINS NO `sorry`: it proves the configuration bound
-from the leaves `cauchy_cnd`, `rho_cross`, `rho_energy_ge` (through its leaves) and
+Cauchy-regularised kernel, from `cauchy_cnd`, `rho_cross`, `rho_energy_ge` and
 `eq_6_7_field`.
 
 The regularisation differs from the paper's (circles of radius `ε` around the `t_i`, p. 18):

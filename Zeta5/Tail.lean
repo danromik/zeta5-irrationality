@@ -47,7 +47,7 @@ and at `M` then gives, for `40 | M`,
 which is **stronger** than the assembled form of (5.16)–(5.17) that Appendix B consumes
 (`-2689/48000 + λ/M - (2923/240 - 1/4)/M² + 32/M³`).
 
-Every constant here was checked numerically before being claimed: `𝒫(20) = 37/2`,
+Numerical values: `𝒫(20) = 37/2`,
 `𝒞(20) = 0`, `𝒫(M) = 𝒞(M) = 0` for `40 | M`, `max|𝒞| = 118511/(4320√3) = 15.8385… < 16`,
 `max|G₀| = 0.0160375… < 161/10000`, and the bound above brackets the true integral at
 `M = 40, 80, 120, 200` (referee audit of the preprint; see README, "Provenance").

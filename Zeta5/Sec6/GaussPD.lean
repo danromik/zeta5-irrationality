@@ -1,5 +1,5 @@
 /-
-Zeta5/Sec6/GaussPD.lean  —  LEAF: positive definiteness of the Gaussian kernel.
+Zeta5/Sec6/GaussPD.lean  —  positive definiteness of the Gaussian kernel.
 
 Role in the proof of (6.14): this is the first display of the proof of Lemma 6.2 (p. 18),
 `J(s) = ∬ e^{-s|z-w|²} dν dν = (4s/π)∫(∫ e^{-2s|z-u|²} dν(z))² dA(u) ≥ 0`, on the real line
@@ -15,7 +15,7 @@ open Real MeasureTheory Set
 noncomputable section
 
 /-- Completing the square (the only algebra behind Gaussian positive-definiteness):
-`∫ e^{-2s(x-u)²} e^{-2s(y-u)²} du = √(π/(4s)) e^{-s(x-y)²}`.  (Proved.) -/
+`∫ e^{-2s(x-u)²} e^{-2s(y-u)²} du = √(π/(4s)) e^{-s(x-y)²}`. -/
 theorem gauss_conv {s : ℝ} (_hs : 0 < s) (x y : ℝ) :
     ∫ u, Real.exp (-(2 * s * (x - u) ^ 2)) * Real.exp (-(2 * s * (y - u) ^ 2))
       = Real.sqrt (π / (4 * s)) * Real.exp (-(s * (x - y) ^ 2)) := by
@@ -135,22 +135,15 @@ private lemma gpd_prod_int {s : ℝ} (hs : 0 < s) (μ ν : Measure ℝ) [IsFinit
   (gpdG_int hs μ).mul_bdd (gpdG_cont hs ν).aestronglyMeasurable
     (Filter.Eventually.of_forall fun u => gpdG_bdd hs ν u)
 
-/-- **LEAF (medium).**  **The Gaussian kernel is positive definite** on differences of finite
+/-- **The Gaussian kernel is positive definite** on differences of finite
 measures on `ℝ`: `G_s(α,α) − 2G_s(α,β) + G_s(β,β) ≥ 0`, where
 `G_s(μ,ν) = ∫∫ e^{-s(x−y)²} dν(y) dμ(x)` (`gaussE`).
 
 Paper: Lemma 6.2, proof, first display (p. 18).
 
-Proof plan.  Put `g_μ(u) = ∫ e^{-2s(x−u)²} dμ(x)`; `0 ≤ g_μ ≤ μ(ℝ)` and
-`∫ g_μ du = μ(ℝ)√(π/(2s))` (Tonelli), so `g_μ g_ν` is integrable.
-1. `gaussE s μ ν = √(4s/π) ∫ g_μ(u) g_ν(u) du` for all finite `μ, ν`: insert `gauss_conv`
-   (note `√(π/(4s))⁻¹ = √(4s/π)`), then `MeasureTheory.integral_integral_swap` twice.  The
-   triple integrand `(x,y,u) ↦ e^{-2s(x−u)²}e^{-2s(y−u)²}` is continuous (so strongly
-   measurable) and bounded by `e^{-2s(x−u)²}`, whose integral over `μ ⊗ ν ⊗ volume` is
-   `μ(ℝ)ν(ℝ)√(π/(2s)) < ∞` (`integral_gaussian`, `integrable_exp_neg_mul_sq`,
-   `Integrable.comp_sub_right`); use `integrable_prod_iff` / `Integrable.mono'`.
-2. Hence the combination equals `√(4s/π) ∫ (g_α − g_β)² du ≥ 0` (`integral_sub`,
-   `integral_mul_left`, `integral_nonneg` with `sq_nonneg`).
+Proof.  Put `g_μ(u) = ∫ e^{-2s(x−u)²} dμ(x)`, which is continuous, bounded by `μ(ℝ)` and
+integrable.  By `gauss_conv` and Fubini, `gaussE s μ ν = √(4s/π) ∫ g_μ(u) g_ν(u) du` for all
+finite `μ, ν`, so the combination equals `√(4s/π) ∫ (g_α − g_β)² du ≥ 0`.
 Only finiteness of `α, β` is needed (no mass or support condition). -/
 theorem gauss_pd (α β : Measure ℝ) [IsFiniteMeasure α] [IsFiniteMeasure β] {s : ℝ}
     (hs : 0 < s) :

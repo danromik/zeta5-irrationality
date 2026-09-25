@@ -1,21 +1,15 @@
 /-
 Zeta5/OuterLocal.lean
 
-**The `p`-adic local analysis of §4.2 (pp. 11–12): the arithmetic that `outer_local_analysis`
-stands for.**
+**The `p`-adic local analysis of §4.2 (pp. 11–12): arithmetic used by `outer_local_analysis`.**
 
-`Zeta5/OuterRange.lean` reduces Proposition 4.3 to a single local statement,
-`Zeta5.outer_local_analysis`, whose docstring names four missing ingredients:
+`Zeta5/OuterRange.lean` reduces Proposition 4.3 to the local statement
+`Zeta5.outer_local_analysis`, proved in `Zeta5/OuterBasis.lean`.  This file proves the
+congruence `H^{(5)}_{p−a} ≡ H^{(5)}_{a−1} (mod p)` for `p ≥ 7`, the divided-difference
+integrality, the `p`-adic toolkit they need, and the change-of-basis identity that turns the
+basis (4.11) into a determinant.
 
-> the valuations of the residues `W(−l²)(−l²)^{i+j}/D'_tail(−l²)`, the congruence
-> `H^{(5)}_{p−a} ≡ H^{(5)}_{a−1} (mod p)` for `p ≥ 7` (a consequence of
-> `∑_{v=1}^{p−1} v^{−5} ≡ 0`), the divided-difference integrality, and the unimodularity of
-> (4.11).
-
-This file proves the second and third of those outright, together with the `p`-adic toolkit
-they need, and the change-of-basis identity that turns the basis (4.11) into a determinant.
-
-WHAT IS PROVED HERE, with no `sorry`:
+WHAT IS PROVED HERE:
 
 *  **§1.  A `p`-adic congruence calculus on `ℚ`** (`PInt`, `PCong`) built on
    `Zeta5.padicFil` of `Lemma42.lean`: the ring rules, and the two concrete facts
@@ -58,22 +52,19 @@ WHAT IS PROVED HERE, with no `sorry`:
    `v_p((det U)^{-2}) = 0` when `U` is `ℤ_p`-unimodular.  This is "The basis change is
    unimodular, which proves the proposition" made into an identity.
 
-WHAT IS *NOT* PROVED HERE: the entry bounds behind the weights (4.12) and the unimodularity
-of the particular basis (4.11).  Those are what remains of `Zeta5.outer_local_analysis`.
+The entry bounds behind the weights (4.12) and the unimodularity of the basis (4.11) are
+proved in `Zeta5/OuterBasis.lean`.
 
-A NOTE ON (4.10), AND A DEFECT IN THE PREVIOUS STATEMENT OF `outer_local_analysis`.
-`Zeta5.outer_local_analysis` used to demand the rank bound of (4.10) in the *stronger*
-"vanishing columns" form — a set `C` of columns on which `L` vanishes, with at most `r_p`
-columns outside `C`.  That form is correct in the **monomial** basis, which is where the
-paper proves it ("Its first `h − r_p` rows and columns vanish"), but it is **false in the
-basis (4.11)**, where the matrices of (4.10) actually live: every row of (4.11) has degree
-between `h − 6` and `h − 1`, so the degree count that makes columns vanish never fires, and
-an exact computation of the paper's own `L` in the basis (4.11) at `K = 40` finds
+A NOTE ON (4.10).  `Zeta5.outer_local_analysis` states the rank bound of (4.10) in its
+literal form `rank_{ℚ_p} L ≤ r_p`, which `Zeta5.lemma_4_2_gauss_rank` (`OuterRange.lean`)
+consumes, not in the "vanishing columns" form — a set `C` of columns on which `L` vanishes,
+with at most `r_p` columns outside `C`.  That form is correct in the **monomial** basis,
+which is where the paper proves it ("Its first `h − r_p` rows and columns vanish"), but it is
+**false in the basis (4.11)**, where the matrices of (4.10) live: every row of (4.11) has
+degree between `h − 6` and `h − 1`, so the degree count that makes columns vanish never
+applies, and an exact computation of the paper's `L` in the basis (4.11) at `K = 40` finds
 **zero** vanishing columns at `p = 17, 19, 23` (where `h − r_p = 17, 21, 29` of them would be
-needed), while `rank_ℚ L = r_p` exactly — the audit's own finding.  The statement has
-therefore been restated with the *literal* hypothesis of (4.10), `rank_{ℚ_p} L ≤ r_p`, which
-is what the paper writes and what `Zeta5.lemma_4_2_gauss_rank` (already proved in
-`OuterRange.lean`) consumes.  Proposition 4.3 itself is unchanged.
+needed), while `rank_ℚ L = r_p` exactly (the referee audit).
 -/
 import Zeta5.Lemma42
 import Zeta5.Functional
@@ -796,9 +787,9 @@ theorem padicValRat_unimodular {p : ℕ} [Fact p.Prime] {n : ℕ}
 
 end Basis
 
-/-! # §6.  Known-answer controls, and the axiom audit for this file
+/-! # §6.  Known-answer controls, and axiom checks
 
-Every statement of §§2–4 was checked against exact rational arithmetic outside Lean, at
+The statements of §§2–4 agree with exact rational arithmetic (computed outside Lean) at
 `p = 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43` and, where an `a` occurs, at every
 `1 ≤ a ≤ (p−1)/2`.  What the computation found:
 
@@ -810,8 +801,8 @@ Every statement of §§2–4 was checked against exact rational arithmetic outsi
   `v_p ≥ 1` in **both** coefficients, at every `p` and `a` — `muPole_congr`;
 * the **truncated** difference, with the `−1/4 + 1/(2j)` tail of (2.3) dropped, has
   `v_p = 0` exactly (so it is *not* `≡ 0`), and becomes `≥ 1` after adding `1/a` — which is
-  `muPole_tail_is_needed` together with `neg_inv_not_congr_zero`, and is the audit's finding
-  on p. 12 confirmed;
+  `muPole_tail_is_needed` together with `neg_inv_not_congr_zero` (the audit's observation
+  on p. 12);
 * `v_p((p−a)² − a²) = 1` exactly, at every `p` and every `1 ≤ a ≤ (p−1)/2` —
   `node_sub_valuation`.
 -/

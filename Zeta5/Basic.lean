@@ -3,8 +3,7 @@ Copyright (c) 2026.  Lean 4 formalisation of
 
     A. Fauzan, "ζ(5) is irrational", 17 September 2026.
 
-This file contains ONLY definitions (and facts that follow from them immediately).
-It must never contain a `sorry`.
+This file contains only definitions (and facts that follow from them immediately).
 
 Reference for every definition is the paper, by equation number.
 
@@ -376,8 +375,7 @@ def gammaOut (n p : ℕ) : ℤ :=
 Formula (5.3) of the paper expresses this by Legendre's formula,
 `v_p(S_K) = 2h ∑_{a≥1}⌊K/p^a⌋ - 12h ∑_{a≥1}⌊N/p^a⌋ - 2∑_{i=1}^{h-1}∑_{a≥1}⌊2i/p^a⌋
 + (h-1)v_p(4)`.  We take the valuation itself as the definition, which is what (5.1)
-actually needs; (5.3) is then a (true, and audited) lemma about it that no statement here
-depends on. -/
+actually needs; (5.3) is then a lemma about it that no statement here depends on. -/
 def vS (n p : ℕ) : ℤ := padicValRat p (S n)
 
 /-- A choice of allocation (4.4) for every inner prime.

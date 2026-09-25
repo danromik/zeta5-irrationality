@@ -1,9 +1,7 @@
 /-
 Zeta5/Sec6/RhoEnergy.lean  —  `I(ρ) ≤ I_k(ρ,ρ)`: the energy of `ρ` for the regularised kernel
-is at least the value (A.2).
-
-Proved here from the leaves `kE_rhoM_expand`, `kE_arc_comm`, `pair_energy_ge` and
-`Irho_double_sum`; this file contains no `sorry`.
+is at least the value (A.2), from `kE_rhoM_expand`, `kE_arc_comm`, `pair_energy_ge` and
+`Irho_double_sum`.
 -/
 import Zeta5.Sec6.PairEnergy
 import Zeta5.Sec6.Bilinear

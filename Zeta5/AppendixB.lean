@@ -3,12 +3,11 @@ Zeta5/AppendixB.lean
 
 **Appendix B: the exact arithmetic integrals.**
 
-This file proves the `Zeta5.eq_5_16_5_18` interface statement outright.  Everything that
-Appendix B calls a *computation* is computed here: no finite rational verification is
-assumed.
+This file proves the statement `Zeta5.eq_5_16_5_18` of `Interface.lean`.  Every computation
+of Appendix B is carried out here.
 
-Contents, in the paper's numbering.  Everything is PROVED, with **no `sorry`**; the §5.3
-analysis behind (5.14)–(5.17) is in `Zeta5/Tail.lean` and is instantiated here.
+Contents, in the paper's numbering.  The §5.3 analysis behind (5.14)–(5.17) is in
+`Zeta5/Tail.lean` and is instantiated here.
 
 * (B.1), §B.1   the `z`-integral of (5.4) in closed form, by fractional parts and minima
                 (`Gam_eq`), from the displayed identity `ℓ(x,z) - 2x = e(f)(1_{z<d₀(f)} -
@@ -637,7 +636,7 @@ Below, `p{j}_{i}` is the `i`-th interval of (B.2) inside `[j, j+1]`, with the sl
 intercept of `R` there; `table3_{j}` is the corresponding row of **Table 3** (p. 27).
 The endpoints are exactly the `x ∈ (3,20)` with `cx ∈ ℤ` for some
 `c ∈ {2, 2α, 2λ, 2H, 4α, 2(1-α), 2(1+α)}` (note `2λ = 2(1-α)`), together with `3` and `20`:
-`143` intervals, as the paper states.  All of this is *computed*, not assumed. -/
+`143` intervals, as the paper states. -/
 
 /-! ### Table 3, row `j = 3`: the 10 intervals of (B.2) inside `[3,4]` -/
 
@@ -2197,7 +2196,7 @@ of genuinely analytic tail bounds of §5.3, obtained there from the two integrat
 (5.15) applied to the periodic decomposition (5.12)–(5.13).  The analysis lives in
 `Zeta5/Tail.lean`; here it is instantiated at `Qcl`. -/
 
-/-- **(5.16)–(5.17)** (p. 16), combined.  **Proved**, from `Zeta5.Tail.tail_bound`.
+/-- **(5.16)–(5.17)** (p. 16), combined, proved from `Zeta5.Tail.tail_bound`.
 
 Paper statement, verbatim.  With `A(z) = ℓ(x,z) - 2x`, `B(z) = ℓ(αx,z) - 2αx`,
 `f = {x}`, `g = {αx}`, `τ = {2Hx}`, `σ = {2x}`, `η = {2λx}`, (5.12)–(5.13) write
@@ -2248,7 +2247,7 @@ for `M ∈ 40ℤ_{>0}`,
 
 `I_out + 6λ/M + ∫_3^M R(x) x^{-3} dx ≤ A_M`.
 
-Everything here is proved: (5.16)–(5.17) is `eq_5_16_5_17`, (5.18) is the computed
+(5.16)–(5.17) is `eq_5_16_5_17`, (5.18) is the computed
 `eq_5_18`, the bookkeeping `A_* = I_out + ∫_3^20 + (-2689/48000)` is `Zeta5.Astar_eq`, and
 the split `∫_3^M = ∫_3^20 + ∫_20^M` uses the integrability produced by the piecewise
 computation. -/

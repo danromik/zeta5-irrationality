@@ -19,7 +19,7 @@ WHAT IS FORMALISED HERE, AND IN WHICH SETTING.
 *  The valuation is **abstract**: a `Zeta5.ValFil F` on a commutative ring `F` is the predicate
    `v(x) ≥ c` for `c : ℚ` together with the six axioms actually used (`v(0) = ∞`, `v(1) ≥ 0`,
    monotonicity in `c`, the ultrametric inequality for `+`, additivity for `*`, invariance under
-   `-`).  This is the honest minimum: the proof of (4.13) is a one-sided estimate and never needs
+   `-`).  The proof of (4.13) is a one-sided estimate and never needs
    equality in `v(xy) = v(x) + v(y)`, nor the value group, nor completeness.  The weights are
    genuine rationals, so the half-integrality hypothesis is a *hypothesis* and not built into the
    types — which is what makes the counterexample below expressible.
@@ -35,15 +35,10 @@ WHAT IS FORMALISED HERE, AND IN WHICH SETTING.
    (`lemma_4_2_rank_zero`, `lemma_4_2_rank_zero_gauss`), where it needs neither a field nor the
    half-integrality nor the nonpositivity of the weights.
 
-THIS FILE CONTAINS NO `sorry`.
-
-AUDIT CONTEXT.  The referee audit of the preprint (see README, "Provenance") proved Lemma 4.2
-by hand and, in an independent verification, stress-tested it over `ℤ_7`, `ℤ_11` and `ℤ_3`
-with 6000 random instances: no violation, and the bound is attained.  The same tests,
-run with weights in `(1/4)ℤ` instead of `(1/2)ℤ`, produce violations — e.g. `p = 11`, `h = 3`,
-`w = (-3/2, -1/4, -3/2)`, `r = 1`, `z = 0`, where the claimed bound is `-13/2` and the true
-valuation is `-7`.  `lemma_4_2_needs_half_integers` below is a minimal witness of the same
-phenomenon, checked by the kernel rather than by a random search.
+With weights in `(1/4)ℤ` instead of `(1/2)ℤ`, (4.13) fails; the audit gives the instance
+`p = 11`, `h = 3`, `w = (-3/2, -1/4, -3/2)`, `r = 1`, `z = 0`, where the claimed bound is
+`-13/2` and the valuation is `-7`.  `lemma_4_2_needs_half_integers` below is a minimal
+counterexample of this kind.
 -/
 import Zeta5.Basic
 
@@ -580,8 +575,8 @@ half-integer; `z = 0`, so the claimed bound would be `2(-1/4-1/4) - min(2,0) = -
 The mechanism is exactly the one the paper's proof relies on: the loss `k + 2∑_{i≤k} w_(i)`
 has increment `1 + 2w_(k)`, which is `≤ 0` for a nonzero half-integer weight but `+1/2` for
 `w = -1/4`, so at `k = 2` the loss is `+1` and the maximum is no longer `min(r,z) = 0`.
-(The audit's random search found the same failure at `p = 11`, `h = 3`,
-`w = (-3/2,-1/4,-3/2)`, `r = 1`: claimed bound `-13/2`, true valuation `-7`.)
+(The audit gives the same failure at `p = 11`, `h = 3`, `w = (-3/2,-1/4,-3/2)`, `r = 1`:
+claimed bound `-13/2`, valuation `-7`.)
 
 Compare `lemma_4_2_attained` below: the *same* `A`, `L`, `pinv` with the half-integer weights
 `w = (-1/2,-1/2)` satisfy Lemma 4.2 with equality. -/
@@ -630,8 +625,7 @@ every hypothesis holds, `lemma_4_2` applies, and the bound it delivers,
 `2∑w - min(r,z) = -2`, equals the true valuation `v_2(det) = v_2(9/4) = -2`.
 
 Two things are checked at once: that the hypotheses of `lemma_4_2` are satisfiable (so the
-theorem is not vacuous) and that (4.13) cannot be improved.  This matches the audit's finding
-that in 6000 random trials the minimum observed slack was `0`. -/
+theorem is not vacuous) and that (4.13) cannot be improved. -/
 theorem lemma_4_2_attained :
     (padicFil 2).vge (((1 : Matrix (Fin 2) (Fin 2) ℚ) + (1 / 2 : ℚ) • 1).det)
         (2 * ∑ _i : Fin 2, (-(1 / 2) : ℚ) - ((min 2 0 : ℕ) : ℚ))
@@ -651,10 +645,9 @@ theorem lemma_4_2_attained :
     norm_num
   · rw [det_one_add_half_smul_one, padicValRat_two_nineQuarters]
 
-/-! ## `#print axioms`
+/-! ## Axiom checks
 
-The results of this file must depend on nothing but `propext`, `Classical.choice`, `Quot.sound`;
-in particular no `sorryAx`. -/
+The results of this file depend only on `propext`, `Classical.choice`, `Quot.sound`. -/
 
 #print axioms Zeta5.lemma_4_2
 #print axioms Zeta5.lemma_4_2_rank_zero

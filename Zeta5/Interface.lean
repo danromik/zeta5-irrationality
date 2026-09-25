@@ -1,27 +1,20 @@
 /-
 Zeta5/Interface.lean
 
-THE PAPER'S NAMED STATEMENTS, one Lean declaration each, and the assembly of Theorem 2.1
+The paper's named statements, one Lean declaration each, and the assembly of Theorem 2.1
 and Theorem 1.1 from them.
 
-This file is the table of contents of the formalisation: every numbered statement of
-Fauzan's paper that Theorem 1.1 goes through has a declaration here whose *type* is a
-faithful transcription of the printed statement, so that a reader can check the
-transcription against the PDF without reading any proof.
+Every numbered statement of Fauzan's paper that Theorem 1.1 goes through has a declaration
+here whose type transcribes the printed statement, so that the transcription can be checked
+against the paper without reading any proof. Where a formal statement differs from the
+printed one, its docstring says how and in which direction.
 
-CONVENTION (see README): nothing here is proved by weakening a statement; where the formal
-statement records only part of a paper statement, the docstring says which part, and the
-rest is a separate named `sorry`.
-
-THIS FILE CONTAINS **NO** `sorry` (since 2026-09-23).  Every
-statement below is discharged by a proof elsewhere in the project:
+Each statement is proved elsewhere in the project:
 
   (2.9)   leading coefficient of `Δ_K`         ← `Zeta5.Functional.eq_2_9`
   Prop. 2.2  (2.10) and the "Hence" clause     ← `Zeta5.Positivity.prop_2_2_moment`,
                                                  `Zeta5.Positivity.prop_2_2`, via the
-                                                 pole integral
-                                                 `Zeta5.Hermite.pole_integral` (proved;
-                                                 no axiom since 2026-09-24)
+                                                 pole integral `Zeta5.Hermite.pole_integral`
   Prop. 4.1  the inner range                   ← `Zeta5.Section3.prop_4_1`
   Prop. 4.3  the outer range (both assertions) ← `Zeta5.Outer.prop_4_3`,
                                                  `Zeta5.Outer.prop_4_3_large`
@@ -29,32 +22,20 @@ statement below is discharged by a proof elsewhere in the project:
                                                  applied to (3.12) and Props 4.1, 4.3
   (3.12)  the crude valuation bound            ← `Zeta5.CrudeBound.eq_3_12'`
   Prop. 5.2  (5.11), the prime-sum bound       ← `Zeta5.PrimeSum.prop_5_2`, via
-                                                 `Zeta5.PNT.prime_riemann_sum`, modulo the
-                                                 external axiom (the PNT, `θ(x) ~ x`)
-                                                 `Zeta5.Axioms.chebyshev_theta_asymptotic`
+                                                 `Zeta5.PNT.prime_riemann_sum`, from the
+                                                 axiom `Zeta5.Axioms.chebyshev_theta_asymptotic`
+                                                 (the prime number theorem, `θ(x) ~ x`)
   (5.16)–(5.18) the constant bookkeeping       ← `Zeta5.AppendixB.eq_5_16_5_18`
   (5.21)  `limsup K^{-2}log m_{K,M} ≤ A_M`     ← `eq_5_21_of_prop_5_2` (Asymptotics.lean)
+  (6.14)  the logarithmic-energy bound         ← `Zeta5.RealBound.eq_6_14`
+                                                 (`Zeta5/Sec6/Final.lean`)
   Prop. 6.3  (6.16), the real bound            ← `Zeta5.RealBound.prop_6_3`
                                                  (`Zeta5/Sec6/Final.lean`)
   (7.1)   the combination of (5.21) and (6.16) ← `eq_7_1_of` (Asymptotics.lean)
   existence of the allocation (4.4)            ← `Zeta5.exists_innerAlloc_of_inner`
   Theorem 2.1, Theorem 1.1, (2.7), (2.8)       ← proved below and in `Skeleton.lean`
 
-None of those proofs bottoms out in a `sorry` (since 2026-09-24).  The last one to do so was
-
-  `Zeta5.RealBound.eq_6_14`                 (6.14), the logarithmic-energy bound
-
-which is PROVED in `Zeta5/Sec6/Final.lean` (statement unchanged) through the §6 blueprint:
-19 leaf statements in `Zeta5/Sec6/*.lean`, each a self-contained analytic or finite statement
-internal to §6 and Appendix A of the paper (Lemma 6.2 for the regularised kernel, (A.1),
-(A.2), (A.5), the smoothing error), all of them now proved; (6.2)/(6.7) themselves are the
-kernel-checked certified partition of `Zeta5/Sec6/Num/`.  The module docstring of
-`Zeta5/Sec6/Final.lean` gives the route and where it deviates from the paper.  Theorem 1.1
-therefore assumes nothing beyond the axiom of `Zeta5/Axioms.lean` (since 2026-09-24 a single
-one, the prime number theorem `θ(x) ~ x`; the two axioms it replaced are now the theorems
-`Zeta5.Hermite.pole_integral` and `Zeta5.PNT.prime_riemann_sum`, statements unchanged).
-
-Four further steps, `sorry`s until 2026-09-23, are now PROVED, statements unchanged:
+The main intermediate steps behind these are
 
   `Zeta5.CrudeBound.crude_entry_bound`      Lemma 3.3 at the `h²` entries of (3.11)
                                             ← `Zeta5/Lemma33.lean`
@@ -67,12 +48,14 @@ Four further steps, `sorry`s until 2026-09-23, are now PROVED, statements unchan
                                             ← `Zeta5/Uniformity.lean`
 
 with the shared unimodularity lemma `Zeta5.HermiteBasis.det_coeffMatrix_unimodular`
-(`Zeta5/HermiteBasis.lean`, `HermiteBasisCore.lean`) used by both local analyses.
+(`Zeta5/HermiteBasis.lean`, `HermiteBasisCore.lean`) used by both local analyses. The route
+to (6.14) through `Zeta5/Sec6/` is described in the module docstring of
+`Zeta5/Sec6/Final.lean`.
 
-IMPORT DISCIPLINE.  A file that proves one of the statements below must NOT import this
-file, or the import graph cycles.  `Arithmetic.lean` used to import it and no longer does;
-`Section3.lean` (which proves Prop. 4.1) imports `LocalFunctional.lean` (which imports
-`Arithmetic.lean`) and `InnerEntries.lean`, and this file imports `Section3.lean`.
+Import discipline: a file that proves one of the statements below must not import this
+file, or the import graph cycles. `Section3.lean` (which proves Prop. 4.1) imports
+`LocalFunctional.lean` (which imports `Arithmetic.lean`) and `InnerEntries.lean`, and this
+file imports `Section3.lean`.
 -/
 import Zeta5.Skeleton
 import Zeta5.Counting
@@ -103,13 +86,13 @@ noncomputable section
 The domain of `μ_X` is realised here by `muOver n A = μ_X(A(t)/D_tail(t))`, which covers every
 rational function occurring in (2.4).
 
-**PROVED** in `Zeta5/Positivity.lean`: the series for `w` and its convergence, the
+Proved in `Zeta5/Positivity.lean`: the series for `w` and its convergence, the
 interchange of `∑` and `∫`, the moment identity `∫_0^∞ y^{2e}w = μ(t^e)` (via Mathlib's
 `hasSum_zeta_nat` for Euler's formula), the pole values including both correction terms
 `−1/4 + 1/(2j)`, integrability throughout, and the ℚ-linearity of `μ_X` through polynomial
-division and simple partial fractions.  The pole integral (Hermite's formula for the Hurwitz
-zeta function, in the form of p. 5) is `Zeta5.Hermite.pole_integral`, also proved (formerly the
-axiom `Zeta5.Axioms.hermite_pole_integral`), so Proposition 2.2 has no external input. -/
+division and simple partial fractions.  The pole integral of p. 5 is
+`Zeta5.Hermite.pole_integral` (`Zeta5/Hermite.lean`), proved without Hermite's formula
+(README, deviation 8).  Proposition 2.2 uses no axiom. -/
 theorem prop_2_2_moment (n : ℕ) (A : ℚ[X]) :
     evalZeta5 (muOver n A)
       = ∫ y in Set.Ioi (0 : ℝ),
@@ -121,7 +104,7 @@ theorem prop_2_2_moment (n : ℕ) (A : ℚ[X]) :
 The paper derives it from (2.10) by the displayed computation
 `∫_0^∞ D_N(y²)⁶q(y²)²/D_K(y²) · w(y) dy > 0` for `0 ≠ q` of degree `< h`.
 
-**PROVED** in `Zeta5/Positivity.lean`: the matrix is real symmetric because it is
+Proved in `Zeta5/Positivity.lean`: the matrix is real symmetric because it is
 Hankel; the quadratic form at `x ≠ 0` is that integral with `q = ∑ x_i X^i ≠ 0`; the integrand
 is `≥ 0` on `(0,∞)` and vanishes only on the finite root set of `y ↦ q(y²)`, so the integral
 is strictly positive. -/
@@ -197,18 +180,15 @@ theorem Q_natDegree (n M : ℕ) (Alloc : InnerAllocFamily n M) :
 /-- **Proposition 4.1** (p. 11).  Under (4.1) — `K ∈ 40ℤ_{>0}`, `K ≥ 200M²`,
 `K/M < p ≤ K/3` — one has `v_p^G(Δ_K) ≥ γ_p^in`, for any allocation satisfying (4.4).
 
-This is the one substantial argument of the paper that the audit could read but not
-cross-check against a computed determinant, because (4.1) forces `p > 8000` and a matrix
-of size `≥ 296000`.  It is the primary target of this formalisation.
+The audit could not check this against a computed determinant, because (4.1) forces
+`p > 8000` and a matrix of size `≥ 296000`.
 
-The one step of its proof that the audit found unproved in the paper — `b_a ≤ 6αx + 3`,
-p. 10, and the nonnegativity of the `L_a` that it is used for — is proved, with no `sorry`,
-as `Zeta5.ell_lt` and `Zeta5.InnerAlloc.L_nonneg` in `Counting.lean`.
+The inequality `b_a ≤ 6αx + 3` of p. 10, which the paper states without proof, and the
+nonnegativity of the `L_a` that it gives are `Zeta5.ell_lt` and `Zeta5.InnerAlloc.L_nonneg`
+in `Counting.lean` (README, deviation 4).
 
-*No longer a `sorry`* (since 2026-09-22).  It is `Zeta5.Section3.prop_4_1`, which derives
-it from the entry bound and the unimodularity of the basis (4.5) —
-`Zeta5.Section3.entry_bounds_4_2_4_3`, formerly a `sorry`, PROVED (2026-09-23) in
-`Zeta5/InnerEntries.lean` — by the sorry-free
+Proved as `Zeta5.Section3.prop_4_1`, from the entry bounds and the unimodularity of the
+basis (4.5) (`Zeta5.Section3.entry_bounds_4_2_4_3`, via `Zeta5/InnerEntries.lean`) by
 `Zeta5.prop_4_1_of_entry_bounds`, `Zeta5.lemma_4_2` and `Zeta5.InnerAlloc.sum_rowW`. -/
 theorem prop_4_1 (n M p : ℕ) (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) :
     vGAtLeast p (Delta n) A.gammaIn :=
@@ -217,10 +197,9 @@ theorem prop_4_1 (n M p : ℕ) (hp : IsInnerPrime n M p) (A : InnerAlloc n M p) 
 /-- **Proposition 4.3, first assertion** (p. 13).  Under (4.9) — `p ≥ 7`, `p ≤ K < 3p`,
 `p² > 2K`, `2N < p`, `5N ≤ 2p - 2` — one has `v_p^G(Δ_K) ≥ γ_p^out`.
 
-*No longer a `sorry`* (since 2026-09-22): it is `Zeta5.Outer.prop_4_3`, which derives it
-from the §4.2 local analysis (`Zeta5.outer_local_analysis`, formerly a `sorry`, PROVED
-(2026-09-23) in `Zeta5/OuterBasis.lean`) together with the rank bound (4.10),
-weights (4.12), p. 13 table and assembly (4.14) of `Zeta5/OuterRange.lean`. -/
+Proved as `Zeta5.Outer.prop_4_3`, from the §4.2 local analysis
+(`Zeta5.outer_local_analysis`, via `Zeta5/OuterBasis.lean`) together with the rank bound
+(4.10), weights (4.12), p. 13 table and assembly (4.14) of `Zeta5/OuterRange.lean`. -/
 theorem prop_4_3 (n p : ℕ) (hp : p.Prime) (h7 : 7 ≤ p) (hpK : p ≤ K n)
     (hK3p : K n < 3 * p) (hp2 : 2 * K n < p ^ 2) (hN : 2 * N n < p)
     (hN5 : 5 * N n ≤ 2 * p - 2) :
@@ -229,7 +208,7 @@ theorem prop_4_3 (n p : ℕ) (hp : p.Prime) (h7 : 7 ≤ p) (hpK : p ≤ K n)
 
 /-- **Proposition 4.3, second assertion** (p. 13).  For `p > K`, `v_p^G(Δ_K) ≥ 0`.
 
-*No longer a `sorry`* (since 2026-09-22): it is `Zeta5.Outer.prop_4_3_large`. -/
+Proved as `Zeta5.Outer.prop_4_3_large`. -/
 theorem prop_4_3_large (n p : ℕ) (hp : p.Prime) (hpK : K n < p) :
     vGAtLeast p (Delta n) 0 :=
   Zeta5.Outer.prop_4_3_large n p hp hpK
@@ -238,13 +217,10 @@ theorem prop_4_3_large (n p : ℕ) (hp : p.Prime) (hpK : K n < p) :
 
 /-- **Proposition 5.1** (p. 14).  `Q_{K,M} = m_{K,M} F_K` belongs to `ℤ[X]`.
 
-*No longer a `sorry`.*  This is the paper's own proof, carried out prime by prime in
-`Zeta5.prop_5_1_of` (`Normalization.lean`) and applied here to its four inputs: (3.12) for
-`pM ≤ K`, Proposition 4.1 for the inner range, and the two assertions of Proposition 4.3 for
-the outer range and for `p > K` (which also covers `p > 2h`, where `v_p(S_K) = 0`).
-
-This is what makes §§3–4 load-bearing: `eq_3_12`, `prop_4_1`, `prop_4_3` and `prop_4_3_large`
-are now in the dependency cone of `Zeta5.zeta5_irrational`. -/
+The paper's proof, carried out prime by prime in `Zeta5.prop_5_1_of`
+(`Normalization.lean`) and applied here to its four inputs: (3.12) for `pM ≤ K`,
+Proposition 4.1 for the inner range, and the two assertions of Proposition 4.3 for the outer
+range and for `p > K` (which also covers `p > 2h`, where `v_p(S_K) = 0`). -/
 theorem prop_5_1 (n M : ℕ) (hM : 40 ≤ M) (hK : 200 * M ^ 2 ≤ K n)
     (Alloc : InnerAllocFamily n M) :
     ∃ P : Polynomial ℤ, P.map (Int.castRingHom ℚ) = Q n M Alloc :=
@@ -262,8 +238,8 @@ Stated in `ε`–`n₀` form with `K = 40n` (equivalent to the printed `limsup �
 hypothesis is `M ≥ 40`, not `40 | M`: the divisibility is needed only later, in (5.17) and
 hence (5.21).
 
-*No longer a `sorry`*: it is `Zeta5.PrimeSum.prop_5_2`.  The paper's proof (p. 15) is carried
-out there: `log m_{K,M} = Σ_{p≤2h}(−L_p)log p` is split along the three branches of (5.1);
+Proved as `Zeta5.PrimeSum.prop_5_2`, following the paper's proof (p. 15):
+`log m_{K,M} = Σ_{p≤2h}(−L_p)log p` is split along the three branches of (5.1);
 (3.12) contributes `O(K^{3/2}log K) = o(K²)` for `p ≤ √(5K)`; the logarithmic factor
 `⌊log_p 5K⌋` is exactly `1` for `√(5K) < p ≤ K/M`, where the prime number theorem gives the
 contribution `6λK²/M + o(K²)`; and for a bounded piecewise continuous `f` on `[3,M]`, partial
@@ -271,21 +247,17 @@ summation and the prime number theorem give
 `K^{-2}∑_{K/M<p≤K/3} p f(K/p) log p → ∫_3^M f(x)x^{-3}dx`, applied with `f = R` via (5.7),
 the same argument in `y = p/K` giving (5.10) for the outer range.
 
-`PrimeSum.lean` proves all of that.  It rests on
+The proof uses
 
-*  the **prime number theorem**, in the partial-summation form the proof consumes,
-   `Zeta5.PNT.prime_riemann_sum` — proved in `Zeta5/PNT.lean` from the bare prime number
-   theorem `θ(x)/x → 1`, the axiom `Zeta5.Axioms.chebyshev_theta_asymptotic` (allowed by the
-   ground rules of this formalization, README, "Ground rules"), which is the only external
-   input of Proposition 5.2; and
-*  `Zeta5.PrimeSum.eq_5_7_uniformity`, which is **(5.7)** together with the two
-   displays of §5.2 for the outer range — i.e. exactly the three assertions §5 makes with an
-   informal justification rather than a proof, with the `O_M(1)` constants now quantified
-   *outside* `K` and `p`, which is the uniformity the audit singled out as the paper's
-   weakest point.  Formerly a `sorry` (never an axiom, being *Fauzan's* claim); PROVED
-   (2026-09-23), with the explicit constant `C = 400 M²`, in
-   `Zeta5/Uniformity.lean`.  The p. 14 sentence "these functions are bounded and piecewise
-   polynomial on each compact subinterval of `[3,∞)`" is **not** assumed: it is proved, as
+*  the prime number theorem in partial-summation form, `Zeta5.PNT.prime_riemann_sum`, proved
+   in `Zeta5/PNT.lean` from `θ(x)/x → 1`, the axiom
+   `Zeta5.Axioms.chebyshev_theta_asymptotic`; this is the only external input of
+   Proposition 5.2; and
+*  `Zeta5.PrimeSum.eq_5_7_uniformity`: (5.7) together with the two displays of §5.2 for the
+   outer range, the assertions §5 makes with an informal justification, with the `O_M(1)`
+   constants quantified outside `K` and `p` (the explicit constant is `C = 400 M²`), proved
+   in `Zeta5/Uniformity.lean`.  The p. 14 sentence "these functions are bounded and piecewise
+   polynomial on each compact subinterval of `[3,∞)`" is not assumed: it is proved, as
    `Zeta5.PrimeSum.RR_reg`. -/
 theorem prop_5_2 (M : ℕ) (hM : 40 ≤ M) (Alloc : ∀ n, InnerAllocFamily n M)
     (ε : ℝ) (hε : 0 < ε) :
@@ -304,18 +276,14 @@ This is the constant-bookkeeping half of the passage from (5.11) to (5.21).  Wri
 `∫_3^M = ∫_3^{20} + ∫_{20}^∞ - ∫_M^∞`, the paper supplies (5.18) for `∫_3^{20}` (exact),
 (5.16) for `∫_{20}^∞` (`≤ -2689/48000`) and (5.17) for `∫_M^∞`
 (`≥ -λ/M + (2923/240 - 1/4)/M² - 32/M³`, and this is where `40 | M` is used, via
-`𝒫(M) = 𝒞(M) = 0`).  Adding them gives exactly `A_M` as defined in (5.20).  `Zeta5.Astar_eq` in `Basic.lean` is the exact rational identity
-`A_* = I_out + ∫_3^{20} + (-2689/48000)` that sits behind it, and it is proved.
+`𝒫(M) = 𝒞(M) = 0`).  Adding them gives exactly `A_M` as defined in (5.20).  `Zeta5.Astar_eq` in `Basic.lean` is
+the exact rational identity `A_* = I_out + ∫_3^{20} + (-2689/48000)` behind it.
 
-Split off from `eq_5_21` so that `Zeta5.prop_5_2` is actually *used*:
-before the split, (5.21) was a `sorry` of its own and Proposition 5.2 was an orphan in the
-dependency graph.
-
-*No longer a `sorry`* (since 2026-09-22): it is `Zeta5.AppendixB.eq_5_16_5_18`, which
-proves the whole of Appendix B — (5.8)–(5.10) and `I_out`, the 143 exact pieces of (B.2),
-(5.12)–(5.13), the seventeen rows of Table 3 and (5.18) — from Basic.lean's definitions,
-and, since 2026-09-23, on no `sorry` at all: its former residue
-`Zeta5.AppendixB.eq_5_16_5_17` (the tail integrals) is proved in `Zeta5/Tail.lean`. -/
+Proved as `Zeta5.AppendixB.eq_5_16_5_18`, which proves Appendix B — (5.8)–(5.10) and `I_out`,
+the 143 exact pieces of (B.2), (5.12)–(5.13), the seventeen rows of Table 3 and (5.18) — from
+the definitions in `Basic.lean`; the tail integrals (5.16)–(5.17) are
+`Zeta5.AppendixB.eq_5_16_5_17`, in the combined form of README deviation 7, using
+`Zeta5/Tail.lean`. -/
 theorem eq_5_16_5_18 (M : ℕ) (hM : 40 ∣ M) (hM0 : 0 < M) :
     (Iout : ℝ) + 6 * (lam : ℝ) / (M : ℝ)
       + (∫ x in (3 : ℝ)..(M : ℝ), RR x / x ^ 3) ≤ (AM M : ℝ) :=
@@ -328,8 +296,7 @@ exact rational bookkeeping `A_* = I_out + ∫_3^{20} + (-2689/48000)` behind it.
 
 The hypothesis is `40 ∣ M` with `M > 0`, exactly as printed (`M ∈ 40ℤ_{>0}`): (5.17), which
 is what produces the `1/M`, `1/M²`, `1/M³` terms of `A_M`, uses `𝒫(M) = 𝒞(M) = 0`, which the
-paper establishes only for `40 | M`.  (An earlier version of this file stated it for all
-`M ≥ 40`; that is stronger than anything the paper proves.) -/
+paper establishes only for `40 | M`. -/
 theorem eq_5_21 (M : ℕ) (hM : 40 ∣ M) (hM0 : 0 < M) (Alloc : ∀ n, InnerAllocFamily n M)
     (ε : ℝ) (hε : 0 < ε) :
     ∃ n₀ : ℕ, ∀ n, n₀ ≤ n →
@@ -346,11 +313,10 @@ theorem eq_5_21 (M : ℕ) (hM : 40 ∣ M) (hM0 : 0 < M) (Alloc : ∀ n, InnerAll
 
 (The first assertion is `F_pos`, proved above from Proposition 2.2.)
 
-*No longer a `sorry`* (since 2026-09-22): it is `Zeta5.RealBound.prop_6_3`, fed with
-`Δ_K(ζ(5)) > 0` (`delta_pos`, from Proposition 2.2 — the paper's own hypothesis for it).
-`RealBound.lean` proves (6.15) and the passage (6.14) ⇒ (6.16) outright; (6.14) itself,
-`Zeta5.RealBound.eq_6_14`, is proved in `Zeta5/Sec6/Final.lean` (since 2026-09-24 with no
-`sorry` underneath) through the §6 blueprint (`Zeta5/Sec6/*.lean`). -/
+Proved as `Zeta5.RealBound.prop_6_3`, applied to `Δ_K(ζ(5)) > 0` (`delta_pos`, from
+Proposition 2.2, as in the paper).  `RealBound.lean` proves (6.15) and the passage
+(6.14) ⇒ (6.16); (6.14) itself, `Zeta5.RealBound.eq_6_14`, is proved in
+`Zeta5/Sec6/Final.lean` from the files in `Zeta5/Sec6/`. -/
 theorem prop_6_3 (n : ℕ) (hn : 0 < n) :
     Real.log (evalZeta5 (F n))
       ≤ (Ubar : ℝ) * (K n : ℝ) ^ 2 + 24 * (K n : ℝ) * Real.log (K n : ℝ)
@@ -364,7 +330,7 @@ for `M ∈ 40ℤ_{>0}`.
 
 Stated in `ε`–`n₀` form with `K = 40n`, so `K² = 1600 n²`.  It follows from `eq_5_21`
 and `prop_6_3` because `24 K log K + 200 K = o(K²)`; that last step is elementary
-analysis, proved in `Asymptotics.lean` (`eq_7_1_of`).  Not a `sorry`. -/
+analysis, proved in `Asymptotics.lean` (`eq_7_1_of`). -/
 theorem eq_7_1 (M : ℕ) (hM : 40 ∣ M) (hM0 : 0 < M) (Alloc : ∀ n, InnerAllocFamily n M)
     (ε : ℝ) (hε : 0 < ε) :
     ∃ n₀ : ℕ, ∀ n, n₀ ≤ n →
@@ -385,7 +351,7 @@ theorem exists_innerAlloc (n M p : ℕ) (hp : IsInnerPrime n M p) :
 
 /-! ## Theorem 2.1, assembled
 
-Everything below is proved from the statements above; it introduces no new `sorry`. -/
+Everything below is proved from the statements above. -/
 
 /-- **Theorem 2.1, first sentence** (p. 4), in the paper's generality: for every `M ≥ 40` and
 every `K = 40n` with `K ≥ 200M²`, the polynomial `Q_{K,M}` belongs to `ℤ[X]`, has degree `h`,

@@ -46,8 +46,7 @@ WHAT THIS FILE PROVES.
 
 *  **§A.  The rank hypothesis of Lemma 4.2, in a form that applies over `ℚ[X]`.**
    `Zeta5.lemma_4_2` (`Lemma42.lean`) is stated with `Matrix.rank L ≤ r`, which forces a
-   *field*; `ℚ[X]` is not one, and at an earlier stage of this formalisation this was the
-   obstacle to Proposition 4.3.  It is removed here in three steps:
+   *field*; `ℚ[X]` is not one.  The hypothesis is replaced here in three steps:
    - `lemma_4_2_of_vanishing`: the rank enters the proof of (4.13) through exactly one
      consequence — the complementary-minor terms taking more than `r` columns from `L`
      vanish — so that consequence becomes the hypothesis.  No field; any commutative ring.
@@ -60,8 +59,7 @@ WHAT THIS FILE PROVES.
      into a field — for `ℚ[X]` the inclusion into `RatFunc ℚ`.  This is the "view the matrices
      over the fraction field `ℚ(X)`" resolution, and it is **the form §4.2 uses**: the
      vanishing-columns form does *not* survive the change of basis to (4.11) (see the
-     correction recorded in the docstring of `Zeta5.outer_local_analysis`, and the head of
-     `Zeta5/OuterLocal.lean`).
+     docstring of `Zeta5.outer_local_analysis`, and the head of `Zeta5/OuterLocal.lean`).
    `lemma_4_2_gauss_of_vanishing` is the Gauss-valuation instance ("The same assertion holds
    for the Gauss valuation of polynomial entries", p. 12) with the half-integer weights
    carried as `W = 2w`.
@@ -96,12 +94,11 @@ WHAT THIS FILE PROVES.
    `rank_{ℚ_p} L ≤ r_p` of (4.10), which is the one §4.2 uses): from the local data of §4.2 —
    the unimodular basis (4.11), the splitting (4.10), and the entry bound
    `v_p^G(A_{uv}) ≥ w_u + w_v` for the weights (4.12) — Proposition 4.3 follows.  This is the
-   determinant half of the proof on p. 13, and it is complete.
+   determinant half of the proof on p. 13.
 
-*  **§G.  Proposition 4.3.**  `Outer.prop_4_3` and `Outer.prop_4_3_large` are derived, with no
-   `sorry` of their own, from `outer_local_analysis` (formerly a `sorry`, now proved in
-   `Zeta5/OuterBasis.lean`), which is the *local*
-   half: the construction of the basis (4.11), its `ℤ_p`-unimodularity, the entry bounds
+*  **§G.  Proposition 4.3.**  `Outer.prop_4_3` and `Outer.prop_4_3_large` are derived
+   from `outer_local_analysis` (proved in `Zeta5/OuterBasis.lean`),
+   which is the *local* half: the construction of the basis (4.11), its `ℤ_p`-unimodularity, the entry bounds
    behind (4.12), and the divided-difference congruence.  Two `example`s check that the two
    theorems have *literally* the types of `Zeta5.prop_4_3` and `Zeta5.prop_4_3_large` in
    `Interface.lean`, which they prove (they sit in the namespace `Zeta5.Outer` so that both
@@ -112,10 +109,9 @@ WHAT THIS FILE PROVES.
    by Lean from `Zeta5.gammaOut` at all 37 primes of the audit's three exact tests
    (`K = 40, 80, 120`) and at `p > K`, and agrees with the stored values in every case.
 
-THIS FILE NOW CONTAINS NO `sorry` (2026-09-23).  Its former single `sorry`,
-`Zeta5.outer_local_analysis` (whose docstring states the paper text it stands for), is proved
-in `Zeta5/OuterBasis.lean` (`Zeta5.OuterBasis.outer_local_core`), which this file imports; the
-statement is unchanged.  No statement is weakened.
+`Zeta5.outer_local_analysis` (whose docstring states the paper
+text it stands for) is proved from `Zeta5.OuterBasis.outer_local_core`
+(`Zeta5/OuterBasis.lean`), which this file imports.
 -/
 import Zeta5.Lemma42
 import Zeta5.Section41
@@ -1280,14 +1276,11 @@ end Reduction
 
 The determinant half of the proof on p. 13 is `prop_4_3_of_local_data` above, and it is
 complete.  The *local* half — the first three paragraphs of §4.2 — is
-`outer_local_analysis`, formerly the single `sorry` of this file, now proved in
-`Zeta5/OuterBasis.lean`. -/
+`outer_local_analysis`, proved in `Zeta5/OuterBasis.lean`. -/
 
 section Prop43
 
-/-- **The local analysis of §4.2 (pp. 11–12).**  PROVED (2026-09-23) in
-`Zeta5/OuterBasis.lean`; this was formerly the one `sorry` of this file, and the account of the
-obstruction at the end of this docstring is kept as the record of what had to be done.
+/-- **The local analysis of §4.2 (pp. 11–12).**  Proved in `Zeta5/OuterBasis.lean`.
 
 The paper's text that this stands for, verbatim:
 
@@ -1340,33 +1333,23 @@ parameters but `Zeta5.outerWeight`, the literal (4.12); and the value of
 `Zeta5.gammaOut_eq` of §E.  The rank hypothesis is discharged into Lemma 4.2 by
 `Zeta5.lemma_4_2_gauss_rank` (§A), which needs no field structure on `ℚ[X]`.
 
-**A CORRECTION (2026-09-23).**  This statement used to demand the *stronger*
-vanishing-columns form of (4.10) — a set `C` of columns of `L` that vanish, with at most
-`r_p` columns outside `C` — on the ground that it is the reason the paper gives for the rank
-bound.  That is right in the **monomial** basis, where the paper proves it, and wrong in the
-basis (4.11), where the matrices of (4.10) live: every row of (4.11) is `P_a q_{a,i}` of
+**The rank form of (4.10).**  The statement uses the rank bound, not the vanishing-columns form
+of (4.10) (a set `C` of columns of `L` that vanish, with at most `r_p` columns outside `C`).
+The vanishing-columns form holds in the **monomial** basis, where the paper proves it, but not
+in the basis (4.11), where the matrices of (4.10) live: every row of (4.11) is `P_a q_{a,i}` of
 degree `h − (ℓ_a − δ_a) + i ∈ [h − 6, h − 1]`, so the degree count "`L_{ij} = 0` if
-`i + j < K − 6N + 2p − 3`" never fires, and an exact computation of the paper's own `L` in
+`i + j < K − 6N + 2p − 3`" never applies, and an exact computation of the paper's `L` in
 the basis (4.11) at `K = 40` finds **zero** vanishing columns at `p = 17, 19, 23`, where
-`h − r_p = 17, 21, 29` of them would be needed, while `rank_ℚ L = r_p` exactly (a finding of
-the referee audit; see README, "Provenance").  The previous form of this `sorry` was
-therefore not merely unproved but **false**; it has been replaced by the literal (4.10).
-Proposition 4.3, and everything below it, is unchanged.  See the head of
-`Zeta5/OuterLocal.lean`.
+`h − r_p = 17, 21, 29` of them would be needed, while `rank_ℚ L = r_p` exactly (the referee
+audit; see README, "Provenance").  See the head of `Zeta5/OuterLocal.lean`.
 
-The obstruction to discharging it is the `p`-adic local analysis itself: the valuations of the
-residues `W(−l²)(−l²)^{i+j}/D'_tail(−l²)`, the congruence
-`H^{(5)}_{p−a} ≡ H^{(5)}_{a−1} (mod p)` for `p ≥ 7` (a consequence of
-`∑_{v=1}^{p−1} v^{-5} ≡ 0`), the divided-difference integrality, and the unimodularity of
-(4.11).  The second and third of those are now **proved**, in `Zeta5/OuterLocal.lean`
+The proof (`Zeta5.OuterBasis.outer_local_core`) uses the congruence
+`H^{(5)}_{p−a} ≡ H^{(5)}_{a−1} (mod p)` and the divided-difference integrality
 (`Zeta5.OuterLocal.H5_congr`, `Zeta5.OuterLocal.muPole_congr`,
-`Zeta5.OuterLocal.muPole_divided_difference`), and the last clause above — the factorisation
-`Δ_K = c · det(…)` with `v_p(c) = 0` out of a `ℤ_p`-unimodular basis change — is
-`Zeta5.OuterLocal.Delta_eq_of_basis` with `Zeta5.OuterLocal.padicValRat_unimodular`, built on
-`Zeta5.OuterLocal.gram_basis_change` (`Gram(U) = U G_K Uᵀ`).  What is still missing, and all
-that is missing, is the construction of the basis (4.11) itself, its `ℤ_p`-unimodularity, the
-entry bounds behind (4.12), and the residue valuations.  None of it is in Mathlib and none of it is
-a standard citable fact, so it is left as this single `sorry` rather than as an axiom. -/
+`Zeta5.OuterLocal.muPole_divided_difference`), and the factorisation `Δ_K = c · det(…)` with
+`v_p(c) = 0` is `Zeta5.OuterLocal.Delta_eq_of_basis` with
+`Zeta5.OuterLocal.padicValRat_unimodular`, built on `Zeta5.OuterLocal.gram_basis_change`
+(`Gram(U) = U G_K Uᵀ`). -/
 theorem outer_local_analysis (n p : ℕ) [Fact p.Prime] (hp : OuterHyp n p) :
     ∃ (Aq L : Matrix (Fin (h n)) (Fin (h n)) ℚ[X]) (W : Fin (h n) → ℤ)
       (eρ : OuterRows n p ≃ Fin (h n)) (pinv : ℚ[X]) (c : ℚ),
@@ -1377,7 +1360,7 @@ theorem outer_local_analysis (n p : ℕ) [Fact p.Prime] (hp : OuterHyp n p) :
       ∧ (L.map (algebraMap ℚ[X] (RatFunc ℚ))).rank ≤ (rOut n p).toNat
       ∧ padicValRat p c = 0
       ∧ Delta n = Polynomial.C c * (Aq + pinv • L).det :=
-  -- PROVED in `Zeta5/OuterBasis.lean` (2026-09-23): the basis (4.11) and the zero-class rows,
+  -- Proved in `Zeta5/OuterBasis.lean`: the basis (4.11) and the zero-class rows,
   -- their `ℤ_p`-unimodularity (via `HermiteBasis.det_coeffMatrix_unimodular`), the splitting
   -- (4.10) with `rank L ≤ r_p`, and the entry bounds behind (4.12).  `outerDim` and
   -- `outerWeight` are definitionally `OuterBasis.dimO` and `OuterBasis.wtO`.
@@ -1556,10 +1539,7 @@ example : (outerCost 2 0, outerCost 3 0, outerCost 4 0, outerCost 5 0, outerCost
 example : (outerZeroCt 2 0, outerZeroCt 3 0, outerZeroCt 4 0, outerZeroCt 5 0, outerZeroCt 6 0)
     = (2, 2, 2, 2, 2) := by decide
 
-/-! ## Axiom audit for this file
-
-Everything here is `sorry`-free, `outer_local_analysis` included (it is proved in
-`Zeta5/OuterBasis.lean`). -/
+/-! ## Axiom checks -/
 
 #print axioms Zeta5.lemma_4_2_of_vanishing
 #print axioms Zeta5.lemma_4_2_of_zeroCols

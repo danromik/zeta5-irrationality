@@ -1,12 +1,10 @@
 /-
 Zeta5/Hermite.lean
 
-**Hermite's pole integral at `s = 5`, proved outright (no axiom).**  (Used by
-`Zeta5.Positivity`, i.e. by Proposition 2.2.)
+**Hermite's pole integral at `s = 5`.**  (Used by `Zeta5.Positivity`, i.e. by
+Proposition 2.2.)
 
-`Zeta5.Hermite.pole_integral` has exactly the type of the former axiom
-`Zeta5.Axioms.hermite_pole_integral` (removed 2026-09-24), the display in the middle of p. 5
-of the paper:
+`Zeta5.Hermite.pole_integral` is the display in the middle of p. 5 of the paper:
 
   `∫_0^∞ w(y)/(y²+a²) dy = a⁴ ζ(5,a) − 1/(2a) − 1/4`   (`a > 0`).
 
@@ -424,8 +422,7 @@ lemma laplace_rhs (ha : 0 < a) :
 /-! ## The theorem -/
 
 open MeasureTheory Set in
-/-- **Hermite's pole integral at `s = 5`, proved outright** (no axiom).  Same statement as the
-former axiom `Zeta5.Axioms.hermite_pole_integral`. -/
+/-- **Hermite's pole integral at `s = 5`** (p. 5). -/
 theorem pole_integral (a : ℝ) (ha : 0 < a) :
     ∫ y in Ioi (0 : ℝ), wt y / (y ^ 2 + a ^ 2)
       = a ^ 4 * (∑' k : ℕ, 1 / ((k : ℝ) + a) ^ 5) - 1 / (2 * a) - 1 / 4 := by

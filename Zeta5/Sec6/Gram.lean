@@ -1,8 +1,8 @@
 /-
 Zeta5/Sec6/Gram.lean  —  §6.2 of the paper: (6.10)–(6.13) and the bookkeeping of (6.14),
-from a configuration bound.  THIS FILE CONTAINS NO `sorry`.
+from a configuration bound.
 
-Everything is stated in the ORIGINAL variable `y` (no `h`-fold change of variables); the
+Everything is stated in the original variable `y` (no `h`-fold change of variables); the
 paper's `t = (y/K)²` appears only as an argument of `Vfield` and of the configuration bound
 `ConfigBound` (`Sec6/Defs.lean`).
 

@@ -22,25 +22,21 @@ three branches of (5.1) split that sum into three blocks:
    `−L_p = K T(p/K) + O(1)` with `T` the integrand of (5.10), and the same partial summation
    in the variable `y = p/K` turns `Σ K T(p/K) log p` into `K² I_out`.
 
-WHAT IS ASSUMED HERE, AND WHY.
+INPUTS FROM OTHER FILES.
 
 *  `Zeta5.PNT.prime_riemann_sum` — the prime number theorem in the partial-summation
-   form the proof consumes.  Until 2026-09-24 this was the axiom
-   `Zeta5.Axioms.pnt_prime_riemann_sum`; it is now a theorem (same statement), proved in
-   `Zeta5/PNT.lean` from the bare prime number theorem `θ(x)/x → 1`, which is the axiom
-   `Zeta5.Axioms.chebyshev_theta_asymptotic` (allowed by the ground rules of this
-   formalization, README, "Ground rules"; see its docstring).
+   form the proof consumes, proved in `Zeta5/PNT.lean` from `θ(x)/x → 1`, the axiom
+   `Zeta5.Axioms.chebyshev_theta_asymptotic`.
 *  `Zeta5.PrimeSum.eq_5_7_uniformity` — the conjunction of the four statements of §§5.1–5.2
    that the paper asserts with an informal justification rather than a proof: (5.7) (two
-   halves), and the two displays of §5.2 for the outer range.  Formerly the single `sorry`
-   of this file; now **proved** (with `C = 400 M²`) in `Zeta5/Uniformity.lean`, which this
-   file imports.  Its statement is unchanged.
+   halves), and the two displays of §5.2 for the outer range.  It is proved (with
+   `C = 400 M²`) in `Zeta5/Uniformity.lean`, which this file imports.
 
 Everything else — the exact decomposition of `log m_{K,M}`, the three-way split, the whole
 branch-1 estimate, the regularity of `T` needed to feed `PNT.prime_riemann_sum`, the change of variables
 `x = 1/y`, and the assembly — is proved.
 
-IMPORT DISCIPLINE.  This file must not import `Zeta5.Interface`, which imports it.
+IMPORTS.  This file must not import `Zeta5.Interface`, which imports it.
 -/
 import Zeta5.Basic
 import Zeta5.PNT
@@ -574,7 +570,7 @@ lemma tendsto_S3 {M : ℕ} (hM : 40 ≤ M) :
 
 Table 4 (`Zeta5.AppendixB.qout_0 … qout_10`) exhibits `T` as an affine function on each of
 eleven open intervals covering `(1/3, 2λ)`; that gives both hypotheses the prime-number-theorem
-input `PNT.prime_riemann_sum` needs, with no new assumption. -/
+input `PNT.prime_riemann_sum` needs. -/
 
 /-- A function that is affine on an open interval is continuous at its interior points. -/
 lemma continuousAt_of_affine {f : ℝ → ℝ} {l r b c : ℝ}
@@ -1138,8 +1134,8 @@ def RegR (M : ℕ) : Prop :=
   (∃ C : ℝ, ∀ x ∈ Icc (3 : ℝ) (M : ℝ), |RR x| ≤ C)
     ∧ (∃ D : Finset ℝ, ∀ x ∈ Icc (3 : ℝ) (M : ℝ), x ∉ D → ContinuousAt RR x)
 
-/-- **The paper's p. 14 sentence, PROVED**: *"These functions are bounded and piecewise
-polynomial on each compact subinterval of `[3,∞)`."*  Not assumed. -/
+/-- **The paper's p. 14 sentence**: *"These functions are bounded and piecewise
+polynomial on each compact subinterval of `[3,∞)`."* -/
 lemma RR_reg (M : ℕ) (hM : 40 ≤ M) : RegR M :=
   ⟨⟨200 * (M : ℝ) ^ 2, RR_bddOn M hM⟩, RR_piecewise M⟩
 
@@ -1151,21 +1147,17 @@ THE PAPER'S CLAIMS, VERBATIM.
    `γ_p^in = pΓ(K/p) + O_M(1),     v_p(S_K) = p𝒩(K/p) + O_M(1).`"
    → the first two conjuncts.  "Uniformly in the inner range" is rendered by putting
    the constant `C` **outside** the quantifiers over `K = 40n` and over the primes `p`
-   satisfying (4.1) — which is exactly the uniformity the audit singled out as the paper's
-   weakest point, and exactly what a referee needs written down.
+   satisfying (4.1).
 
 *  p. 15, §5.2: *"Formula (4.14) gives* `−γ_p^out = K(R₀(p/K) − d(p/K)) + O(1)`*"* and
    *"The scalar contribution in this range is* `−v_p(S_K) = K(−2λ⌊1/y⌋ + Σ_{j=1}^5 (2λ−jy)_+)
    + O(1)`*"*.  Added together these are the third conjunct, with
    `T = R₀ − d − 2λ⌊1/y⌋ + Σ_{j=1}^5(2λ−jy)_+ = Zeta5.AppendixB.Tout` the integrand of (5.10).
 
-NOTHING ELSE IS ASSUMED.  In particular the p. 14 sentence "these functions are bounded and
-piecewise polynomial on each compact subinterval of `[3,∞)`" is **proved**, as `RR_reg`.
+The p. 14 sentence "these functions are bounded and piecewise polynomial on each compact
+subinterval of `[3,∞)`" is `RR_reg`.
 
-WHY THIS IS PROVED AND NOT AN AXIOM.  It is Fauzan's own claim about his own functions, not
-a standard external fact; the ground rules of this formalization (README, "Ground rules")
-forbid axiomatising it.  The paper justifies it
-in one informal paragraph (p. 14: *"Each interval on which these counts are constant has its
+The paper justifies (5.7) in one informal paragraph (p. 14: *"Each interval on which these counts are constant has its
 number of grid points equal to its length times `p`, up to an error bounded by two.  There are
 `O(M)` such intervals, and all dimensions and weights are `O(M)`.  The reserved zero block and
 the change from `p/2` to `(p−1)/2` alter the number of allocated rows by `O_M(1)`.  Altering
@@ -1173,8 +1165,7 @@ that number changes the weight sum by `O_M(1)`.  If `2Hx` crosses an integer, al
 extra row to every ordinary class gives exactly the next base allocation.  The estimate is
 therefore uniform at these transitions as well."*).
 
-EVIDENCE THAT IT IS TRUE (from the final verification of the referee audit of the preprint,
-README, "Provenance"; these figures supersede that audit's earlier estimates): `γ_p^in` was
+NUMERICAL DATA (from the referee audit of the preprint, README, "Provenance"): `γ_p^in` was
 computed **exactly** from (4.4)–(4.8) — including the zero block (4.7) and the
 `ε`-ordering — by a cell decomposition validated against a
 brute-force loop over `a = 1..(p−1)/2`, and compared with `pΓ(K/p)` in exact rational
@@ -1187,7 +1178,7 @@ than globally, and `Γ` was shown to be *exactly* continuous across `2Hx ∈ ℤ
 `|−(v_p(S_K)+γ_p^out) − K·T(p/K)| ≤ 10` over `K/3 < p ≤ 2h`, at `K = 320 000`.
 
 PROOF: `Zeta5.Uniformity.eq_5_7_uniformity` (`Zeta5/Uniformity.lean`), with the explicit
-constant `C = 400 M²` (the true constant is about `4M`; only existence is used). -/
+constant `C = 400 M²` (the numerical data suggest about `4M`; only existence is used). -/
 theorem eq_5_7_uniformity (M : ℕ) (hM : 40 ≤ M) (Alloc : ∀ n, InnerAllocFamily n M) :
     ∃ C : ℝ, 0 ≤ C ∧
       (∀ (n p : ℕ) (hp : IsInnerPrime n M p),

@@ -5,7 +5,7 @@ Part of the Lean formalisation of
 
     A. Fauzan, "ζ(5) is irrational", 17 September 2026.
 
-**PROPOSITION 5.1 (p. 14), THE STRUCTURAL KEYSTONE.**
+**PROPOSITION 5.1 (p. 14).**
 
     Proposition 5.1.  The polynomial `Q_{K,M} = m_{K,M} F_K` belongs to `ℤ[X]`.
 
@@ -13,13 +13,10 @@ Part of the Lean formalisation of
     4.1 and 4.3.  At `p > 2h`, all factorials in `S_K` are units, and `Δ_K` is integral by
     Proposition 4.3.  Thus every coefficient of `Q_{K,M}` is integral at every prime.  □
 
-In the paper Proposition 5.1 is a *conclusion*, the output of §§3–5.1.  Before this file it
-was **assumed** in `Interface.lean`, which made Propositions 4.1 and 4.3 and (3.12) orphans:
-`Zeta5.zeta5_irrational` did not depend on them at all.  This file carries out the paper's
-one-paragraph proof, so that `Interface.prop_5_1` is no longer a `sorry` and §§3–4 become
-load-bearing.
+This file carries out the paper's one-paragraph proof; `Interface.prop_5_1` is derived from
+it, so that `Zeta5.zeta5_irrational` depends on (3.12) and Propositions 4.1 and 4.3.
 
-WHAT IS PROVED HERE, with no `sorry`:
+CONTENTS.
 
   §1  The Gauss valuation `v_p^G` of §3 (p. 5): monotonicity, its characterisation by
       `padicNorm`, `v_p^G(AB) ≥ v_p^G(A) + v_p^G(B)`, the exact rule for `C c · A`, and
@@ -30,12 +27,7 @@ WHAT IS PROVED HERE, with no `sorry`:
   §5  **`prop_5_1_of`**: Proposition 5.1 from (3.12), Propositions 4.1, 4.3 and 4.3-large,
       taken as explicit hypotheses.  `Interface.prop_5_1` is this applied to the four.
 
-WHAT WAS *MOVED* HERE AND HAS MOVED ON: **`eq_3_12`** — (3.12), the output of Lemma 3.3 —
-was declared in `Arithmetic.lean`, then here; it now lives in `Zeta5/CrudeBound.lean`, where
-it is proved rather than assumed.  See §3 below.
-
-THIS FILE CONTAINS NO `sorry`.  (It used to contain exactly one, `eq_3_12`; that statement
-now lives, proved, in `Zeta5/CrudeBound.lean` — see §3 below.)
+(3.12), `Zeta5.eq_3_12`, is proved in `Zeta5/CrudeBound.lean`; see §3 below.
 
 CONVENTION (README): nothing here is proved by weakening a statement.  Every hypothesis of
 `prop_5_1_of` is the verbatim statement of the paper result it stands for, as declared in
@@ -204,17 +196,13 @@ theorem padicValRat_mKM (n M p : ℕ) (hp : p.Prime) (Alloc : InnerAllocFamily n
       omega
     simp [hmem, hple]
 
-/-! # §3.  (3.12) has MOVED to `Zeta5/CrudeBound.lean`
+/-! # §3.  (3.12) is in `Zeta5/CrudeBound.lean`
 
-`Zeta5.eq_3_12` — `v_p^G(F_K) ≥ -6h⌊log_p 5K⌋ - h v_p(24)`, the output of Lemma 3.3 — used
-to be declared here, as a `sorry`, because `prop_5_1_of` needs it and `Arithmetic.lean`
-(where it first stood) sits *below* `Interface.lean`.  It is now **proved**, from (3.11) and
-Lemma 3.3, in `Zeta5/CrudeBound.lean`, which sits between `Section3.lean` and
-`Interface.lean`: the proof needs `τ`, `τ^ext` and the pullback identity (3.1), all of which
-are declared in `Section3.lean`, i.e. *below* this file.  The statement is unchanged, and
-still carries the name `Zeta5.eq_3_12`; `Interface.prop_5_1` consumes it exactly as before.
-
-`prop_5_1_of` below is unaffected: it takes (3.12) as the explicit hypothesis `H312`. -/
+`Zeta5.eq_3_12` — `v_p^G(F_K) ≥ -6h⌊log_p 5K⌋ - h v_p(24)`, the output of Lemma 3.3 — is
+proved, from (3.11) and Lemma 3.3, in `Zeta5/CrudeBound.lean`, which sits between
+`Section3.lean` and `Interface.lean` (the proof needs `τ`, `τ^ext` and the pullback identity
+(3.1) of `Section3.lean`).  `prop_5_1_of` below takes (3.12) as the explicit hypothesis
+`H312`, and `Interface.prop_5_1` supplies `Zeta5.eq_3_12`. -/
 
 /-! # §4.  `v_p(S_K) = 0` for `p > 2h`
 
@@ -295,7 +283,7 @@ branch of (5.1):
 | `3p > K`, `p > K`   | `v_p(S_K) + 0`              | Proposition 4.3, 2nd assertion   |
 | `p > 2h`            | (not in the product)        | `v_p(S_K) = 0` and Prop. 4.3     |
 
-THE POINT THE AUDIT FLAGS.  The first branch is a statement about `F_K`, not about `Δ_K`,
+REMARK.  The first branch is a statement about `F_K`, not about `Δ_K`,
 and it correctly *omits* `v_p(S_K)`: (3.12) already bounds `v_p^G(F_K) = v_p(S_K) +
 v_p^G(Δ_K)` as a whole.  Adding `v_p(S_K)` there would be a double count.  The formalisation
 below keeps the asymmetry exactly as the paper has it: `H312` is applied to `F n`, the other
@@ -427,11 +415,10 @@ example : padicValRat 3 (1 / 6 : ℚ) < 0 := by
 
 end Controls
 
-/-! # `#print axioms`: what is actually proved in this file
+/-! # Axiom checks
 
-Everything here — including `prop_5_1_of`, the whole content of Proposition 5.1 — depends on
-no `sorryAx`.  `prop_5_1_of` is an unconditional implication: its four paper
-inputs are explicit hypotheses. -/
+Everything here depends only on the three standard axioms.  `prop_5_1_of` is an
+implication: its four paper inputs are explicit hypotheses. -/
 
 #print axioms Zeta5.prop_5_1_of
 #print axioms Zeta5.exists_intPoly_of_vG

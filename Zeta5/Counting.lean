@@ -1,27 +1,24 @@
 /-
 Zeta5/Counting.lean
 
-The residue-class counts `ℓ_A(a)` of §4.1 (p. 10), the one inequality of the paper that the
-audit found to be **asserted without proof**, and the nonnegativity of the dimensions `L_a`
+The residue-class counts `ℓ_A(a)` of §4.1 (p. 10), an inequality that the paper asserts
+without proof, and the nonnegativity of the dimensions `L_a`
 that depends on it.
 
 The paper writes, on p. 10 immediately after (4.4),
 
     "From (4.4),   2Hx - 21/20 < T < 2Hx,   b_a ≤ 6αx + 3."
 
-The attribution to (4.4) is wrong: `b_a ≤ 6αx + 3` is a statement about `ℓ_N`, and no proof is
-given.  It is load-bearing: with the naive bound `ℓ_N(a) ≤ 2⌊N/p⌋ + 2`, i.e. `b_a ≤ 6αx + 6`,
-the paper's own chain gives `T - b_a > 2λx - 141/20`, which is `-3/2` at `x = 3`, so the
-nonnegativity of the `L_a` — and with it Proposition 4.1 — collapses.  (This gap was found by
-the referee audit of the preprint; see README, "Provenance".)
+`b_a ≤ 6αx + 3` is a statement about `ℓ_N` and does not follow from (4.4); no proof is
+given.  It is needed: with the naive bound `ℓ_N(a) ≤ 2⌊N/p⌋ + 2`, i.e. `b_a ≤ 6αx + 6`,
+the paper's chain gives only `T - b_a > 2λx - 141/20`, which is `-3/2` at `x = 3`, and does not
+yield `L_a ≥ 0`.  (The audit, `docs/zeta5-audit.pdf`, identifies this and supplies a proof.)
 
 Since `x = K/p` and `α = 3/40`, `αx = 3K/(40p) = N/p`, so the inequality reads
 `3 ℓ_N(a) ≤ 6N/p + 3`, i.e. `p · ℓ_N(a) ≤ 2N + p`.  `ell_lt` proves the strict form
 `p · ℓ_A(a) < 2A + p` for every `A`, every odd prime `p` and every `1 ≤ a ≤ (p-1)/2`; that is
 exactly the case split on `v_A = A mod p` that the audit supplies.  `InnerAlloc.L_nonneg` then
-proves `L_a ≥ 0`, the conclusion the paper draws from the disputed line.
-
-THIS FILE CONTAINS NO `sorry`.
+proves `L_a ≥ 0`, the conclusion the paper draws from this line.
 -/
 import Zeta5.Basic
 

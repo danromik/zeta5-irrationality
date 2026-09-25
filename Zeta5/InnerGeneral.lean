@@ -21,11 +21,10 @@ Proof: `τ^ext_X(W/Q) = τ(P) + ∑_r c_r (H^{(5)}_{d(r)} − X)` with `P = W di
   substituting `x = a + pz` into the partial-fraction decomposition
   `W = P·Q + ∑_r c_r Q/(x−r)` and splitting `Q` into near and far factors (`class_identity`).
 
-Checked numerically before being formalised (exact rational arithmetic, `p = 7, 11, 13, 17`,
-random `W`, `S` satisfying the hypotheses, `E` from `−5` to `9`): no failure in 360 random
-instances, the bound attained with equality in most of them, and the claim with `E + 1` in
-place of `E` failing whenever it is attained; violating the unit-difference hypothesis makes
-it fail in 119/120 instances.  On the paper's own entries (basis (4.5), K = 80, p = 23,
+Numerical tests (exact rational arithmetic, `p = 7, 11, 13, 17`, random `W`, `S` satisfying
+the hypotheses, `E` from `−5` to `9`; not part of the verification): the bound holds in 360
+random instances and is attained in most of them; without the unit-difference hypothesis it
+fails in 119/120 instances.  On the paper's own entries (basis (4.5), K = 80, p = 23,
 all 2775 entries, and K = 40, p = 13, all 703 entries) the exponent `min_a(u_a − t_a) − 4`
 coincides exactly with `min((4.3), min_c (4.2))` and the true valuation never falls below it.
 -/

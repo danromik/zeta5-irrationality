@@ -6,28 +6,27 @@ Zeta5/Positivity.lean
   (2.10)  `μ_{ζ(5)}(R) = ∫_0^∞ R(y²) w(y) dy`,  `w(y) = (2π)⁴y⁵ ∑_{ℓ≥1} ℓ⁴e^{-2πℓy}/12`,
           and hence `G_K(ζ(5))` is positive definite.
 
-WHAT IS PROVED HERE, AND WHAT IS ASSUMED.
+WHAT IS PROVED HERE.
 
 *  The convergence of the series for `w`, the interchange of `∑` and `∫`, the moment
    identity `∫_0^∞ y^{2e}w(y) dy = (2e+5)!ζ(2e+2)/(12(2π)^{2e+2}) = μ(t^e)` (i.e. (2.2)),
    the positivity `w > 0` on `(0,∞)`, the integrability of every integrand occurring in
    (2.4), the passage from the pole integral to (2.3) *including both correction terms*
    `−1/4 + 1/(2j)`, the ℚ-linearity of `μ_X` through polynomial division and simple partial
-   fractions, and the final Gram-matrix argument: **all proved, no `sorry`.**
+   fractions, and the final Gram-matrix argument.
 *  The pole integral of the paper's p. 5 display (Hermite's formula for the Hurwitz zeta
    function at `s = 5`, DLMF 25.11.29, transported through four integrations by parts) is
-   `Zeta5.Hermite.pole_integral`, **proved** in `Zeta5/Hermite.lean` from Mathlib alone (by a
-   route through Mathlib's Mittag-Leffler expansion of the cotangent rather than Hermite's
-   formula).  Until 2026-09-24 it was the axiom `Zeta5.Axioms.hermite_pole_integral`, with
-   the same statement.  This file therefore has no external input beyond Mathlib.
+   `Zeta5.Hermite.pole_integral`, proved in `Zeta5/Hermite.lean` from Mathlib alone (through
+   Mathlib's Mittag-Leffler expansion of the cotangent rather than Hermite's formula).  This
+   file therefore has no external input beyond Mathlib.
 
 Euler's formula for `ζ(2m)` is NOT assumed: it is Mathlib's `hasSum_zeta_nat`, already used
 by `Zeta5.Functional.muMono_eq_zeta`, which is what identifies the Bernoulli form (2.2) with
 the moment `(2e+5)!ζ(2e+2)/(12(2π)^{2e+2})`.
 
 POSITION IN THE DEPENDENCY GRAPH.  This file imports `Zeta5.Functional` and `Zeta5.Hermite`
-only, so it sits *below* `Zeta5.Interface`, which discharges its `prop_2_2_moment` and
-`prop_2_2` from here.
+only, so it sits below `Zeta5.Interface`, which proves its `prop_2_2_moment` and `prop_2_2`
+from here.
 -/
 import Zeta5.Functional
 import Zeta5.Hermite
@@ -793,12 +792,10 @@ theorem prop_2_2 (n : ℕ) : Matrix.PosDef ((G n).map evalZeta5) := by
     rw [h4]
     simp
 
-/-! ## 11.  Axiom audit
+/-! ## 11.  Axiom checks
 
-These `#print axioms` lines appear in the build log.  Everything, including the two
-statements of Proposition 2.2, is proved from `[propext, Classical.choice, Quot.sound]` alone
-(since 2026-09-24, when the axiom `Zeta5.Axioms.hermite_pole_integral` was replaced by the
-theorem `Zeta5.Hermite.pole_integral`), with **no `sorryAx`**. -/
+Everything here, including the two statements of Proposition 2.2, depends only on
+`[propext, Classical.choice, Quot.sound]`. -/
 
 #print axioms Zeta5.Positivity.wt_pos
 #print axioms Zeta5.Positivity.integral_pow_mul_exp

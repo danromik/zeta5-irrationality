@@ -30,7 +30,7 @@ theorem Uclosed_eq_Urho (t : ℝ) : Num.Uclosed t = Urho t := by
 theorem Num_Vclosed_eq (t : ℝ) : Num.Vclosed t = Vclosed t := rfl
 
 /-- **(6.7)** for the closed forms: `2U^ρ(t) − V(t) + √t/K ≤ M₀ + √2/K` for `K ≥ 2`, `t ≥ 0`.
-From the certified partition of `Zeta5/Sec6/Num/` (`Num.eq_6_7_closed`). -/
+From the interval-arithmetic partition of `Zeta5/Sec6/Num/` (`Num.eq_6_7_closed`). -/
 theorem eq_6_7_closed (K : ℝ) (hK : 2 ≤ K) (t : ℝ) (ht : 0 ≤ t) :
     2 * Urho t - Vclosed t + Real.sqrt t / K ≤ RealBound.M0 + Real.sqrt 2 / K := by
   have := Num.eq_6_7_closed K hK t ht

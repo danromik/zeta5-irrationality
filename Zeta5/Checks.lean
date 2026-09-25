@@ -3,9 +3,8 @@ Zeta5/Checks.lean
 
 KNOWN-ANSWER CONTROLS for the definitions in `Zeta5/Basic.lean`.
 
-A formalisation is only as good as its definitions: a `sorry`-free proof of a mistranscribed
-statement is worthless.  Every control below is a fact computed by hand from the paper and
-then re-derived by Lean from the definition alone.  This file contains no `sorry`.
+Every control below is a fact computed by hand from the paper and re-derived by Lean from
+the definition alone.
 -/
 import Zeta5.Counting
 import Zeta5.Skeleton
@@ -153,7 +152,7 @@ example : -1600 * (AM 200 + Ubar) > 139 / 5 := eq_7_2_M200
 /-- (7.2) at `M = 100000`, which Corollary 1.2 needs. -/
 example : -1600 * (AM 100000 + Ubar) > 7907 / 100 := eq_7_2_M100000
 
-/-- The margin is genuinely tight: the printed exponent `139/5` in (2.7) is only
+/-- The margin is small: the printed exponent `139/5` in (2.7) is only
 `0.05` below the true value `-1600(A_200 + U) = 27.85…`. -/
 example : -1600 * (AM 200 + Ubar) < 2786 / 100 := by
   norm_num [AM, Astar, Ubar, lam]
@@ -205,8 +204,8 @@ example (p A a : ℕ) (ha1 : 1 ≤ a) (ha2 : 2 * a < p) : p * ell p A a < 2 * A 
 
 /-- **Two independent proofs of the same repair.**  `Counting.ell_lt` argues directly from
 `ell_eq`; `Section41.ell_lt_caseSplit` argues from the closed form by the case split on
-`v_A = A mod p` that the audit used on p. 10.  That the two theorems have the *same*
-statement is checked here by Lean, not by eye. -/
+`v_A = A mod p` that the audit used on p. 10.  The `example` checks that the two
+theorems have the same statement. -/
 example : @Zeta5.ell_lt = @Zeta5.ell_lt_caseSplit := rfl
 
 /-- The closed form itself, `ℓ_A(a) = 2m_A + 1_{a ≤ v_A} + 1_{a ≥ p - v_A}`. -/
@@ -225,10 +224,9 @@ treats the classes `+a` and `-a` separately can prove the paper's inequality. -/
 example (p A : ℕ) (hv : 2 * (A % p) ≤ p) : 2 * A + p ≤ p * (2 * mFloor p A + 2) :=
   naive_not_enough p A hv
 
-/-! ## What is actually proved, with no `sorry`
+/-! ## Axiom checks
 
-`#print axioms` on the completed parts: these must show `propext, Classical.choice, Quot.sound`
-and **not** `sorryAx`. -/
+The first seven show only `propext, Classical.choice, Quot.sound`. -/
 
 #print axioms Zeta5.theorem_1_1
 #print axioms Zeta5.irrational_of_integerPolynomials
@@ -238,8 +236,8 @@ and **not** `sorryAx`. -/
 #print axioms Zeta5.eq_7_2_M200
 #print axioms Zeta5.Astar_eq
 
--- And, for contrast, the two statements that are still conditional: these DO show `sorryAx`,
--- and that is the honest state of the formalisation.
+-- These two go through Proposition 5.2 and also show
+-- `Zeta5.Axioms.chebyshev_theta_asymptotic`.
 #print axioms Zeta5.theorem_2_1
 #print axioms Zeta5.zeta5_irrational
 

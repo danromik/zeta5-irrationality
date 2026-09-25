@@ -4,9 +4,7 @@ Zeta5/Skeleton.lean
 The top-level deduction of the paper:  Theorem 2.1 ⟹ Theorem 1.1
 (A. Fauzan, "ζ(5) is irrational", §1.1 p. 2 and "Proof of Theorem 1.1", p. 21).
 
-THIS FILE CONTAINS NO `sorry`.
-
-The argument is the one the audit called "airtight": an integer-valued polynomial of
+The argument: an integer-valued polynomial of
 degree at most `37n`, positive at `ξ` and smaller than `exp(-139 n²/5)`, multiplied by
 `b^{37n}` where `ξ = a/b`, is a positive integer that is eventually `< 1`.  The decay is
 quadratic in `n` and the height cost only linear, so no bound on the coefficients of the
@@ -132,7 +130,7 @@ lemma evalZeta5_map (P : Polynomial ℤ) :
 
 /-- **Theorem 1.1** (p. 2).  `ζ(5)` is irrational, given Theorem 2.1 at `M = 200`.
 
-This is the paper's "Proof of Theorem 1.1" on p. 21, and it is complete: no `sorry`. -/
+This is the paper's "Proof of Theorem 1.1" on p. 21. -/
 theorem theorem_1_1 (Alloc : ∀ n, InnerAllocFamily n 200) (hT : Theorem_2_1 Alloc) :
     Irrational zeta5 := by
   obtain ⟨n₀, hn₀⟩ := hT

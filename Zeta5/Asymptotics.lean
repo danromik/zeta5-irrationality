@@ -3,13 +3,8 @@ Zeta5/Asymptotics.lean
 
 The passage from (5.21) and (6.16) to (7.1), §7 p. 21.
 
-These three declarations were written as part of `Arithmetic.lean` (§D there); they are kept
-in a separate file, upstream of `Interface.lean`, for one reason only: `Interface.eq_7_1` is
-*proved* from them, so they must be visible before `Interface.lean` is elaborated, while
-`Arithmetic.lean` at the time imported `Interface.lean`.  Nothing here uses anything but
-`Basic.lean`.
-
-THIS FILE CONTAINS NO `sorry`.
+`Interface.eq_7_1` is proved from these declarations, so this file is upstream of
+`Interface.lean`.  It imports only `Basic.lean`.
 -/
 import Zeta5.Basic
 
@@ -63,9 +58,7 @@ theorem log_linear_le_quadratic (ε : ℝ) (hε : 0 < ε) :
 
 Stated in `ε`–`n₀` form with `K = 40n`, so `K² = 1600 n²`, exactly as `Zeta5.eq_7_1` states
 it.  The three hypotheses are (5.21), (6.16) and the positivity `F_K(ζ(5)) > 0` (the first
-assertion of (6.16), which Proposition 2.2 supplies).
-
-A complete proof of (7.1) from its stated inputs: no `sorry`. -/
+assertion of (6.16), which Proposition 2.2 supplies). -/
 theorem eq_7_1_of (M : ℕ) (Alloc : ∀ n, InnerAllocFamily n M)
     (Hm : ∀ δ : ℝ, 0 < δ → ∃ n₀ : ℕ, ∀ n, n₀ ≤ n →
         Real.log (mKM n M (Alloc n)) ≤ ((AM M : ℝ) + δ) * (K n : ℝ) ^ 2)

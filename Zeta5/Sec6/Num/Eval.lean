@@ -1,17 +1,15 @@
 /-
-Zeta5/Sec6/Num/Eval.lean  —  the certified numerics of (6.2)/(6.7) (Lemma 6.1, Appendix A.3):
+Zeta5/Sec6/Num/Eval.lean  —  the interval arithmetic for (6.2)/(6.7) (Lemma 6.1, Appendix A.3):
 computable rational enclosures (`logUp`/`logLo`, `atanUp`/`atanLo`, `sqrtUp`/`sqrtLo`),
 Table 1 as rationals, and the cell checker `cellOK`/`chainOK`, all executed by the kernel.
 
-Imports only Mathlib (and the previous `Num` module).  No `native_decide`, no
-`implemented_by`, no axiom: every finite computation is `decide +kernel`, i.e. checked by the
-kernel.  THIS FILE CONTAINS NO `sorry`.  (Prepared by the numerics scout of the §6 blueprint;
-namespace `Zeta5.Sec6.Num`.)
+Imports only Mathlib.  Every finite computation is `decide +kernel`, i.e. checked by the
+kernel; there is no `native_decide` or `implemented_by`.
 -/
 import Mathlib
 
 /-!
-# Kernel-checkable rational enclosures for (6.2) on `[0,2]`  (prototype)
+# Kernel-checkable rational enclosures for (6.2) on `[0,2]`
 
 All functions below are computable on `ℚ`, are executed by the kernel (`decide +kernel`),
 and every one of them carries an *unconditional* soundness theorem (see `Sound.lean`):

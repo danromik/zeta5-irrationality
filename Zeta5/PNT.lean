@@ -6,10 +6,9 @@ theorem in Chebyshev's form `θ(x) ~ x`.
 
 (Used by `Zeta5.PrimeSum`, i.e. by Proposition 5.2.)
 
-`Zeta5.PNT.prime_riemann_sum` has *exactly* the type of the former axiom
-`Zeta5.Axioms.pnt_prime_riemann_sum` (removed 2026-09-24); it is proved here from the single
-axiom `Zeta5.Axioms.chebyshev_theta_asymptotic` (the prime number theorem as `θ(x)/x → 1`,
-with Mathlib's own `Chebyshev.theta`) by a Darboux-type sandwich:
+`Zeta5.PNT.prime_riemann_sum` is proved here from the axiom
+`Zeta5.Axioms.chebyshev_theta_asymptotic` (the prime number theorem as `θ(x)/x → 1`, with
+Mathlib's own `Chebyshev.theta`) by a Darboux-type sandwich:
 
 1.  `θ(cX)/X → c` for every `c ≥ 0` (`theta_scaled`);
 2.  a bounded function continuous off a finite set `D` has, for every `ε`, a uniform
@@ -281,8 +280,7 @@ lemma piece_bound (φ : ℝ → ℝ) (u v X c w : ℝ) (hu : 0 ≤ u) (huv : u �
 /-! ## 6. The prime Riemann sum -/
 
 open Filter Finset Set in
-/-- The prime number theorem in the partial-summation form consumed by Proposition 5.2.
-Same type as the former axiom `Zeta5.Axioms.pnt_prime_riemann_sum`. -/
+/-- The prime number theorem in the partial-summation form used by Proposition 5.2 (p. 15). -/
 theorem prime_riemann_sum (a b : ℝ) (ha : 0 ≤ a) (hab : a < b) (φ : ℝ → ℝ)
     (hbdd : ∃ C : ℝ, ∀ y ∈ Icc a b, |φ y| ≤ C)
     (hpc : ∃ D : Finset ℝ, ∀ y ∈ Icc a b, y ∉ D → ContinuousAt φ y) :

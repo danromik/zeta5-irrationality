@@ -1,11 +1,9 @@
 /-
-Zeta5/Sec6/Num/Tail.lean  —  the certified numerics of (6.2)/(6.7) (Lemma 6.1, Appendix A.3):
-`t ≥ 4`: an analytic bound replacing (6.8) (`tail_bound_ge4`).
+Zeta5/Sec6/Num/Tail.lean  —  the interval arithmetic for (6.2)/(6.7) (Lemma 6.1, Appendix A.3):
+`t ≥ 4`: an analytic bound in place of (6.8) (`tail_bound_ge4`).
 
-Imports only Mathlib (and the previous `Num` module).  No `native_decide`, no
-`implemented_by`, no axiom: every finite computation is `decide +kernel`, i.e. checked by the
-kernel.  THIS FILE CONTAINS NO `sorry`.  (Prepared by the numerics scout of the §6 blueprint;
-namespace `Zeta5.Sec6.Num`.)
+Depends only on Mathlib and the preceding `Num` modules.  Every finite computation is
+`decide +kernel`, i.e. checked by the kernel; there is no `native_decide` or `implemented_by`.
 -/
 import Zeta5.Sec6.Num.Cell
 

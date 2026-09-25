@@ -6,10 +6,10 @@ Zeta5/Lemma33.lean
     A. Fauzan, "ζ(5) is irrational", 17 September 2026,
 
 together with the pullback bookkeeping (3.1) that turns the entries of (3.11) into values of
-`τ_X` on rational functions with the `2K` integer poles `0 < |r| ≤ K`.  This file discharges
-`Zeta5.CrudeBound.crude_entry_bound`.  It contains NO `sorry` and NO `axiom`.
+`τ_X` on rational functions with the `2K` integer poles `0 < |r| ≤ K`.  It supplies
+`Zeta5.CrudeBound.crude_entry_bound`.
 
-PAPER STATEMENT (p. 8, checked against the page image):
+PAPER STATEMENT (p. 8):
 
 > **Lemma 3.3.**  Let `A` be integer-valued on `ℤ_p`, with `deg A ≤ d`, and put
 > `g(x) = (K!)² A(x) / ∏_{-K≤r≤K, r≠0}(x-r)`.  Then
@@ -27,7 +27,7 @@ CONTENTS.
       `x·T(x) = P_{2K+1}(x+K)` (`X_mul_Tpoly`).
   §2  **(3.1)** for every `μ_X(B/D_tail)`: `muOver n B = (-1)^K τ_X(x⁵B(-x²)D_N(-x²)/T)`
       (`pullback`), by linearity from `eq_3_1_mono` and `eq_3_1_pole` over the partial-fraction
-      basis of `Functional.lean`.  PROVED.
+      basis of `Functional.lean`.
   §3  `p`-adic bookkeeping with `padicNorm` (multiplicative, `|0|_p = 0`), which avoids the trap
       `padicValRat p 0 = 0`: `v_p(C(n,k)) ≤ ⌊log_p n⌋` (Mathlib's
       `Nat.factorization_choose_le_log`), `v_p(H^{(5)}_m) ≥ -5⌊log_p m⌋`.
@@ -53,7 +53,7 @@ CONTENTS.
       `lemma_3_3` (the printed (3.10)).
   §7  The entries of (3.11): `entry_pullback` and `entry_bound`, which `CrudeBound.lean` applies.
 
-KNOWN-ANSWER CONTROLS, run before the proof (exact rational arithmetic, `numerics/lemma33/`):
+NUMERICAL CHECKS (exact rational arithmetic, `numerics/lemma33/`, not part of the proof):
 the no-`24` bound on every basis element `C(x+K,k)`, `k ≤ d`, for `K ≤ 8`, three `d` per `K`,
 `p ≤ 13` (126 cases, min slack 0, never violated); `τ(ΔS) = [x⁴]S` on 30 random `S`; the
 closed forms above for `K ≤ 5`, all `k < 5K`; the pullback (3.1) against the definition of
@@ -1140,7 +1140,7 @@ end Controls
 
 end Lemma33
 
-/-! # Audit trail -/
+/-! # Axiom checks -/
 
 section
 #print axioms Zeta5.Lemma33.pullback

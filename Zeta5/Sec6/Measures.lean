@@ -1,8 +1,6 @@
 /-
 Zeta5/Sec6/Measures.lean  —  elementary facts about the measures of `Sec6/Defs.lean`:
 mass, support, and integrals against `arcsine`, `rhoM` and `pts`.
-
-THIS FILE CONTAINS NO `sorry`.
 -/
 import Zeta5.Sec6.Defs
 

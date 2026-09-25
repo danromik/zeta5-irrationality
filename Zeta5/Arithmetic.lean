@@ -5,9 +5,8 @@ Part of the Lean formalisation of
 
     A. Fauzan, "ζ(5) is irrational", 17 September 2026.
 
-Elementary arithmetic infrastructure for the paper, and the ASSEMBLY of Theorem 2.1 from the
-five statements of the paper that the referee audit (see README, "Provenance") could read but not
-certify.
+Elementary arithmetic infrastructure for the paper, and the assembly of Theorem 2.1 from five
+statements of the paper, taken as hypotheses.
 
 Contents, in the order the paper uses them:
 
@@ -17,22 +16,13 @@ Contents, in the order the paper uses them:
   §D  §7, p. 21:   the assembly — Theorem 2.1 from Prop 5.1, (2.9), Prop 2.2, (5.21), (6.16).
   §E  (7.2), p. 21: the final margin `A_200 + U < -139/8000`, exact rational arithmetic.
 
-CONVENTION (README): nothing here is proved by weakening a statement, and every `sorry`
-carries a docstring naming the paper statement it stands for.  The hypotheses of the §D
-theorems are faithful transcriptions of the paper's own statements, taken as *hypotheses*
-rather than as new `sorry`s, so that the §D results are unconditional implications.
+The hypotheses of the §D theorems transcribe the paper's own statements, so that the §D
+results are unconditional implications.
 
-THIS FILE CONTAINS NO `sorry`.  (It used to contain exactly one, `eq_3_12`, the output of
-Lemma 3.3; that declaration was moved unchanged to `Zeta5/Normalization.lean`, and now lives,
-proved, in `Zeta5/CrudeBound.lean`.)
-
-IMPORTS (changed 2026-09-22).  This file used to `import
-Zeta5.Interface`.  It no longer does, and must not: `Zeta5/Section3.lean` — which *proves*
-`Interface.prop_4_1` — imports this file, so an `import Zeta5.Interface` here is an import
-cycle.  Nothing here ever used a declaration of `Interface.lean`; the only non-local
-dependencies are `Theorem_2_1`/`theorem_1_1` (Skeleton), `eq_7_1_of` /
-`eq_5_21_of_prop_5_2` / `log_linear_le_quadratic` (Asymptotics) and `eq_3_12`
-(Normalization).  The names of `Interface.lean` that occur below occur only in prose.
+IMPORTS.  This file must not import `Zeta5.Interface`: `Zeta5/Section3.lean`, which proves
+`Interface.prop_4_1`, imports this file.  The non-local dependencies are
+`Theorem_2_1`/`theorem_1_1` (Skeleton) and `eq_7_1_of` / `log_linear_le_quadratic`
+(Asymptotics).  Names of `Interface.lean` occur below only in prose.
 -/
 import Zeta5.Skeleton
 import Zeta5.Asymptotics
@@ -163,7 +153,8 @@ The other ingredient of §3.3 is the Vandermonde bound (3.8),
 a Lean lemma: written with `padicValRat`, whose value at `0` is `0` rather than `+∞`, the
 inequality is false whenever `A(x) = A(y)` with `x ≢ y`, so a faithful statement needs the
 `v_p(0) = +∞` convention of `vGAtLeast`, which applies to polynomial coefficients and not to
-a single value.  What §5 actually consumes is Lemma 3.3's *output*, (3.12), stated below. -/
+a single value.  What §5 consumes is Lemma 3.3's output (3.12), proved in
+`Zeta5/CrudeBound.lean`. -/
 
 /-- The binomial polynomial `C(X,k) = X(X-1)⋯(X-k+1)/k!`.  `descPochhammer ℚ k` is the
 falling factorial `X(X-1)⋯(X-k+1)`. -/
@@ -308,19 +299,10 @@ theorem integer_binom_coeffs (d : ℕ) (P : ℚ[X]) (hP : P.natDegree ≤ d)
   exact Finset.sum_congr rfl fun k hk => by
     rw [hcz k (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk))]
 
-/-! ### (3.12) has MOVED to `Zeta5/Normalization.lean`
+/-! ### (3.12)
 
-`Zeta5.eq_3_12` — `v_p^G(F_K) ≥ -6h⌊log_p(5K)⌋ - h v_p(24)`, the output of Lemma 3.3 — was
-declared here.  It is now declared, with its statement, docstring and `sorry` unchanged, in
-`Zeta5/Normalization.lean`, which sits *above* `Interface.lean` in the import order.  The
-move was forced by the proof of Proposition 5.1: `Interface.prop_5_1` is proved from (3.12)
-together with Propositions 4.1 and 4.3, so (3.12) has to be elaborated before
-`Interface.lean`, which at the time was imported by this file.
-
-It has since moved on again, to `Zeta5/CrudeBound.lean`, where it is **proved** from (3.11)
-and Lemma 3.3; that file imports `Section3.lean`, hence this one, so `eq_3_12` is no longer
-in scope here.  `integer_binom_coeffs` above — the elementary input to the Vandermonde bound
-(3.8) — is unchanged and still proved here. -/
+`Zeta5.eq_3_12`, `v_p^G(F_K) ≥ -6h⌊log_p(5K)⌋ - h v_p(24)`, the output of Lemma 3.3, is
+proved in `Zeta5/CrudeBound.lean` from (3.11) and Lemma 3.3. -/
 
 /-- (5.1), first branch: for `pM ≤ K` the exponent `L_p(K,M)` is exactly the right-hand
 side of (3.12).  A transcription check tying `Lp` to `eq_3_12`. -/
@@ -338,7 +320,7 @@ The paper writes, for `p ≥ 7` and `d ≥ 3`,
 and asserts: *"The von Staudt–Clausen theorem implies `v_p(κ_d) ≥ -1`.  Moreover `κ_d ∈ ℤ_p`
 for `d ≤ p+1`."*  Mathlib has von Staudt–Clausen (`Bernoulli.vonStaudt_clausen`) together
 with the exact valuation `v_p(B_{2k}) = -1` when `(p-1) ∣ 2k`; both assertions are derived
-from it below, with no `sorry`. -/
+from it below. -/
 
 lemma padicNorm_le_one_of_nonneg {p : ℕ} [hp : Fact p.Prime] {x : ℚ}
     (hx : 0 ≤ padicValRat p x) : padicNorm p x ≤ 1 := by
@@ -555,23 +537,13 @@ The paper's "Proof of Theorem 2.1" (p. 21) combines five statements:
 Everything in this section is proved from those five, taken as hypotheses.  The only genuine
 analytic content is `log_linear_le_quadratic`: `24K log K + 200K = o(K²)`. -/
 
-/-! ### Moved to `Zeta5/Asymptotics.lean`
+/-! ### Inputs from `Zeta5/Asymptotics.lean`
 
-`Q_{K,M}(ζ(5)) = m_{K,M}·F_K(ζ(5))` (`evalZeta5_Q`), the `o(K²)` estimate
-`24x log x + 200x = o(x²)` (`log_linear_le_quadratic`) and **(7.1)** from its three inputs
-(`eq_7_1_of`) were written here and have been MOVED VERBATIM to `Zeta5/Asymptotics.lean`,
-which imports only `Basic.lean`.  The move was forced by the import order: `Interface.eq_7_1`
-is *proved* by `eq_7_1_of`, so `eq_7_1_of` has to be elaborated before `Interface.lean`,
-which at the time was imported by this file.  All three are still in scope here (this file
-imports `Asymptotics.lean` directly) and are used below in `theorem_2_1_of`.
-
-`eq_7_1_proved`, which derived the statement of `Zeta5.eq_7_1` from `eq_5_21`, `prop_6_3`
-and `F_pos`, has been deleted for the same reason: that derivation is now the *body* of
-`Zeta5.eq_7_1` in `Interface.lean`, which is no longer a `sorry`.
-
-`eq_5_21_of_prop_5_2` moved to `Zeta5/Asymptotics.lean` for the same reason:
-`Interface.eq_5_21` is now proved by it, from `Interface.prop_5_2` and the new named
-`sorry` `Interface.eq_5_16_5_18`.  It too is still in scope here. -/
+`Q_{K,M}(ζ(5)) = m_{K,M}·F_K(ζ(5))` (`evalZeta5_Q`), the estimate `24x log x + 200x = o(x²)`
+(`log_linear_le_quadratic`), (7.1) from its three inputs (`eq_7_1_of`) and (5.21) from
+Proposition 5.2 (`eq_5_21_of_prop_5_2`) are in `Zeta5/Asymptotics.lean`, which imports only
+`Basic.lean`, so that `Interface.lean` can use them.  `eq_7_1_of` is used below in
+`theorem_2_1_of`. -/
 
 /-- **(2.7)/(2.8) from (7.1)**, with (7.1) and the positivity of `Q_{K,M}(ζ(5))` as
 hypotheses.  This is `Zeta5.decay_of_margin` with its input made explicit; `c` is the
@@ -644,7 +616,6 @@ the paper's five inputs taken as hypotheses:
 * `H521` — (5.21), `limsup K^{-2} log m_{K,200} ≤ A_200`;
 * `H616` — Proposition 6.3, (6.16).
 
-The proof is complete: no `sorry`, and no appeal to the `sorry`s of `Interface.lean`.
 The margin (7.2) enters through `eq_7_2_M200`, proved in `Basic.lean`. -/
 theorem theorem_2_1_of (Alloc : ∀ n, InnerAllocFamily n 200)
     (H51 : ∀ n : ℕ, 200 * 200 ^ 2 ≤ K n →
@@ -675,8 +646,7 @@ theorem theorem_2_1_of (Alloc : ∀ n, InnerAllocFamily n 200)
 
 /-- **Theorem 1.1** from the same five inputs: `ζ(5)` is irrational.
 
-This is the paper's whole argument with exactly its five unproved inputs made explicit as
-hypotheses.  `#print axioms` on it shows no `sorryAx`. -/
+This is the paper's argument with its five inputs made explicit as hypotheses. -/
 theorem zeta5_irrational_of (Alloc : ∀ n, InnerAllocFamily n 200)
     (H51 : ∀ n : ℕ, 200 * 200 ^ 2 ≤ K n →
         ∃ P : Polynomial ℤ, P.map (Int.castRingHom ℚ) = Q n 200 (Alloc n))
@@ -778,11 +748,10 @@ example : A200printed + Ubar < -139 / 8000 := A200_add_Ubar_lt
 
 end Controls
 
-/-! # `#print axioms`: what is actually proved in this file
+/-! # Axiom checks
 
-Nothing in this file depends on `sorryAx`; the assembly theorems of §D are unconditional
-implications, with their five inputs explicit as hypotheses.  `Zeta5.eq_3_12` now lives in
-`Zeta5/CrudeBound.lean`, which imports this file. -/
+The assembly theorems of §D are unconditional implications, with their five inputs explicit
+as hypotheses. -/
 
 #print axioms Zeta5.vS_eq
 #print axioms Zeta5.integer_binom_coeffs

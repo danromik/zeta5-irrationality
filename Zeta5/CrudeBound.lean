@@ -19,8 +19,8 @@ This file carries out that sentence.  Its contents, in the paper's order:
   §1b  p. 9   the two printed binomial identities that make the basis integer-valued under
               `t = -x²`: `q_i(-z²) = C(z+i,2i) + C(z+i-1,2i)` (`qb_pullback_int`) and
               `D_N(-z²)/(N!)² = C(N-z,N)C(N+z,N)` (`D_pullback_int`), hence
-              `fb_pullback_int`.  PROVED.
-  §2   p. 9   **(3.11)**, `F_K(X) = det[(K!)² μ_X(f_i f_j/D_K)]_{0≤i,j<h}`.  PROVED — the
+              `fb_pullback_int`.
+  §2   p. 9   **(3.11)**, `F_K(X) = det[(K!)² μ_X(f_i f_j/D_K)]_{0≤i,j<h}`, by the
               triangular change of basis.  This is a genuine identity, not a definition:
               the constant `S_K` of (2.5) is *recovered* from the leading coefficients of
               the `q_i`, `S_K = ((K!)²/(N!)¹²)^h · (∏_{i<h} lead q_i)²`
@@ -30,13 +30,13 @@ This file carries out that sentence.  Its contents, in the paper's order:
   §3   p. 9   Lemma 3.3's two hypotheses for the entries of (3.11): the pullback numerator
               `A_{ij}(x) = x⁵f_i(-x²)f_j(-x²)` is integer-valued (`pullNum_int`) and has
               degree at most `12N + 4h + 1` (`pullNum_natDegree_le`), whence
-              `max(2K, d+1) ≤ 5K` (`max_two_K_le_five_K`).  PROVED.
+              `max(2K, d+1) ≤ 5K` (`max_two_K_le_five_K`).
   §6   pp. 8–9 `crude_entry_bound`: Lemma 3.3 (3.10) at the entries of (3.11), transported
-              through the pullback identity (3.1).  PROVED (2026-09-23), by
+              through the pullback identity (3.1), by
               `Zeta5.Lemma33.entry_bound` of `Zeta5/Lemma33.lean`, which proves Lemma 3.3
               itself (`Zeta5.Lemma33.lemma_3_3`) and the pullback (3.1) for every
               `μ_X(B/D_tail)` (`Zeta5.Lemma33.pullback`).  Then the assembly
-              `eq_3_12'` = `eq_3_12`, by `Zeta5.vGAtLeast_det`.  PROVED.
+              `eq_3_12'` = `eq_3_12`, by `Zeta5.vGAtLeast_det`.
 
 -/
 import Zeta5.Section3
@@ -525,7 +525,7 @@ Lemma 3.3 bounds every entry of (3.11) by `-6⌊log_p 5K⌋ - v_p(24)`; the dete
 `h × h` matrix all of whose entries have Gauss valuation at least `e` has Gauss valuation at
 least `h e` (`Zeta5.vGAtLeast_det`, the `L = 0` case of Lemma 4.2). -/
 
-/-- **Lemma 3.3 (p. 8), applied to the `(i,j)` entry of (3.11).  PROVED.**
+/-- **Lemma 3.3 (p. 8), applied to the `(i,j)` entry of (3.11).**
 
 PAPER STATEMENT, verbatim (p. 8), together with the sentence of p. 9 that applies it:
 
@@ -542,7 +542,7 @@ through the pullback identity **(3.1)** `μ_X(R) = τ_X(x⁵R(-x²))`, which tur
 `±(K!)² μ_X(f_i f_j/D_K) = ±Gf n i j` because `D_K(-x²) = (-1)^K ∏_{0<|r|≤K}(x-r)`.  (The
 sign is immaterial: `vGAtLeast` is invariant under negation.)
 
-HOW IT IS PROVED (`Zeta5/Lemma33.lean`, no `sorry`, no new axiom):
+HOW IT IS PROVED (`Zeta5/Lemma33.lean`):
 
 * the pullback (3.1) for every `μ_X(B/D_tail)` (`Lemma33.pullback`), by linearity from the
   monomial and pole cases `eq_3_1_mono`, `eq_3_1_pole` and the partial-fraction basis of
@@ -641,13 +641,13 @@ end Controls
 
 end CrudeBound
 
-/-- **(3.12)** (p. 9), under the name `Normalization.lean` used for it.  -/
+/-- **(3.12)** (p. 9), in the namespace `Zeta5`.  -/
 theorem eq_3_12 (n p : ℕ) (hp : p.Prime) :
     vGAtLeast p (F n)
       (-6 * (h n : ℤ) * (Nat.log p (5 * K n) : ℤ) - (h n : ℤ) * (padicValNat p 24 : ℤ)) :=
   CrudeBound.eq_3_12' n p hp
 
-/-! # Audit trail: what is actually proved in this file -/
+/-! # Axiom checks -/
 
 section
 #print axioms Zeta5.CrudeBound.eq_3_11

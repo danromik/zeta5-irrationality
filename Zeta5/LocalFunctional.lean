@@ -3,14 +3,11 @@ Zeta5/LocalFunctional.lean
 
 §§A–E OF THE PAPER'S SECTION 3 (pp. 5–7): the local rational functional.
 
-MOVED VERBATIM, 2026-09-23, from `Zeta5/Section3.lean` (its §A–§E; every declaration keeps
-its name, namespace, statement and proof).  The move is structural only: the proof of
-`Zeta5.Section3.entry_bounds_4_2_4_3` lives in `Zeta5/InnerEntries.lean`, which needs `τ`,
-`τ^ext`, `Tpoly`, `resid` and Lemma 3.1, and which `Section3.lean` must import; keeping these
-definitions in `Section3.lean` would have made that an import cycle.  `Section3.lean` imports
-this file, so every downstream importer of `Zeta5.Section3` sees exactly what it saw before.
+These declarations are in a separate file because `Zeta5/InnerEntries.lean`, which proves
+`Zeta5.Section3.entry_bounds_4_2_4_3`, needs `τ`, `τ^ext`, `Tpoly`, `resid` and Lemma 3.1,
+and `Section3.lean` imports `InnerEntries.lean`.  `Section3.lean` imports this file.
 
-Contents, in the paper's order (see `Section3.lean` for the full commentary):
+Contents, in the paper's order:
 
   §A  p. 5      the functional `L` (`Lfun`) with `L(x^k) = B_k`, and `τ(P) = L(P''')/24`.
   §B  p. 6      `τ(x^d) = κ_d`, and the identities (3.2) and (3.3).
@@ -403,12 +400,12 @@ values `H^{(5)}_{d(r_ν)} - Y` are integral because `d(r_ν) < p`; `τ(P_0) ∈ 
 `deg P_0 ≤ p+1` (that is `κ_d ∈ ℤ_p` for `d ≤ p+1`); and for `j ≥ 1` the factor `p^j`
 absorbs the one power of `p` that `τ` can lose (`v_p(κ_d) ≥ -1`, von Staudt–Clausen).
 
-SCOPE NOTE, stated loudly.  The series `∑_{j≥0} p^j U_j` is an element of the Tate algebra
+SCOPE NOTE.  The series `∑_{j≥0} p^j U_j` is an element of the Tate algebra
 `𝓐 = ℚ_p⟨z⟩`, which is not formalised here.  `lemma_3_1` below is (3.4) for every partial
 sum `∑_{j≤J} p^j U_j`, with `J` arbitrary — i.e. the whole arithmetic content, uniformly in
 `J`.  The passage from the partial sums to the sum of the series is the *analytic* wrapper
 (`‖τ^ext_Y‖ ≤ p` on `𝓑_T`, `𝓑_T` complete, `ℤ_p[X]` closed in `ℚ_p[X]`), and is the only
-part of Lemma 3.1 not machine-checked.  Nothing downstream uses more than the partial sums:
+part of Lemma 3.1 not formalized.  Nothing downstream uses more than the partial sums:
 in §4 the far factors are expanded to the finite order that the entry bound needs. -/
 
 section Lemma31

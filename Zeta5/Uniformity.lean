@@ -3,9 +3,8 @@ Zeta5/Uniformity.lean
 
 **(5.7) (p. 14) and the two displays of §5.2 (p. 15), with the `O_M(1)` made uniform.**
 
-This file proves `Zeta5.PrimeSum.eq_5_7_uniformity`.  Its statement lives, unchanged, in
-`PrimeSum.lean`, which imports this file; `eq_5_7_uniformity` below has literally the same
-type.  The constant is explicit: `C = 400 M²` (the true size is about `4M`; the statement
+This file proves `Zeta5.PrimeSum.eq_5_7_uniformity`.  Its statement is in `PrimeSum.lean`,
+which imports this file; `eq_5_7_uniformity` below has the same type.  The constant is explicit: `C = 400 M²` (the true size is about `4M`; the statement
 only asks for existence).
 
 THE ROUTE.
@@ -43,11 +42,7 @@ THE ROUTE.
 KNOWN-ANSWER CONTROLS (exact rational arithmetic, `numerics/uniformity/`):
 over every prime of the relevant ranges at `K = 160 000` and `K = 320 000`, `M = 40`,
 `γ_p^in - pΓ(K/p) ∈ [-151, 149]`, `v_p(S_K) - p𝒩(K/p) ∈ [3, 37]`,
-`-(v_p(S_K)+γ_p^out) - K T(p/K) ∈ [-10, 2]`; every intermediate statement of this file
-(`riemann`, `Gam_split`, `IT_succ`, `eps_ell_sum`, `U_eq`, `T_cases`, `Z0_bound`, `delta_eq`,
-`Gs_bound`, the bound of `assembly`) was tested there before it was proved.
-
-Nothing here is assumed: no axiom, no `sorry`.
+`-(v_p(S_K)+γ_p^out) - K T(p/K) ∈ [-10, 2]`.
 -/
 import Zeta5.Arithmetic
 import Zeta5.AppendixB

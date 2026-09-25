@@ -20,16 +20,6 @@ import Zeta5.Basic
 namespace Zeta5
 namespace Axioms
 
-/-
-HISTORY.  Until 2026-09-24 this file declared two axioms, each stronger than its citation:
-`hermite_pole_integral` (Hermite's formula DLMF 25.11.29 at `s = 5` already carried through
-the four integrations by parts of p. 5) and `pnt_prime_riemann_sum` (the prime number theorem
-already carried through partial summation and a Darboux sandwich).  Both are now theorems with
-the identical statements: `Zeta5.Hermite.pole_integral` (`Zeta5/Hermite.lean`, proved from
-Mathlib alone, with no axiom) and `Zeta5.PNT.prime_riemann_sum` (`Zeta5/PNT.lean`, proved from
-the single axiom below).
--/
-
 open Filter in
 /-- **The prime number theorem, in Chebyshev's form `θ(x) ~ x`.**  (Used by `Zeta5.PNT`,
 hence by `Zeta5.PrimeSum`, i.e. by Proposition 5.2.)

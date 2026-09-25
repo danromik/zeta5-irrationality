@@ -1,14 +1,11 @@
 /-
 Zeta5/Sec6/Defs.lean  —  the shared definitions of the proof of (6.14).
 
-THIS FILE CONTAINS NO `sorry`, and provers never edit it: every leaf of the §6 blueprint
-(`Zeta5/Sec6/*.lean`) states its claim in terms of the definitions below.
-
-ROUTE (the full plan, with every leaf, is in the module docstring of
-`Zeta5/Sec6/Final.lean`).  (6.14) is reduced to a *configuration bound* (the paper's (6.9)) by the Gram-integral argument (6.10)–(6.13), which
-is proved in `Zeta5/Sec6/Gram.lean`.  The configuration bound is proved NOT by the paper's
-Lemma 6.2 for the singular kernel `log|z-w|` on `ℂ` with circle regularisation, but by the
-same zero-mass energy argument for the **Cauchy-regularised kernel on the real line**
+The route is described in the module docstring of `Zeta5/Sec6/Final.lean`.  (6.14) is reduced
+to a *configuration bound* (the paper's (6.9)) by the Gram-integral argument (6.10)–(6.13)
+(`Zeta5/Sec6/Gram.lean`).  The configuration bound is proved not by the paper's Lemma 6.2 for
+the singular kernel `log|z-w|` on `ℂ` with circle regularisation, but by the same zero-mass
+energy argument for the **Cauchy-regularised kernel on the real line**
 
     kC ε x = ½ log (x² + ε²)   ( = log |x + iε| ),
 
@@ -124,7 +121,7 @@ def ConfigBound (n : ℕ) (A : ℝ) : Prop :=
         * Real.exp (-(K n : ℝ) * ∑ i, Vfield (t i) + ∑ i, Real.sqrt (t i))
       ≤ Real.exp A
 
-/-! ## 6. Elementary facts about the kernel (proved) -/
+/-! ## 6. Elementary facts about the kernel -/
 
 theorem kC_zero (ε : ℝ) : kC ε 0 = Real.log ε := by
   unfold kC

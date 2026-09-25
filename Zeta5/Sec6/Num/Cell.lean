@@ -1,16 +1,14 @@
 /-
-Zeta5/Sec6/Num/Cell.lean  —  the certified numerics of (6.2)/(6.7) (Lemma 6.1, Appendix A.3):
+Zeta5/Sec6/Num/Cell.lean  —  the interval arithmetic for (6.2)/(6.7) (Lemma 6.1, Appendix A.3):
 the closed forms (A.1)/(A.5) (`UomR`, `Uclosed`, `Vclosed`), monotonicity of (A.1),
 and the soundness of the cell checker (`cell_sound`, `chain_sound`).
 
-Imports only Mathlib (and the previous `Num` module).  No `native_decide`, no
-`implemented_by`, no axiom: every finite computation is `decide +kernel`, i.e. checked by the
-kernel.  THIS FILE CONTAINS NO `sorry`.  (Prepared by the numerics scout of the §6 blueprint;
-namespace `Zeta5.Sec6.Num`.)
+Depends only on Mathlib and the preceding `Num` modules.  Every finite computation is
+`decide +kernel`, i.e. checked by the kernel; there is no `native_decide` or `implemented_by`.
 -/
 import Zeta5.Sec6.Num.Sound
 
-/-! # The closed forms, their monotonicity, and the cell / chain lemmas (prototype). -/
+/-! # The closed forms, their monotonicity, and the cell / chain lemmas -/
 
 namespace Zeta5
 namespace Sec6

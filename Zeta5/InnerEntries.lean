@@ -1021,7 +1021,7 @@ theorem entry_bounds (n M p : ℕ) (hp : IsInnerPrime n M p) (A : InnerAlloc n M
   · rw [Matrix.det_submatrix_equiv_self]
     exact OuterLocal.Delta_eq_of_basis _ h0
 
-/-! # Known-answer controls and the axiom audit for the three `Inner*` files
+/-! # Known-answer controls and axiom checks for the three `Inner*` files
 
 The counting definitions against hand computation, at `p = 7`:
 `5 ≡ −2`, so of the roots `±5` exactly one (`−5`) lies in the class `2`; both `±7` lie in the

@@ -17,11 +17,10 @@ This file proves everything that Proposition 6.3 (6.16) needs apart from (6.14):
 
 (6.14) itself (`Zeta5.RealBound.eq_6_14`) and Proposition 6.3 (`Zeta5.RealBound.prop_6_3`)
 are stated and proved in `Zeta5/Sec6/Final.lean` (same names, same types): their proofs need
-the §6 machinery of `Zeta5/Sec6/`, which imports this file.  **This file contains no `sorry`
-and declares no `axiom`.**
+the §6 machinery of `Zeta5/Sec6/`, which imports this file.
 
-Everything here was cross-checked against the independent numerics of the referee audit
-(see README, "Provenance"):
+The values agree with the independent numerics of the referee audit (see README,
+"Provenance"):
   I(ρ)  = -2.126593445147050403253600969…
   C_*   =  2.653035990340488661129250336…
   λM₀ - I(ρ) + C_* = -1.366995564512460935617…  ≤  Ū = -1.3669955.

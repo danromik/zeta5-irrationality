@@ -15,7 +15,7 @@ exact finite statements replace it:
   differentiations).  Proved here from the difference identity `L(P(x+1)) = L(P) + P'(0)`
   (`Lfun_comp_one_add`, i.e. Mathlib's `sum_bernoulli`) by a uniqueness argument: the defect
   `Λ(P) = ∑_a L(P(a+mz)) − m L(P)` is shift-invariant, hence vanishes on every
-  `(x+1)^{k+1} − x^{k+1}`, hence on every `x^k` by induction.  No axiom.
+  `(x+1)^{k+1} − x^{k+1}`, hence on every `x^k` by induction.
 * **`class_bound`** — the per-class estimate: if the polynomial `π = P(a+pz)` satisfies an
   exact polynomial identity `π·T·D = p^e (U·N_f − D·R) − T·F`, where `T` is the monic
   near-pole polynomial, `D` the far-pole polynomial (unit constant term, `v_p([z^k]D) ≥ k`),
