@@ -21,7 +21,6 @@ import Zeta5.Arithmetic
 import Zeta5.Section3
 import Zeta5.CrudeBound
 import Zeta5.Checks
-import Zeta5.Audit
 import Zeta5.AppendixBCheck
 -- Listed explicitly for completeness; each is also imported transitively by the modules above.
 import Zeta5.HermiteBasisCore

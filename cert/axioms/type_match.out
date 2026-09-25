@@ -1,9 +1,0 @@
-Zeta5.Axioms.hermite_pole_integral [axiom, Zeta5.Axioms]  vs  Zeta5.Hermite.pole_integral [thm, Zeta5.Hermite]
-   lparams [] / []; Expr.hash 3169839243 / 3169839243
-   type serialisation sha256 ac4e1d9a888e5b82 / ac4e1d9a888e5b82  (2479 / 2479 chars)
-   IDENTICAL TYPE: True
-Zeta5.Axioms.pnt_prime_riemann_sum [axiom, Zeta5.Axioms]  vs  Zeta5.PNT.prime_riemann_sum [thm, Zeta5.PNT]
-   lparams [] / []; Expr.hash 418062367 / 418062367
-   type serialisation sha256 42b5e9c141e15980 / 42b5e9c141e15980  (2997 / 2997 chars)
-   IDENTICAL TYPE: True
-ALL IDENTICAL

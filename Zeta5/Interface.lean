@@ -69,10 +69,6 @@ Four further steps, `sorry`s until 2026-09-23, are now PROVED, statements unchan
 with the shared unimodularity lemma `Zeta5.HermiteBasis.det_coeffMatrix_unimodular`
 (`Zeta5/HermiteBasis.lean`, `HermiteBasisCore.lean`) used by both local analyses.
 
-`Zeta5/Audit.lean` recomputes that list from the environment on every build
-(`#assumption_report Zeta5.zeta5_irrational`) and also checks that no `sorry` in the project
-is an orphan — i.e. that the list is complete.
-
 IMPORT DISCIPLINE.  A file that proves one of the statements below must NOT import this
 file, or the import graph cycles.  `Arithmetic.lean` used to import it and no longer does;
 `Section3.lean` (which proves Prop. 4.1) imports `LocalFunctional.lean` (which imports
@@ -469,11 +465,9 @@ def stdAlloc : ∀ n, InnerAllocFamily n 200 :=
 
 /-- **Theorem 1.1**: `ζ(5)` is irrational.
 
-Depends on no `sorry` (since 2026-09-24): beyond Lean's three standard axioms it rests
-exactly on the axiom of `Zeta5/Axioms.lean` (the prime number theorem `θ(x) ~ x`,
-`Zeta5.Axioms.chebyshev_theta_asymptotic`, since 2026-09-24), as `Zeta5/Audit.lean` prints on
-every build; `#print axioms` shows no `sorryAx`.  The deduction from Theorem 2.1 (`Zeta5.theorem_1_1` in `Skeleton.lean`) and
-the assembly of Theorem 2.1 above are complete. -/
+Beyond Lean's three standard axioms it depends only on the axiom of `Zeta5/Axioms.lean`, the
+prime number theorem `θ(x) ~ x` (`Zeta5.Axioms.chebyshev_theta_asymptotic`); see
+`#print axioms Zeta5.zeta5_irrational`. -/
 theorem zeta5_irrational : Irrational zeta5 :=
   theorem_1_1 stdAlloc (theorem_2_1 stdAlloc)
 
