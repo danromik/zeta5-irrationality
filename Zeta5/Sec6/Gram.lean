@@ -16,8 +16,11 @@ paper's `t = (y/K)²` appears only as an argument of `Vfield` and of the configu
   `gram_bound`, with `∫_0^∞ (1+y)⁵e^{-y/K} dy ≤ 326K⁶` (`integral_g_le`) in place of the
   paper's `652 = ∫_0^∞ t^{-1/2}(1+√t)⁵e^{-√t}dt` (the paper's `4096·652` is our `8192·326`).
 * **(6.14)** from any configuration bound `A ≤ (λM₀−I(ρ))K² + 3h log K + 131h`
-  (`eq_6_14_of_config`), using the factor `1/h!` of (6.10) (`log h! ≥ h log h − h + 1`), which
-  the paper drops; the paper's own (6.9) constants are admissible (`paper_6_9_admissible`).
+  (`eq_6_14_of_config`), using the factor `1/h!` of (6.10) (`log h! ≥ h log h − h + 1`).  The
+  paper keeps `1/h!` in (6.13) and discards it (`log h! ≥ 0`) only when it takes logarithms.
+  Here it pays for one `h log K`; the configuration bound actually proved (`configBound`,
+  `2h log K + 20h`) would give (6.14) without it.  The paper's own (6.9) constants are
+  admissible (`paper_6_9_admissible`).
 -/
 import Zeta5.Positivity
 import Zeta5.Sec6.Defs

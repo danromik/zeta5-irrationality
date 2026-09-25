@@ -15,43 +15,48 @@
 \title{A Lean 4 formalisation of\\ ``$\zeta(5)$ is irrational'' (A.\ Fauzan, 17 Sep 2026):\\
 what it proves and what it assumes}
 \author{Companion note to \texttt{docs/STATUS.md}}
-\date{23 September 2026}
+\date{24 September 2026}
 
 \begin{document}
 \maketitle
 \sloppy
 
 \begin{abstract}
-The project compiles. There is one theorem, \lean{Zeta5.zeta5\_irrational :
-Irrational zeta5}, and the paper's entire route to it --- Theorem~2.1, Propositions~2.2,
-4.1, 4.3, 5.1, 5.2, 6.3, Lemma~3.3 and the numbered equations between them --- is wired up
-beneath it with nothing short-circuited. It rests on \emph{two} external axioms
-(Hermite's integral formula for the Hurwitz zeta function, and the prime number theorem in
-the partial-summation form the proof consumes; Mathlib has neither) and on \emph{one} named
-\lean{sorry}: the paper's (6.14), the logarithmic-energy bound of \S6. The four other large
-steps --- Lemma~3.3 at the entries of (3.11), the inner-range local analysis behind
-Proposition~4.1, the outer-range local analysis (4.10)--(4.12), and the uniformity statement
-(5.7) with its \S5.2 companions --- are \emph{proved}, with statements fixed before the proofs
-were written and no further axiom. Every arithmetic statement that the proof of Theorem~1.1 uses
-(\S\S2--5 and Appendix~B) is therefore machine-checked. At three places the formal proof takes a
-different route from the paper's own proof: Lemma~3.2 (the distribution formula, with the far
-poles), the polynomial part of the proof of Lemma~3.3, and the unimodularity arguments are
-replaced by different arguments, so the paper's proofs of those three steps are bypassed rather
-than checked. The assumption list is recomputed from the Lean environment on
-every build and independently confirmed by a separate scan; \S6 records the faithfulness
-audit against the PDF, including the places where the formal proof takes a different route
-from the paper's.
+The project compiles, and it contains no \lean{sorry}. There is one theorem,
+\lean{Zeta5.zeta5\_irrational : Irrational zeta5}. The paper's entire route to it is wired up
+beneath it, with nothing short-circuited: Theorem~2.1, Propositions~2.2, 4.1, 4.3, 5.1, 5.2
+and 6.3, Lemma~3.3, and the numbered equations between them. The theorem rests on \emph{two}
+external axioms, which Mathlib does not have: Hermite's integral formula for the Hurwitz zeta
+function, and the prime number theorem in the partial-summation form that the proof consumes.
+It rests on nothing else.
+
+The paper's (6.14), the logarithmic-energy bound of \S6, was the last \lean{sorry} on
+23~September. It is now proved, with its statement unchanged, in the 37 modules of
+\lean{Zeta5/Sec6/}. Their route differs from the paper's at several places: a real-line
+regularisation of the logarithmic kernel instead of circles, a different bound on the
+smoothing error, and a kernel-checked certified partition of its own in place of Table~2.
+Every statement that the proof of Theorem~1.1 uses is therefore machine-checked, conditional
+only on the two axioms.
+
+At three places in \S\S3--4 the formal proof takes a different route from the paper's own
+proof: Lemma~3.2 (the distribution formula, with the far poles), the polynomial part of the
+proof of Lemma~3.3, and the unimodularity arguments. The paper's proofs of those three steps
+are bypassed rather than checked. The assumption list is recomputed from the Lean environment
+on every build. An adversarial certification on 24~September confirmed it by five independent
+methods and a full kernel replay. It also showed, by a kernel-level comparison, that no
+statement or definition of the 23~September state changed.
 \end{abstract}
 
 \section{The build}
 
-Lean 4.34.0 with Mathlib v4.34.0. Thirty-two modules plus the root file, about 24\,500 lines
-of Lean. With all project build artifacts removed, a rebuild of every \lean{Zeta5} module from
-source takes about 4--5 minutes and ends with
-\begin{center}\ttfamily Build completed successfully (8957 jobs).\end{center}
-\noindent with zero errors and exactly \emph{one} \lean{declaration uses `sorry'} warning,
-for \lean{RealBound.eq\_6\_14} --- the same one the dependency walker reports below. The
-other ${\approx}248$ warnings are Mathlib deprecation and style lints.
+Lean 4.34.0 with Mathlib v4.34.0. There are 69 modules under \lean{Zeta5/} (37 of them in
+\lean{Zeta5/Sec6/}) plus the root file, 28\,918 lines of Lean. With all project build
+artifacts removed, a rebuild of every \lean{Zeta5} module from source takes about 8 minutes on
+a 12-core machine (7\,min\,26\,s to 8\,min\,1\,s in four clean builds). It ends with
+\begin{center}\ttfamily Build completed successfully (8994 jobs).\end{center}
+\noindent with zero errors and \emph{no} \lean{declaration uses `sorry'} warning. The 17
+warnings are style lints. Fourteen are unused automatically included section variables, and
+three are unreferenced hypothesis names. Removing them would change theorem signatures.
 
 \section{The one theorem and its assumptions}
 
@@ -73,21 +78,24 @@ ASSUMPTION REPORT for Zeta5.zeta5_irrational
     Zeta5.Axioms.hermite_pole_integral
     Zeta5.Axioms.pnt_prime_riemann_sum
 
-  (C) sorry(s) - unfinished steps of the paper's own argument, 1 in all:
-    Zeta5.RealBound.eq_6_14
+  (C) sorry(s) - unfinished steps of the paper's own argument, 0 in all:
+    (none)
 
   (D) any other axiom (must be empty):
     (none)
 
-  [self-check: walker agrees with Lean.collectAxioms, 6 axiom(s)]
+  [self-check: walker agrees with Lean.collectAxioms, 5 axiom(s)]
 
 every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
 \end{Verbatim}
 
-\noindent The last line makes (C) a \emph{complete} list rather than a selection. An
-independent scan (\lean{cert/C3Scan.lean}, sharing no code with \lean{Audit.lean}) of all
-3272 declarations defined in the 33 \lean{Zeta5} modules finds exactly two \lean{axiom}s
-and exactly one declaration mentioning \lean{sorryAx}, namely \lean{eq\_6\_14}.
+\noindent The last line is printed vacuously: there is no \lean{sorry} at all. \lean{\#print
+axioms Zeta5.zeta5\_irrational} gives exactly \lean{[propext, Classical.choice, Quot.sound,
+Zeta5.Axioms.hermite\_pole\_integral, Zeta5.Axioms.pnt\_prime\_riemann\_sum]}. Independent
+scans share no code with \lean{Audit.lean} (\lean{cert/final/}). One covers all 3862
+declarations defined in the 70 \lean{Zeta5} modules. Another walks the compiled \lean{.olean}
+files directly. They find exactly two \lean{axiom}s and no declaration that mentions
+\lean{sorryAx}.
 
 \subsection*{The ground rules}
 
@@ -96,9 +104,11 @@ axiom mentions any constant or table of the paper, and the only object of the pa
 either one mentions is the explicit weight $w$ of (2.10). A finite explicit computation is
 never an axiom: Appendix~B's exact rational integrals and Appendix~A's Table-1 evaluations and
 Table-2 tiling are \emph{proved}. And no statement is changed to make it provable: the
-statements of the interface theorems were fixed before their proofs were written, and a
-comparison at the level of kernel terms with a snapshot taken before the last of them were
-proved shows that no statement or definition changed (\lean{docs/CERTIFICATION.md}, \S5).
+statements of the interface theorems and of the 19 leaves of the \S6 blueprint were fixed
+before their proofs were written. A comparison at the level of kernel terms between the state
+of 23~September (one \lean{sorry}) and the present state finds no change in any statement or
+definition. Every one of the 3272 declarations of the earlier state is still present, and all
+590 new declarations are in \lean{Zeta5/Sec6/} (\lean{docs/CERTIFICATION.md}, \S5).
 
 \section{(B) The two external axioms}
 
@@ -134,33 +144,65 @@ functions, and all of them are discharged inside \lean{PrimeSum.lean}. The certi
 derives from it in Lean, with no \lean{sorry}, the dyadic form $(\theta(2X)-\theta(X))/X\to1$ of
 the prime number theorem, so it is not vacuous.
 
-\section{(C) The one unfinished step}
+\medskip\noindent Each axiom has exactly one direct user in the dependency cone of 69\,102
+constants: \lean{Positivity.integral\_wt\_div\_pole} for the first, and
+\lean{PrimeSum.tendsto\_primeSum} for the second. The proof of (6.14) uses Hermite's axiom
+through Proposition~2.2's moment representation, which Andr\'eief's identity (6.10) needs.
+\lean{\#print axioms Zeta5.RealBound.eq\_6\_14} gives \lean{[propext, Classical.choice,
+Quot.sound, Zeta5.Axioms.hermite\_pole\_integral]}.
 
-\begin{longtable}{@{}p{2.6cm}p{9.4cm}p{1.8cm}@{}}
+\section{(C) Unfinished steps: none. How (6.14) was proved}
+
+\textbf{(6.14)}, p.~20, states that for $\Delta_K(\zetafive)>0$,
+\[
+  \log\Delta_K(\zetafive)\le 2h(h+6N-K)\log K+(\lambda M_0-I(\rho))K^2+18h\log K+160h,
+\]
+with $K=40n$, $N=3n$, $h=37n$ and $\lambda=37/40$. Lean states it with $I(\rho)$ as the closed
+form (A.2) and $M_0=-1329/200$. The hypothesis is discharged by \lean{delta\_pos}
+(Proposition~2.2). The statement is the one that was a \lean{sorry} on 23~September. It moved
+unchanged from \lean{RealBound.lean} to \lean{Sec6/Final.lean}. The route, whose module
+docstring gives every step:
+
+\begin{longtable}{@{}p{3.2cm}p{11.0cm}@{}}
 \toprule
-\lean{sorry} & paper statement, and what is missing & effort \\
+step & Lean, and how it differs from the paper \\
 \midrule
 \endhead
-\lean{RealBound.} \lean{eq\_6\_14} &
-\textbf{(6.14)}, p.~20: for $\Delta_K(\zetafive)>0$,
-$\log\Delta_K(\zetafive)\le 2h(h+6N-K)\log K+(\lambda M_0-I(\rho))K^2+18h\log K+160h$.
-Missing, in three separable pieces:
-(i)~Andr\'eief's identity (6.10), the $h$-fold Gram integral, with (6.12)--(6.13);
-(ii)~\textbf{Lemma 6.2}, the zero-mass logarithmic energy $I(\nu)\le0$ (p.~18; Ransford,
-Thm~3.1.2), its application to circle-regularised configurations, and (6.6)--(6.9);
-(iii)~(6.2), the arcsine-potential bound $2U^\rho(t)-V(t)\le M_0$ on $[0,2]$, which is
-Appendix~A's 684 certified evaluations of $\mathcal{B}(l,r)$ (A.9), together with the
-identification of the Lean constant \lean{Irho} (the closed form (A.2)) with the energy
-$I(\rho)$.
-& several months \\
+(6.10)--(6.13) & \lean{Sec6/Gram.lean}: Andr\'eief's identity by a double permutation sum,
+applied to the moments of Proposition~2.2. $\int_0^\infty(1+y)^5e^{-y/K}\,dy\le326K^6$
+replaces the paper's 652. The factor $1/h!$ of (6.10) is kept through to (6.14); the paper
+keeps it in (6.13) and discards it only when taking logarithms. With it, any configuration
+bound up to $(\lambda M_0-I(\rho))K^2+3h\log K+131h$ suffices. \\[4pt]
+(6.6)--(6.9), Lemma~6.2 & \lean{Sec6/Energy.lean}, \lean{CND.lean}, \lean{Frullani.lean},
+\lean{GaussPD.lean}, \lean{Swap.lean}. \textbf{Deviation:} the points stay Dirac masses on
+the real line, and the kernel is regularised, $k_\varepsilon(x)=\frac12\log(x^2+\varepsilon^2)
+\ge\log|x|$ with $\varepsilon=(16K)^{-2}$, instead of the points by circles in $\mathbb{C}$.
+The zero-mass inequality of Lemma~6.2 is proved for $k_\varepsilon$, from a Frullani
+representation and positive definiteness of the Gaussian kernel. The result, (6.9'), has
+$2h\log K+20h$ where the paper has $(120+\sqrt2)h$. \\[4pt]
+cross term, p.~19 & \lean{RhoCross.lean}, \lean{SmoothArc.lean}, \lean{SmoothErr.lean},
+\lean{SmoothAux.lean}, \lean{Antideriv.lean}. The smoothing error is at most
+$\pi(\delta+\pi\sqrt{2\delta})$ per arcsine component, so the cross term is at most
+$88\sqrt\varepsilon+420\varepsilon$. This replaces the paper's mass bound and $60\sqrt\varepsilon$. \\[4pt]
+(A.1), (A.2), (A.5) & \lean{LogCos*.lean}, \lean{ArcsinePot.lean}: (A.1) for every interval,
+on it from $\int_0^\pi\log\sin=-\pi\log2$ and off it from Mathlib's circle averages.
+\lean{RhoEnergy.lean} and its leaves: (A.2) is used as $I(\rho)\le I_k(\rho,\rho)$ for the
+regularised kernel. \lean{Field.lean}: the closed form (A.5) of the field $V$ of (6.1). \\[4pt]
+(6.2), (6.7), (6.8), Lemma~6.1 & \lean{Sec6/Num/}, \lean{Potential.lean}.
+\textbf{Deviation:} the bound $\mathcal{B}(l,r)$ of (A.9) on Table~2's 684 cells is not used.
+Instead the closed forms of $2U^\rho-V$ are evaluated with certified rational interval
+arithmetic on 1049 cells of $[0,2]$ and 2 cells of $[2,4]$. Each cell is checked by the
+kernel (\lean{decide +kernel}; there is no \lean{native\_decide}). An analytic bound for
+$t\ge4$ replaces (6.8). The partition is generated by \lean{numerics/sec6/gen\_lean.py}. \\
 \bottomrule
 \end{longtable}
 
-\noindent (6.14) is the one genuinely large item left, needing measure and potential theory
-that Mathlib has only in part and some 23\,000 certified \lean{arctan}/\lean{log}
-evaluations. It holds, with large slack, at the exact values of $\Delta_K(\zetafive)$ for
-$K=40,80,120$ computed in the referee audit of the preprint; that is a consistency check, not
-a proof.
+\noindent The 19 leaf statements were fixed in a blueprint commit before any of them was
+proved, and they did not change afterwards. They were tested numerically first
+(\lean{numerics/sec6/check\_leaves.py}: 133 checks, 7 of them must-fail controls). Sixteen
+leaves were tested directly, the two branches of (A.1) together, and one bilinear expansion
+not at all; the kernel checks them all. Downstream, Proposition~6.3 ((6.16) from (6.14) and
+(6.15)), (7.1), Theorem~2.1 and Theorem~1.1 were already proved.
 
 \section{How the four large interface statements were proved}
 
@@ -225,13 +267,21 @@ dependency cone of the main theorem.
 
 \section{Faithfulness}
 
-\textbf{Statements.} The statements of the four interface theorems proved last, of
-\lean{eq\_6\_14} and of \lean{zeta5\_irrational} are byte-identical to those recorded in a
-snapshot taken before the four proofs were written, and a comparison at the level of kernel
-terms shows that no statement or definition of that snapshot changed
-(\lean{docs/CERTIFICATION.md}, \S5).
+\textbf{Statements.} Two kernel-level comparisons show that no statement was changed to make
+it provable.
+\begin{itemize}
+\item On 23~September, the statements of the four interface theorems proved last, of
+  \lean{eq\_6\_14} and of \lean{zeta5\_irrational} were byte-identical to those recorded in a
+  snapshot taken before the four proofs were written. No statement or definition of that
+  snapshot had changed.
+\item On 24~September, every declaration of the 23~September state was found to have an
+  unchanged type and value. The only exceptions are 16 compiler-generated auxiliary lemmas,
+  which differ only in hygienic binder names (\lean{docs/CERTIFICATION.md}, \S5).
+\end{itemize}
 
-\textbf{Statements checked against the PDF page images} (pp.~5--15, 18--20).
+\textbf{Statements checked against the PDF page images} (pp.~5--15, 17--25).
+\lean{eq\_6\_14} is (6.14) and \lean{prop\_6\_3} is (6.16), term for term, with the paper's
+constants; Table~1, $I(\rho)$, $M_0$ and (6.4) were re-derived from the PDF.
 \lean{Lemma33.lemma\_3\_3} is Lemma~3.3 as printed on p.~8, for every $p$, $K$, $d$; its
 hypothesis ``$A$ integer-valued on $\mathbb{Z}_p$'' is taken as $v_p(A(z))\ge0$ for
 $z\in\mathbb{Z}$, which is equivalent by density. \lean{pullback} is (3.1) on the whole domain
@@ -240,9 +290,11 @@ the doubled (4.12) exactly, zero class included. \textbf{No weakened statement w
 
 \medskip\noindent Deviations, all recorded in docstrings:
 \begin{enumerate}
-\item \lean{eq\_6\_14} is stated with $I(\rho)$ and $M_0$ as \emph{defined real numbers} ---
-  the closed form (A.2) and $-1329/200$ --- not as the logarithmic energy. Do not read
-  ``(6.4) is proved'' as ``Lemma 6.1 is proved''.
+\item \lean{eq\_6\_14} is stated with $I(\rho)$ and $M_0$ as \emph{defined real numbers}: the
+  closed form (A.2) and $-1329/200$, not the logarithmic energy. Its proof connects them to
+  the energy argument through $I(\rho)\le I_k(\rho,\rho)$ for the regularised kernel and
+  through (6.2)/(6.7) for the closed forms (items 19 and 22). The equality of \lean{Irho}
+  with the singular energy $\iint\log|t-u|\,d\rho\,d\rho$ is not stated.
 \item \lean{lemma\_3\_1} proves (3.4) for every \emph{partial} sum $\sum_{j\le J}p^jU_j$, not
   for the series in the Tate algebra. It is also \emph{not in the cone}: Proposition~4.1
   goes around it (item 7). The same holds for \lean{lemma\_4\_2} in its abstract-field form;
@@ -294,41 +346,66 @@ the doubled (4.12) exactly, zero class included. \textbf{No weakened statement w
   $\ell_A$ (\lean{Zeta5.ell\_lt}, the one in the dependency cone); Lean checks by \lean{rfl}
   that the two statements are identical. A point the author may want to revise, not an error
   in the result.
+\item \textbf{Kernel regularisation on the real line} instead of circles in $\mathbb{C}$
+  (\S6.1). Lemma~6.2 is proved for $k_\varepsilon$, not for the singular kernel. The result,
+  (6.9'), has $2h\log K+20h$ in place of $(120+\sqrt2)h$.
+\item \textbf{The smoothing error} is bounded by $\pi(\delta+\pi\sqrt{2\delta})$ per arcsine
+  component, instead of the paper's mass bound and $60\sqrt\varepsilon$. The paper's
+  constant $\le60$ is proved but not used.
+\item \textbf{The Gram step} keeps $1/h!$ through to (6.14) and uses $326K^6$ in place of
+  652. The paper's own (6.9) constants are admissible (\lean{paper\_6\_9\_admissible}).
+\item \textbf{(6.2) is not proved by Appendix~A's route.} (A.9) on Table~2 is replaced by the
+  formalisation's own certified partition (1049\,+\,2 cells, \lean{decide +kernel}) and an
+  analytic tail for $t\ge4$. Table~2's tiling of $[0,2]$ is proved but unused.
+\item \textbf{(A.1)} is proved in normalised form and scaled: on $[-1,1]$ by the product
+  formula for $\cos\varphi-\cos\theta$, and off it by Mathlib's circle averages.
 \end{enumerate}
 
 \section{Trusting the audit metaprogram}
 
 \lean{Zeta5/Audit.lean} walks the dependency cone and reports the groups above. It avoids two
-traps that a naive dependency walker falls into (\lean{ConstantInfo.value?} is \lean{none} for
-theorems in Lean~4.34; reachability must match \lean{Lean.CollectAxioms.collect}), checks
-itself against \lean{Lean.collectAxioms} on every build, and checks that no \lean{sorry}
-escapes the cone. Its \lean{\#sorry\_tree} controls for the four interface statements of the
-previous section, the shared lemma and seven of the main new theorems all print
-\lean{depends on NO sorry}, and \lean{eq\_6\_14} prints \lean{rests on 1 sorry(s)}. An
-adversarial certification (\lean{docs/CERTIFICATION.md}; scripts in \lean{cert/}, sharing no
-code with \lean{Audit.lean}) agrees: 62\,097 constants in the cone, one \lean{sorry}, two
-project axioms, zero orphans, a full kernel replay of every module by \lean{leanchecker}, and
-the deliberately broken \lean{value?}-walker reporting the wrong answer (0 sorries), as a
-negative control should.
+traps that a naive dependency walker falls into: \lean{ConstantInfo.value?} is \lean{none}
+for theorems in Lean~4.34, and reachability must match \lean{Lean.CollectAxioms.collect}. It
+checks itself against \lean{Lean.collectAxioms} on every build. All its \lean{\#sorry\_tree}
+controls print \lean{depends on NO sorry}, including \lean{eq\_6\_14}, the negative control of
+23~September, and five \S6 controls.
+
+An adversarial certification on 24~September (\lean{docs/CERTIFICATION.md}; scripts in
+\lean{cert/final/}, sharing no code with \lean{Audit.lean}) found that five independent
+methods agree name for name:
+\begin{itemize}
+\item \lean{\#print axioms};
+\item a breadth-first walker, which catches planted \lean{sorry}s, including ones hidden in
+  \lean{where} auxiliaries and instance fields;
+\item a module-keyed scan of all 3862 project declarations;
+\item \lean{Audit.lean} itself;
+\item a reader that walks the compiled \lean{.olean} files without Lean's environment.
+\end{itemize}
+The cone has 69\,102 constants, with no \lean{sorry} and the two project axioms. A full kernel
+replay of all 70 modules by \lean{leanchecker} passed (52 minutes). \lean{\#print axioms} and
+\lean{collectAxioms} read axiom lists stored in the \lean{.olean} files, whereas the three
+walkers traverse the proof terms; all five agree.
+
+Two minor weaknesses of \lean{Audit.lean} were found: its sorry list skips internal names,
+and its orphan line prints even when there is no \lean{sorry}. The independent scans have
+neither weakness.
 
 \section{What to do next}
 
-\textbf{(1)} \lean{RealBound.eq\_6\_14}, the only \lean{sorry}, in its three pieces (Andr\'eief;
-Lemma~6.2 and (6.6)--(6.9); (6.2) via Appendix~A), each decomposed into numerically tested
-lemma statements first.
-\textbf{(2)} Reduce \lean{pnt\_prime\_riemann\_sum} to $\theta(x)\sim x$ (Abel summation plus a
+\textbf{(1)} Reduce \lean{pnt\_prime\_riemann\_sum} to $\theta(x)\sim x$ (Abel summation plus a
 Darboux sandwich).
-\textbf{(3)} Formalise p.~5's four integrations by parts, so that \lean{hermite\_pole\_integral}
+\textbf{(2)} Formalise p.~5's four integrations by parts, so that \lean{hermite\_pole\_integral}
 becomes DLMF 25.11.29 verbatim.
-\textbf{(4)} Points the author may want to revise: the p.~10 inequality (item 18), the p.~12
+\textbf{(3)} Points the author may want to revise: the p.~10 inequality (item 18), the p.~12
 divided-difference step (item 15), and the phrasing of the rank argument for (4.10)
 (item 3).
 
 \bigskip
-\noindent\textbf{How to report this result.} ``Theorem~1.1 is machine-checked conditional on
-one explicitly named unproved statement of the paper --- (6.14), the logarithmic-energy bound
-of \S6 --- plus Hermite's integral formula and the prime number theorem in partial-summation
-form.'' Never ``modulo standard facts'': (6.14) is Fauzan's own claim, and it is the analytic
-heart of \S6.
+\noindent\textbf{How to report this result.} ``$\zeta(5)$ is irrational, machine-checked
+conditional on two external results entered as axioms --- Hermite's integral formula (in the
+integrated-by-parts form of p.~5) and the prime number theorem in partial-summation form.''
+Both axioms are slightly stronger than their bare citations (\S3). Nothing internal to
+Fauzan's argument is assumed. Never write ``modulo standard facts'' without naming the two
+axioms.
 
 \end{document}

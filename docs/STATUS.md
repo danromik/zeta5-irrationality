@@ -7,9 +7,9 @@
 > reports no `declaration uses 'sorry'` warning, and the assumption report lists **no
 > `sorry`**: only the three standard Lean axioms and the two axioms of `Zeta5/Axioms.lean`.
 > The §6 route and its deviations from the paper are in §2 (C) and §6 (deviations 19–23)
-> below. Numbers attributed below to the certification (`CERTIFICATION.md`, `cert/`, §4 and
-> §8) were measured on the state of 2026-09-23, when `eq_6_14` was the single `sorry`, and
-> have not been re-run for this state.
+> below. This state (code commit `808618b`) was re-certified on 2026-09-24
+> (`CERTIFICATION.md`, scripts and outputs in `cert/final/`). The numbers in §4 and §8 come
+> from that certification, except where they are marked as from the 2026-09-23 one.
 
 This file records, for a reader who wants to check the formalization against A. Fauzan's
 preprint "ζ(5) IS IRRATIONAL" (17 September 2026): what the Lean development proves, what it
@@ -18,18 +18,26 @@ be done. The independent certification of the assumption list is in
 [`CERTIFICATION.md`](CERTIFICATION.md); a typeset summary is in `lean-status.pdf`.
 
 **State:** 2026-09-24 · **Toolchain:** Lean 4.34.0, Mathlib v4.34.0 · 69 modules under
-`Zeta5/` (37 of them in `Zeta5/Sec6/`) plus the root file, about 28 800 lines of Lean.
+`Zeta5/` (37 of them in `Zeta5/Sec6/`) plus the root file, 28 918 lines of Lean.
 
-**Build.** `lake build` (incremental, after the §6 leaves were filled in) ends with
+**Build.** A clean `lake build` (`.lake/build` deleted, Mathlib from the cache) takes about
+8 minutes on a 12-core machine and ends with
 
 ```
 Build completed successfully (8994 jobs).
 ```
 
-with zero errors and **no** `declaration uses 'sorry'` warning. The 267 warnings are Mathlib
-deprecation and style lints (`if_neg`/`if_pos` deprecations, unused simp arguments, and
-similar); none affects soundness. (On 2026-09-23, with 32 modules, a from-scratch rebuild of
-the project took about 4–5 minutes on top of the Mathlib cache.)
+The four clean builds of 2026-09-24 took 7 min 26 s to 8 min 1 s. The `Zeta5/Sec6/Num/`
+modules need up to about 8 GB of memory. The build has zero errors and **no**
+`declaration uses 'sorry'` warning. There are 17 warnings, all of them style lints:
+* 14 "automatically included section variable(s) unused" (in `InnerTate`, `InnerGeneral`
+  and `InnerEntries`);
+* 3 "Variable name … is not explicitly referenced": `ha` in
+  `InnerGeneral.comp_X_sub_C_phi_near`, and `hC0` in `PrimeSum.block2_le` and `block3_le`.
+
+Silencing them would change the signatures of those theorems, so they are left as they are.
+None affects soundness. The first `eq614` builds had 267 deprecation and style warnings.
+Commit `808618b` removed the others and changed only proofs.
 
 ---
 
@@ -92,8 +100,8 @@ every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
 'Zeta5.theorem_1_1' depends on axioms: [propext, Classical.choice, Quot.sound]
 ```
 
-There is no `sorryAx`: the walker and Lean's `collectAxioms` agree on that. (The independent
-scans of §4 were last run on 2026-09-23, when they found exactly `eq_6_14`.)
+There is no `sorryAx`. The walker and Lean's `collectAxioms` agree on that, and so do the
+independent checks of §4, which were run on commit `808618b` on 2026-09-24.
 
 ### The ground rules these lists follow
 
@@ -106,9 +114,11 @@ The ground rules of this formalization (README, 'Ground rules'):
   (143 pieces, 17 Table-3 rows, 11 Table-4 rows) and Appendix A's Table-1 evaluations and
   Table-2 tiling are *proved*, by `norm_num`/`decide`/explicit rational arithmetic.
 * **No statement is changed to make it provable.** The statements of the interface theorems
-  were fixed before the proofs were written. The certification compared them, and every
-  definition they mention, with a snapshot taken before the last proofs were filled in: none
-  changed (`CERTIFICATION.md` §5). One interface statement was reformulated earlier, before
+  were fixed before the proofs were written. The certification of 2026-09-23 compared them,
+  and every definition they mention, with a snapshot taken before the last proofs were
+  filled in. It found no change. The certification of 2026-09-24 compared all 3 272
+  declarations of the 2026-09-23 state (`main`, `9ce1320`) with `808618b` at the level of
+  kernel terms. No statement or definition changed (`CERTIFICATION.md` §5). One interface statement was reformulated earlier, before
   its proof was written, because its first formulation was false for the paper's own data;
   the new form is the paper's (4.10) as printed (deviation 3).
 
@@ -148,8 +158,8 @@ not vacuous.
 
 Each axiom has exactly one direct user in the cone: `hermite_pole_integral` →
 `Positivity.integral_wt_div_pole`; `pnt_prime_riemann_sum` → `PrimeSum.tendsto_primeSum`
-(`cert/C3Scan.lean`, §4; scan of 2026-09-23, before `Zeta5/Sec6/` existed; `Sec6/Gram.lean`
-reaches `hermite_pole_integral` through `Positivity.prop_2_2_moment`).
+(`cert/final/FScan.lean`, §4). `Sec6/Gram.lean` reaches `hermite_pole_integral` through
+`Positivity.prop_2_2_moment`, and so through the same direct user.
 
 ### (C) Unfinished steps: none. How (6.14) was proved
 
@@ -177,9 +187,11 @@ by (6.10)). The route, in the module docstring of `Zeta5/Sec6/Final.lean`:
 | (6.2), (6.7), (6.8); Lemma 6.1 | §6.1, App. A.3 | `Potential.lean`, `Num/*.lean` (`Num.eq_6_7_closed`) | not by (A.9) on Table 2: a certified partition of its own, 1049 cells on `[0,2]`, 2 on `[2,4]`, analytic tail for `t ≥ 4`, every cell `decide +kernel` (deviation 22) |
 
 The 19 leaf statements (marked `LEAF` in the route in `Sec6/Final.lean`) were fixed in the
-blueprint commit `4dea216`, each with a numerical test and must-fail controls
-(`numerics/sec6/check_leaves.py`, output `check_leaves.out`), and were then proved in
-parallel; none was changed. `Num/` is generated by `numerics/sec6/gen_lean.py`. The
+blueprint commit `4dea216` and tested numerically (`numerics/sec6/check_leaves.py`, output
+`check_leaves.out`: 133 checks, 7 of them must-fail controls). Sixteen leaves are tested
+directly. The two branches of (A.1) are tested together through `integral_log_abs_sub_cos`.
+`kE_rhoM_expand`, a bilinear expansion, has no test of its own. The leaves were then proved
+in parallel, and none of their statements changed (`cert/final/fidelity/leaf_stmts.out`). `Num/` is generated by `numerics/sec6/gen_lean.py`. The
 certified partition uses no `native_decide`: every finite check is `decide +kernel`.
 
 Before it was proved, (6.14) was checked against exact values of `Δ_K(ζ(5))` at `K = 40, 80,
@@ -191,14 +203,15 @@ Before it was proved, (6.14) was checked against exact values of `Δ_K(ζ(5))` a
 
 Four interface statements, and one lemma shared by two of them, were the last to be proved.
 **Each is closed in the strict sense: `#print axioms` shows no `sorryAx`.** Verbatim
-(`lake env lean`, after the final build):
+(`lake env lean`). The `eq_6_14` line is from 2026-09-24. On 2026-09-23 it read
+`[propext, sorryAx, Classical.choice, Quot.sound]`.
 
 ```
 'Zeta5.outer_local_analysis' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.PrimeSum.eq_5_7_uniformity' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.CrudeBound.crude_entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.Section3.entry_bounds_4_2_4_3' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Zeta5.RealBound.eq_6_14' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]   ← 2026-09-23; now: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]
+'Zeta5.RealBound.eq_6_14' depends on axioms: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]
 'Zeta5.OuterBasis.outer_local_core' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.Uniformity.eq_5_7_uniformity' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Zeta5.Lemma33.entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -248,43 +261,64 @@ negative control until 2026-09-23 (`rests on 1 sorry(s)`), now prints `depends o
 as do the §6 controls `Sec6.Gram.eq_6_14_of_config`, `Sec6.Num.eq_6_7_closed`,
 `Sec6.eq_6_7_closed`, `Sec6.configBound` and `Sec6.rho_energy_ge`.
 
-**Independent checks** (the certification scripts in `cert/`, which share no code with
-`Audit.lean`; full report in `CERTIFICATION.md`). **These were run on the state of
-2026-09-23** (32 modules, `eq_6_14` a `sorry`) and have not been re-run since `Zeta5/Sec6/`
-was added:
+**Independent checks** (2026-09-24, on commit `808618b`; scripts and recorded outputs in
+`cert/final/`, which share no code with `Audit.lean`; full report in `CERTIFICATION.md`):
 
-* `cert/C3Scan.lean` — module-keyed scan of **all 3 272 declarations defined in the 33
-  `Zeta5*` modules**: `axiom` declarations (2): `hermite_pole_integral`,
-  `pnt_prime_riemann_sum`; mentioning `sorryAx` (1): `Zeta5.RealBound.eq_6_14`; sorry-carriers
-  in the cone outside the Zeta5 modules: 0; orphans: 0. `Lean.ofReduceBool`, `ofReduceNat` and
-  `trustCompiler` exist in core Lean, as always, and are not in the cone (the cone's axiom set
-  equals `Lean.collectAxioms`'s six).
-* `cert/C3Walker.lean` — an independent breadth-first walker with planted positive controls.
-  It reaches 62 097 constants and finds exactly `[Zeta5.RealBound.eq_6_14]`; the deliberately
-  broken `value?`-walker, run as a negative control, finds no `sorry` at all.
-* Per-module census (`cert/C3Scan.lean`), declarations reached / defined: AppendixB 281/311,
-  Arithmetic 55/80, Asymptotics 6/6, Axioms 2/2, Basic 127/162, Counting 49/50, CrudeBound
-  64/83, Functional 92/132, HermiteBasis 14/18, HermiteBasisCore 11/11, InnerEntries 176/180,
-  InnerGeneral 52/53, InnerTate 78/87, Interface 27/30, Lemma33 142/154, Lemma42 40/66,
-  LocalFunctional 86/115, Normalization 39/39, OuterBasis 298/331, OuterLocal 98/107,
-  OuterRange 144/172, Positivity 64/92, PrimeSum 133/156, RealBound 140/320, Section3 2/33,
-  Section41 104/148, Skeleton 8/15, Tail 63/65, Uniformity 166/209 (Audit, AppendixBCheck,
-  Checks: 0, by design). Cone size 62 097.
-* Cone membership of 82 named declarations (checked against the final build): **72 in the
-  cone** (including `eq_6_14`, the four interface statements of §3, `ell_lt` — the repair of
-  the p. 10 inequality — the p. 12 congruence `H5_congr`, `muPole_divided_difference`,
-  `muPole_tail_is_needed`, `vanishing_of_rank`, and both axioms), **10 proved but not
-  reached**: `ell_lt_caseSplit` (the *second* proof of the p. 10 inequality; `Checks.lean`
-  shows by `rfl` it is the same statement as the in-cone `ell_lt`), `L_gt_three_halves`,
-  **`lemma_3_1`**, `eq_3_2`, `integer_binom_coeffs`, `Lp_small_eq`, **`lemma_4_2`** (the
-  abstract-field form; the route used is `vanishing_of_rank` →
-  `prop_4_3_of_local_data_vanishing`), `lemma_4_2_gauss_rank`, `RealBound.eq_6_11`,
-  `RealBound.table2_tiles`. So Lemma 3.1 and Lemma 4.2 in their paper forms are *proved but
-  not load-bearing*: Proposition 4.1 goes through `general_bound`, Proposition 4.3 through
-  `vanishing_of_rank`.
-* `grep` over the sources: exactly two `axiom` lines, both in `Axioms.lean`; no
-  `native_decide`, `implemented_by`, `extern`, `unsafe`, `#exit`, `debug.skipKernelTC` or
-  `maxHeartbeats 0`.
+* `cert/final/FScan.lean` is a scan keyed on the defining module. It covers **all 3 862
+  declarations defined in the 70 `Zeta5*` modules**:
+  * `axiom` declarations (2): `hermite_pole_integral`, `pnt_prime_riemann_sum`;
+  * declarations mentioning `sorryAx`: 0; `unsafe`: 0;
+  * sorry carriers in the cone: 0; orphans: 0.
+
+  A walk from all 3 862 declarations at once reaches the same five axioms and no `sorry`, so
+  nothing anywhere in the project uses `sorryAx`. `Lean.ofReduceBool`, `ofReduceNat` and
+  `trustCompiler` exist in core Lean, as always, but are not in the cone. The cone's axiom
+  set is exactly `Lean.collectAxioms`'s five.
+* `cert/final/FWalker.lean` is an independent breadth-first walker with planted positive
+  controls. It reaches 69 102 constants from `zeta5_irrational` and finds no `sorry` leaf.
+  It agrees with `Lean.collectAxioms` on 37 targets, among them `eq_6_14`, `prop_6_3` and
+  all 19 §6 leaves.
+* `cert/final/FOlean.lean` reads every compiled `.olean` directly, without `importModules`
+  or `collectAxioms`. It gives the same 69 102 constants, the same five axioms and no
+  `sorryAx`.
+* `leanchecker` replayed all 70 modules through the kernel (exit 0).
+* Per-module census (`FScan.lean`), declarations reached / defined:
+  * AppendixB 281/311, Arithmetic 55/80, Asymptotics 6/6, Axioms 2/2, Basic 127/162,
+    Counting 49/50, CrudeBound 64/83, Functional 92/132;
+  * HermiteBasis 14/18, HermiteBasisCore 11/11, InnerEntries 176/180, InnerGeneral 52/53,
+    InnerTate 78/87, Interface 27/30, Lemma33 142/154, Lemma42 40/66;
+  * LocalFunctional 86/115, Normalization 39/39, OuterBasis 298/331, OuterLocal 98/107,
+    OuterRange 144/172, Positivity 64/92, PrimeSum 133/156, RealBound 151/318;
+  * Section3 2/33, Section41 104/148, Skeleton 8/15, Tail 63/65, Uniformity 166/209;
+  * the 37 `Sec6` modules: 403 of 592 in all (`cert/final/FScan.out` lists them one by one);
+  * Audit, AppendixBCheck and Checks: 0, by design.
+* Cone membership:
+  * On 2026-09-23, 72 of 82 named declarations were in the cone. Among them are the four
+    interface statements of §3, `ell_lt` (the repair of the p. 10 inequality), the p. 12
+    congruence `H5_congr`, `muPole_divided_difference`, `muPole_tail_is_needed`,
+    `vanishing_of_rank` and both axioms.
+  * 10 are proved but not reached:
+    * `ell_lt_caseSplit`, the *second* proof of the p. 10 inequality (`Checks.lean` shows
+      by `rfl` that it is the same statement as the in-cone `ell_lt`);
+    * `L_gt_three_halves`, **`lemma_3_1`**, `eq_3_2`, `integer_binom_coeffs`, `Lp_small_eq`;
+    * **`lemma_4_2`**, the abstract-field form (the route used is `vanishing_of_rank` →
+      `prop_4_3_of_local_data_vanishing`);
+    * `lemma_4_2_gauss_rank`, `RealBound.eq_6_11`, `RealBound.table2_tiles`.
+
+    So Lemma 3.1 and Lemma 4.2 in their paper forms are *proved but not load-bearing*.
+    Proposition 4.1 goes through `general_bound`, and Proposition 4.3 through
+    `vanishing_of_rank`.
+  * On 2026-09-24, `eq_6_14`, `Sec6.configBound`, `Sec6.cauchy_cnd`, `Sec6.Num.eq_6_7_closed`,
+    `Sec6.Gram.andreief` and `Sec6.rho_energy_ge` are in the cone.
+    `RealBound.reg_const_le_sixty`, `RealBound.table2_tiles` and
+    `Sec6.Gram.paper_6_9_admissible` are not (`cert/final/fidelity/Cone.out`).
+* A source scan (`cert/final/source_scan.py`, comments and strings removed) finds:
+  * exactly two `axiom` lines, both in `Axioms.lean`;
+  * no `sorry`, `admit`, `native_decide`, `implemented_by`, `extern`, `unsafe`, `opaque`,
+    `set_option`, `macro`, `syntax`, `notation` or `#eval`;
+  * no `debug.skipKernelTC`.
+
+  The only `elab` and `partial def` are the report commands of `Audit.lean`.
 
 ---
 
@@ -460,8 +494,11 @@ docstrings of `Sec6/Final.lean`, `Sec6/Defs.lean`, `Sec6/Energy.lean`, `Sec6/Gra
     (`smooth_err_norm`), via the nearest point of `[−1,1]` in angle form and
     `∫_0^X log(1+b²/x²)dx`, instead of the paper's mass bound and `60√ε` (p. 19); the paper's
     regularisation constant `≤ 60` (`RealBound.reg_const_le_sixty`) is proved but not used.
-21. **The Gram step** keeps the factor `1/h!` of (6.10), which the paper drops, and uses
-    `∫_0^∞(1+y)⁵e^{−y/K}dy ≤ 326K⁶` in place of the paper's constant `652`; the upper half of
+21. **The Gram step** keeps the factor `1/h!` of (6.10) through to (6.14). (The paper keeps it
+    in (6.13) and discards it, as `log h! ≥ 0`, only when it takes logarithms.) It uses
+    `∫_0^∞(1+y)⁵e^{−y/K}dy ≤ 326K⁶` in place of the paper's constant `652`. The `1/h!` is what
+    lets `eq_6_14_of_config` accept configuration bounds up to `3h log K + 131h`. The bound
+    actually proved (`2h log K + 20h`) would give (6.14) without it; the upper half of
     (6.12) is proved by sum–integral comparison for an increasing function, avoiding the
     paper's "decreasing in `t`, then evaluate at `t = 0`". The paper's own (6.9) constants
     are admissible for `eq_6_14_of_config` (`paper_6_9_admissible`).
@@ -480,70 +517,78 @@ docstrings of `Sec6/Final.lean`, `Sec6/Defs.lean`, `Sec6/Energy.lean`, `Sec6/Gra
 
 ## 7. What to do next, in value order
 
-1. **Re-run the certification on the present state.** `eq_6_14` is proved (2026-09-24) and
-   there is no `sorry` left, but the checks of `CERTIFICATION.md` — clean rebuild, the
-   independent walkers and module scan of `cert/`, `leanchecker` kernel replay, statement
-   snapshot comparison — were run on the state of 2026-09-23 and should be repeated with the
-   37 modules of `Zeta5/Sec6/` included. The typeset `docs/lean-status.pdf` should be updated
-   likewise.
-2. **Reduce `pnt_prime_riemann_sum` to `θ(x) ~ x`** (1–2 weeks): Abel summation plus a Darboux
-   sandwich, no Fauzan-specific object. Would leave only textbook citations among the axioms.
-3. **Reduce `hermite_pole_integral` to DLMF 25.11.29 verbatim** by formalising the four
+1. **Reduce `pnt_prime_riemann_sum` to `θ(x) ~ x`** (1–2 weeks). This needs Abel summation
+   plus a Darboux sandwich, and no object specific to Fauzan's paper. It would leave only
+   textbook citations among the axioms.
+2. **Reduce `hermite_pole_integral` to DLMF 25.11.29 verbatim** by formalising the four
    integrations by parts of p. 5 (~1–2 weeks).
-4. **Points the author may want to revise**, found by the formalization and the referee audit:
-   the p. 10 inequality `b_a ≤ 6αx+3` (deviation 18); the p. 12 divided-difference step, which
-   needs the `+1/(2j)` tail (deviation 15); the phrasing of the rank argument for (4.10)
-   (deviation 3).
+3. **Points the author may want to revise**, found by the formalization and the referee audit:
+   * the p. 10 inequality `b_a ≤ 6αx+3` (deviation 18);
+   * the p. 12 divided-difference step, which needs the `+1/(2j)` tail (deviation 15);
+   * the phrasing of the rank argument for (4.10) (deviation 3).
+4. **Minor, found by the 2026-09-24 certification; none affects soundness**
+   (`CERTIFICATION.md` §7):
+   * `Audit.lean`'s sorry list skips internal names. The module-keyed scans of `cert/final/`
+     cover them.
+   * Its orphan message prints even when there is no `sorry` at all.
+   * `Zeta5.vGAtLeast_mul` is proved twice, with the same statement, in `Section41.lean` and
+     `Normalization.lean`. Both proofs are sorry-free.
+
+   Fixing any of these would change a definition or remove a theorem. Under the ground rules
+   they are therefore recorded here rather than changed.
 
 ---
 
 ## 8. Certification
 
-*This section records the certification of the state of 2026-09-23, before (6.14) was proved;
-it has not been redone for the present state (see §7).*
+An adversarial certification of the present state was made on 2026-09-24, on code commit
+`808618b` (`CERTIFICATION.md`; scripts and outputs in `cert/final/`). Its verdict: **the
+claim holds.** `Zeta5.zeta5_irrational : Irrational Zeta5.zeta5` rests on `propext`,
+`Classical.choice` and `Quot.sound` and on the two axioms of `Axioms.lean`. It uses **no**
+`sorry`, and nothing else is in the dependency cone.
 
-An adversarial certification of that state (`CERTIFICATION.md`; scripts and outputs in
-`cert/`) reached the verdict: **the claim holds.** `Zeta5.zeta5_irrational : Irrational
-Zeta5.zeta5` rests on `propext`, `Classical.choice` and `Quot.sound`, on the two axioms of
-`Axioms.lean`, and on **exactly one** `sorry`, `Zeta5.RealBound.eq_6_14`. Nothing else is in
-the dependency cone.
+* **Clean builds.** Four independent clean builds of the same sources all succeeded: 8994
+  jobs, 0 errors, no `sorry` warning, 17 lint warnings. Each took 7½–8 minutes.
+* **Five independent dependency checks agree name for name:**
+  * `#print axioms`;
+  * the walker `cert/final/FWalker.lean`, which builds shortest provenance chains and
+    catches planted `sorry`, axiom, `where`-auxiliary and instance-field controls;
+  * a module-keyed scan of all 3 862 Zeta5 declarations, with a walk from all of them at
+    once (`cert/final/FScan.lean`);
+  * `Audit.lean` in the clean-build logs;
+  * `cert/final/FOlean.lean`, which reads the `.olean` files directly and does not use
+    Lean's environment or `collectAxioms`.
 
-* **Clean build.** `.lake/build` deleted (Mathlib untouched) and all 32 modules plus the root
-  rebuilt in 4 min 26 s: exit 0, 0 errors, **one** `declaration uses 'sorry'` warning, 249
-  warnings in all.
-* **Five independent dependency checks agree name for name:** the walker `cert/C3Walker.lean`
-  (breadth-first, generous successor relation, shortest provenance chains, planted
-  `sorry`/axiom controls that it catches); `#print axioms`; a module-keyed scan of all 3 272
-  Zeta5 declarations (`cert/C3Scan.lean`); `Audit.lean` in the clean-build log; and
-  **`leanchecker`**, a kernel replay of all 33 modules, exit 0. The `ConstantInfo.value?` trap
-  was run as a negative control: that walker reports no `sorry` at all.
-* **No statement changed.** Compared with a snapshot taken before the last proofs were written
-  (the snapshot is not published), every pre-existing Zeta5 declaration has the same type
-  hash and every definition the same value hash, apart from seven renumbered auxiliary lemmas
-  inside two proofs.
-* **Axioms.** Each is blocked at its degenerate points (the needed hypotheses are proved
-  refutable), is non-vacuous (consequences derived sorry-free), has exactly one direct user in
-  the cone, and was re-verified numerically: Hermite to 40 digits at 8 values of `a` from 0.01
-  to 1000; the prime Riemann sum at 4 test functions up to X = 10⁷.
-* **Statement.** Checked as an `Expr`: `Irrational Zeta5.zeta5`, with Mathlib's `Irrational`,
-  no hypotheses, and no universe parameters. `zeta5 = riemannZeta 5` is proved sorry-free
-  (`cert/C3Semantics.lean`). All nine dependency packages are unmodified git checkouts, and
-  Mathlib is at tag `v4.34.0`.
-* **PDF spot-checks.** `Lemma33.lemma_3_3` (p. 8), `InnerEntries.raabe_tau` (p. 7),
-  `OuterBasis.L0_eq_zero`/`rank_L0` (pp. 11–12), `HermiteBasis.det_coeffMatrix_unimodular`
-  (pp. 10, 12) and `Uniformity.eq_5_7_uniformity` (pp. 14–15) are all faithful. The rank
-  bound is slightly sharper than printed.
-* **The remaining `sorry` was tested.** (6.14) holds at K = 40, 80, 120 against exact values
-  of Δ_K(ζ(5)) from the referee audit, with `Irho` parsed from the Lean source. The slack is
-  large, so this is a consistency check, not a proof.
-* **Defects found:** an overstatement in §1 of this file (now corrected to "every arithmetic
-  statement the proof of Theorem 1.1 uses") and a stray scratch file outside the library (now
-  removed). Neither affected the assumption list.
+  The cone has 69 102 constants. In Lean 4.34, `#print axioms` and `collectAxioms` read
+  axiom lists that were stored when the `.olean` files were written. The three walkers
+  traverse the proof terms themselves.
+* **Kernel replay.** `leanchecker` replayed all 70 modules through the kernel (52 min, exit 0).
+* **No statement changed.** Every one of the 3 272 declarations of the 2026-09-23 state
+  (`main`, `9ce1320`) is still present, with the same kind, universe parameters, type and
+  value. The only exceptions are 16 compiler-generated `_proof_1_N` lemmas, whose types
+  differ only in hygienic binder names (they are α-equivalent). `eq_6_14` and `prop_6_3`
+  moved from `RealBound` to `Sec6.Final` with identical types. All 590 new declarations are
+  in the new `Sec6` modules. No axiom was added, and both axioms are identical.
+* **Fidelity of §6.**
+  * `eq_6_14` and `prop_6_3` match (6.14) and (6.16) of the PDF term for term.
+  * Their hypothesis `0 < Δ_K(ζ(5))` is discharged by `delta_pos`.
+  * Table 1, `Irho`, `M0` and (6.4) were re-checked against the PDF.
+  * The 19 leaf statements are unchanged since the blueprint.
+  * `gen_lean.py` regenerates `Num/` byte for byte.
+  * `check_leaves.py` gives 133 PASS and 0 FAIL.
+* **Defects found:** none that affects soundness or any statement. The documentation issues
+  found (stale descriptions of the 2026-09-23 state and stale warning counts, the wording
+  about the 1/h! of (6.10), and an overstatement about the numerical tests of the leaves)
+  have been corrected. The minor points of §7 item 4 are recorded.
+
+The certification of 2026-09-23 (32 modules, `eq_6_14` the one `sorry`) is summarised in
+`CERTIFICATION.md`, "Earlier certification (2026-09-23)". Its results about the two axioms
+and about the meaning of the main statement still apply: `Axioms.lean` and every definition
+that the statement uses are unchanged.
 
 **How to report this result (2026-09-24):** *"ζ(5) is irrational, machine-checked
 conditional on two external results entered as axioms — Hermite's integral formula (in the
 integrated-by-parts form of p. 5) and the prime number theorem in partial-summation form."*
-Both axioms are stronger than their bare citations (§2 (B)). The certification of §8 predates
-the proof of (6.14); until it is repeated, the no-`sorry` claim rests on the build and on
-`Audit.lean`'s check against `Lean.collectAxioms`. (Before 2026-09-24 the result had to be
-reported as conditional also on (6.14), Fauzan's own claim.)
+Both axioms are stronger than their bare citations (§2 (B)). Nothing internal to Fauzan's
+argument is assumed. (Before 2026-09-24 the result had to be reported as conditional also on
+(6.14), Fauzan's own claim.)

@@ -1,0 +1,4 @@
+segments on [0,2]: 30  cells: 1049  M: {'-1329/200'}
+range: 0 .. 2000000000000  (units 1e-12)
+contiguous tiling of [0,2]: OK
+segB: [('segB', 2000000000000, 4000000000000, '-1389/200', 2)]

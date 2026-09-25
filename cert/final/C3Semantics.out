@@ -1,0 +1,47 @@
+kind: theorem; universe params: []
+type as Expr == Irrational Zeta5.zeta5 : true
+raw type: Irrational Zeta5.zeta5
+`Irrational` is defined in module Mathlib.NumberTheory.Real.Irrational
+`Zeta5.zeta5` is defined in module Zeta5.Basic
+Zeta5.zeta5 is a def; raw value: tsum.{0, 0} Real Nat Real.instAddCommMonoid (UniformSpace.toTopologicalSpace.{0} Real (PseudoMetricSpace.toUniformSpace.{0} Real Real.pseudoMetricSpace)) (fun (v : Nat) => HDiv.hDiv.{0, 0, 0} Real Real Real (instHDiv.{0} Real (DivInvMonoid.toDiv.{0} Real Real.instDivInvMonoid)) (OfNat.ofNat.{0} Real 1 (One.toOfNat1.{0} Real Real.instOne)) (HPow.hPow.{0, 0, 0} Real Nat Real (instHPow.{0, 0} Real Nat (NPow.toPow.{0} Real (Monoid.toNPow.{0} Real Real.instMonoid))) (HAdd.hAdd.{0, 0, 0} Real Real Real (instHAdd.{0} Real Real.instAdd) (Nat.cast.{0} Real Real.instNatCast v) (OfNat.ofNat.{0} Real 1 (One.toOfNat1.{0} Real Real.instOne))) (OfNat.ofNat.{0} Nat 5 (instOfNatNat 5)))) (SummationFilter.unconditional.{0} Nat)
+constants in its value and their modules:
+   tsum  ←  Mathlib.Topology.Algebra.InfiniteSum.Defs
+   Real  ←  Mathlib.Basic.Real.Basic
+   Nat  ←  Init.Prelude
+   Real.instAddCommMonoid  ←  Mathlib.Basic.Real.Basic
+   UniformSpace.toTopologicalSpace  ←  Mathlib.Topology.UniformSpace.Defs
+   PseudoMetricSpace.toUniformSpace  ←  Mathlib.Topology.MetricSpace.Pseudo.Defs
+   Real.pseudoMetricSpace  ←  Mathlib.Topology.MetricSpace.Pseudo.Defs
+   HDiv.hDiv  ←  Init.Prelude
+   instHDiv  ←  Init.Prelude
+   DivInvMonoid.toDiv  ←  Mathlib.Algebra.Group.DivInvMonoid
+   Real.instDivInvMonoid  ←  Mathlib.Basic.Real.Basic
+   OfNat.ofNat  ←  Init.Prelude
+   One.toOfNat1  ←  Init.Data.Zero
+   Real.instOne  ←  Mathlib.Basic.Real.Basic
+   HPow.hPow  ←  Init.Prelude
+   instHPow  ←  Init.Prelude
+   NPow.toPow  ←  Mathlib.Algebra.Group.Monoid
+   Monoid.toNPow  ←  Mathlib.Algebra.Group.Monoid
+   Real.instMonoid  ←  Mathlib.Basic.Real.Basic
+   HAdd.hAdd  ←  Init.Prelude
+   instHAdd  ←  Init.Prelude
+   Real.instAdd  ←  Mathlib.Basic.Real.Basic
+   Nat.cast  ←  Init.Data.Cast
+   Real.instNatCast  ←  Mathlib.Basic.Real.Basic
+   instOfNatNat  ←  Init.Prelude
+   SummationFilter.unconditional  ←  Mathlib.Topology.Algebra.InfiniteSum.SummationFilter
+Zeta5.zeta5_irrational : Irrational Zeta5.zeta5
+def Zeta5.zeta5 : ℝ :=
+∑' (v : ℕ), 1 / (↑v + 1) ^ 5
+def Irrational : ℝ → Prop :=
+fun x => x ∉ Set.range Rat.cast
+'C3sem.zeta5_eq_riemannZeta' depends on axioms: [propext, Classical.choice, Quot.sound]
+'C3sem.one_le_zeta5' depends on axioms: [propext, Classical.choice, Quot.sound]
+'C3sem.riemannZeta_five_not_rational' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.hermite_pole_integral,
+ Zeta5.Axioms.pnt_prime_riemann_sum]
+lake env lean cert/C3Semantics.lean  2.21s user 8.98s system 98% cpu 11.413 total
+EXIT 0

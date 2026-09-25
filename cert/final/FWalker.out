@@ -1,0 +1,211 @@
+/Users/romik/zeta5-lean/Zeta5/cert/final/FWalker.lean:159:8: warning: declaration uses `sorry`
+/Users/romik/zeta5-lean/Zeta5/cert/final/FWalker.lean:168:6: warning: declaration uses `sorry`
+/Users/romik/zeta5-lean/Zeta5/cert/final/FWalker.lean:178:9: warning: declaration uses `sorry`
+=== C3 C3ctl.uses_sorry_2
+  constants reached : 327   (missing from env: 0)
+  axioms (1) : [sorryAx]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (1) : [C3ctl.planted_sorry]
+    chain to sorry leaf  : C3ctl.uses_sorry_2 → C3ctl.uses_sorry_1 → C3ctl.planted_sorry   [3 links]
+=== C3 C3ctl.uses_axiom_2
+  constants reached : 36   (missing from env: 0)
+  axioms (1) : [C3ctl.planted_axiom]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+    chain to axiom       : C3ctl.uses_axiom_2 → C3ctl.uses_axiom_1 → C3ctl.planted_axiom   [3 links]
+=== C3 C3ctl.clean
+  constants reached : 32   (missing from env: 0)
+  axioms (0) : []
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 C3ctl.uses_hidden_2
+  constants reached : 326   (missing from env: 0)
+  axioms (1) : [sorryAx]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (1) : [C3ctl.hiddenVal.aux]
+    chain to sorry leaf  : C3ctl.uses_hidden_2 → C3ctl.hiddenVal.aux   [2 links]
+=== C3 C3ctl.uses_box_2
+  constants reached : 332   (missing from env: 0)
+  axioms (1) : [sorryAx]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (1) : [C3ctl.boxInst]
+    chain to sorry leaf  : C3ctl.uses_box_2 → C3ctl.boxInst   [2 links]
+=== C3 Zeta5.zeta5_irrational
+  constants reached : 69102   (missing from env: 0)
+  axioms (5) : [Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral, Zeta5.Axioms.pnt_prime_riemann_sum, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+    chain to axiom       : Zeta5.zeta5_irrational → Zeta5.theorem_2_1 → Zeta5.Q_pos → Zeta5.F_pos → Zeta5.delta_pos → Zeta5.prop_2_2 → Zeta5.Positivity.prop_2_2 → Zeta5.Positivity.quadForm_eq_integral → Zeta5.Positivity.prop_2_2_moment → Zeta5.Positivity.integral_pole_term → Zeta5.Positivity.integral_wt_div_pole → Zeta5.Axioms.hermite_pole_integral   [12 links]
+    chain to axiom       : Zeta5.zeta5_irrational → Zeta5.theorem_2_1 → Zeta5.decay_2_7 → Zeta5.decay_of_margin → Zeta5.eq_7_1 → Zeta5.eq_5_21 → Zeta5.prop_5_2 → Zeta5.PrimeSum.prop_5_2 → Zeta5.PrimeSum.tendsto_P2 → Zeta5.PrimeSum.tendsto_primeSum → Zeta5.Axioms.pnt_prime_riemann_sum   [11 links]
+=== C3 Zeta5.theorem_1_1
+  constants reached : 18322   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.theorem_2_1
+  constants reached : 69077   (missing from env: 0)
+  axioms (5) : [Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral, Zeta5.Axioms.pnt_prime_riemann_sum, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+    chain to axiom       : Zeta5.theorem_2_1 → Zeta5.Q_pos → Zeta5.F_pos → Zeta5.delta_pos → Zeta5.prop_2_2 → Zeta5.Positivity.prop_2_2 → Zeta5.Positivity.quadForm_eq_integral → Zeta5.Positivity.prop_2_2_moment → Zeta5.Positivity.integral_pole_term → Zeta5.Positivity.integral_wt_div_pole → Zeta5.Axioms.hermite_pole_integral   [11 links]
+    chain to axiom       : Zeta5.theorem_2_1 → Zeta5.decay_2_7 → Zeta5.decay_of_margin → Zeta5.eq_7_1 → Zeta5.eq_5_21 → Zeta5.prop_5_2 → Zeta5.PrimeSum.prop_5_2 → Zeta5.PrimeSum.tendsto_P2 → Zeta5.PrimeSum.tendsto_primeSum → Zeta5.Axioms.pnt_prime_riemann_sum   [10 links]
+=== C3 Zeta5.RealBound.eq_6_14
+  constants reached : 60002   (missing from env: 0)
+  axioms (4) : [Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+    chain to axiom       : Zeta5.RealBound.eq_6_14 → Zeta5.Sec6.Gram.eq_6_14_of_config → Zeta5.Sec6.Gram.gram_bound → Zeta5.Sec6.Gram.eq_6_10 → Zeta5.Sec6.Gram.evalZeta5_G → Zeta5.Positivity.prop_2_2_moment → Zeta5.Positivity.integral_pole_term → Zeta5.Positivity.integral_wt_div_pole → Zeta5.Axioms.hermite_pole_integral   [9 links]
+=== C3 Zeta5.RealBound.prop_6_3
+  constants reached : 60077   (missing from env: 0)
+  axioms (4) : [Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+    chain to axiom       : Zeta5.RealBound.prop_6_3 → Zeta5.RealBound.eq_6_14 → Zeta5.Sec6.Gram.eq_6_14_of_config → Zeta5.Sec6.Gram.gram_bound → Zeta5.Sec6.Gram.eq_6_10 → Zeta5.Sec6.Gram.evalZeta5_G → Zeta5.Positivity.prop_2_2_moment → Zeta5.Positivity.integral_pole_term → Zeta5.Positivity.integral_wt_div_pole → Zeta5.Axioms.hermite_pole_integral   [10 links]
+=== C3 Zeta5.Sec6.Gram.eq_6_14_of_config
+  constants reached : 52982   (missing from env: 0)
+  axioms (4) : [Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+    chain to axiom       : Zeta5.Sec6.Gram.eq_6_14_of_config → Zeta5.Sec6.Gram.gram_bound → Zeta5.Sec6.Gram.eq_6_10 → Zeta5.Sec6.Gram.evalZeta5_G → Zeta5.Positivity.prop_2_2_moment → Zeta5.Positivity.integral_pole_term → Zeta5.Positivity.integral_wt_div_pole → Zeta5.Axioms.hermite_pole_integral   [8 links]
+=== C3 Zeta5.Sec6.configBound
+  constants reached : 55147   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.Num.eq_6_7_closed
+  constants reached : 43229   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.eq_6_7_closed
+  constants reached : 43332   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.rho_energy_ge
+  constants reached : 51436   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.frullani_integrable
+  constants reached : 37450   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.frullani_cauchy
+  constants reached : 41731   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.gauss_pd
+  constants reached : 46980   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.swap_frullani
+  constants reached : 38165   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.cauchy_cnd
+  constants reached : 47113   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.intervalIntegrable_log_abs_sub_cos
+  constants reached : 42865   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.integral_log_abs_sub_cos_of_abs_le
+  constants reached : 43372   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.integral_log_abs_sub_cos_of_one_lt_abs
+  constants reached : 50769   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.arcsine_pot
+  constants reached : 50920   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.exists_nearest_cos
+  constants reached : 16080   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.integral_log_one_add_sq_div
+  constants reached : 41619   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.smooth_err_norm
+  constants reached : 42151   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.arcsine_smooth_err
+  constants reached : 51260   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.rho_cross
+  constants reached : 51541   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.Irho_double_sum
+  constants reached : 15908   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.pair_energy_ge
+  constants reached : 51043   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.kE_arc_comm
+  constants reached : 36110   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.kE_rhoM_expand
+  constants reached : 35686   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+=== C3 Zeta5.Sec6.integral_log_add_sq
+  constants reached : 41289   (missing from env: 0)
+  axioms (3) : [Classical.choice, Quot.sound, propext]
+  vs Lean.collectAxioms : AGREE
+  sorry leaves (0) : []
+MODULE Zeta5.zeta5_irrational : Zeta5.Interface
+MODULE Zeta5.RealBound.eq_6_14 : Zeta5.Sec6.Final
+MODULE Zeta5.RealBound.prop_6_3 : Zeta5.Sec6.Final
+MODULE Zeta5.RealBound.prop_6_3_of : Zeta5.RealBound
+MODULE Zeta5.Axioms.hermite_pole_integral : Zeta5.Axioms
+MODULE Zeta5.Axioms.pnt_prime_riemann_sum : Zeta5.Axioms
+'Zeta5.zeta5_irrational' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.hermite_pole_integral,
+ Zeta5.Axioms.pnt_prime_riemann_sum]
+'Zeta5.theorem_1_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Zeta5.theorem_2_1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.hermite_pole_integral,
+ Zeta5.Axioms.pnt_prime_riemann_sum]
+'Zeta5.RealBound.eq_6_14' depends on axioms: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]
+'Zeta5.RealBound.prop_6_3' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.hermite_pole_integral]
+'C3ctl.uses_sorry_2' depends on axioms: [sorryAx]
+'C3ctl.uses_axiom_2' depends on axioms: [C3ctl.planted_axiom]
+'C3ctl.uses_hidden_2' depends on axioms: [sorryAx]
+'C3ctl.uses_box_2' depends on axioms: [sorryAx]
+lake env lean $O/FWalker.lean  650.69s user 15.54s system 96% cpu 11:32.24 total

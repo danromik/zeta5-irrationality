@@ -1,0 +1,152 @@
+== Frullani: frullani_cauchy, frullani_integrable ==
+PASS frullani eps=0.01 d=0.0  lhs=0 rhs=0
+PASS frullani eps=0.01 d=0.001  lhs=0.00995033085316808 rhs=0.00995033085316808
+PASS frullani eps=0.01 d=0.5  lhs=7.82444593087762 rhs=7.82444593087762
+PASS frullani eps=0.01 d=2.0  lhs=10.5966597327836 rhs=10.5966597327836
+PASS frullani eps=0.01 d=-7.0  lhs=13.1021627109011 rhs=13.1021627109011
+PASS frullani eps=0.3 d=0.0  lhs=0 rhs=0
+PASS frullani eps=0.3 d=0.001  lhs=1.11110493831733e-05 rhs=1.11110493831733e-05
+PASS frullani eps=0.3 d=0.5  lhs=1.32913594727994 rhs=1.32913594727994
+PASS frullani eps=0.3 d=2.0  lhs=3.81649057870658 rhs=3.81649057870658
+PASS frullani eps=0.3 d=-7.0  lhs=6.30160095672183 rhs=6.30160095672183
+PASS frullani eps=1.0 d=0.0  lhs=0 rhs=0
+PASS frullani eps=1.0 d=0.001  lhs=9.99999500000333e-07 rhs=9.99999500000333e-07
+PASS frullani eps=1.0 d=0.5  lhs=0.22314355131421 rhs=0.22314355131421
+PASS frullani eps=1.0 d=2.0  lhs=1.6094379124341 rhs=1.6094379124341
+PASS frullani eps=1.0 d=-7.0  lhs=3.91202300542815 rhs=3.91202300542815
+PASS frullani eps=5.0 d=0.0  lhs=0 rhs=0
+PASS frullani eps=5.0 d=0.001  lhs=3.99999992e-08 rhs=3.99999992e-08
+PASS frullani eps=5.0 d=0.5  lhs=0.00995033085316808 rhs=0.00995033085316808
+PASS frullani eps=5.0 d=2.0  lhs=0.148420005118273 rhs=0.148420005118273
+PASS frullani eps=5.0 d=-7.0  lhs=1.08518926833597 rhs=1.08518926833597
+PASS CONTROL frullani with log(1+|d|/eps) must differ
+== gauss_pd (finite discrete measures, random) ==
+PASS gauss_pd min over 2000 random pairs >= 0  min=2.403e-02
+PASS CONTROL gauss: G_ab - G_aa  (not a PD combination) must be > 0 somewhere
+== cauchy_cnd (equal masses) ==
+PASS cauchy_cnd max over 3000 random equal-mass pairs <= 0  max=-1.751e-07
+PASS CONTROL cauchy_cnd without the mass condition fails  value=2.303
+== swap_frullani (Tonelli; discrete measures) ==
+PASS swap_frullani eps=0.05  22.5039479403 vs 22.5039479403
+PASS swap_frullani eps=1.0  2.6230267407 vs 2.6230267407
+== integral_log_abs_sub_cos, intervalIntegrable_log_abs_sub_cos (normalised A.1) ==
+PASS logcos x=0.0  -2.1775860903036 vs -2.1775860903036
+PASS logcos x=0.3  -2.1775860903036 vs -2.1775860903036
+PASS logcos x=-0.77  -2.1775860903036 vs -2.1775860903036
+PASS logcos x=1.0  -2.1775860903036 vs -2.1775860903036
+PASS logcos x=-1.0  -2.1775860903036 vs -2.1775860903036
+PASS logcos x=1.0000001  -2.1761811273691 vs -2.1761811273691
+PASS logcos x=1.5  0.84595697855197 vs 0.84595697855197
+PASS logcos x=-3.0  3.3602474817938 vs 3.3602474817938
+PASS logcos x=10.0  7.2259008136442 vs 7.2259008136442
+PASS logcos x=1000000.0  43.402706474492 vs 43.402706474492
+PASS CONTROL logcos: off-interval branch used inside [-1,1] is wrong
+== arcsine_pot (scaled A.1) ==
+PASS arcsine_pot a=0.003907 b=0.008993 t=-0.996093
+PASS arcsine_pot a=0.003907 b=0.008993 t=0.00389675
+PASS arcsine_pot a=0.003907 b=0.008993 t=0.00390675
+PASS arcsine_pot a=0.003907 b=0.008993 t=0.00644972
+PASS arcsine_pot a=0.003907 b=0.008993 t=0.00826613
+PASS arcsine_pot a=0.003907 b=0.008993 t=0.0089927
+PASS arcsine_pot a=0.003907 b=0.008993 t=0.208993
+PASS arcsine_pot a=0.003907 b=0.008993 t=5
+PASS arcsine_pot a=7.174e-05 b=0.7466 t=-0.999928
+PASS arcsine_pot a=7.174e-05 b=0.7466 t=6.17413e-05
+PASS arcsine_pot a=7.174e-05 b=0.7466 t=7.17413e-05
+PASS arcsine_pot a=7.174e-05 b=0.7466 t=0.373355
+PASS arcsine_pot a=7.174e-05 b=0.7466 t=0.639985
+PASS arcsine_pot a=7.174e-05 b=0.7466 t=0.746637
+PASS arcsine_pot a=7.174e-05 b=0.7466 t=0.946637
+PASS arcsine_pot a=7.174e-05 b=0.7466 t=5
+PASS arcsine_pot a=-1 b=3 t=-2
+PASS arcsine_pot a=-1 b=3 t=-1.00001
+PASS arcsine_pot a=-1 b=3 t=-1
+PASS arcsine_pot a=-1 b=3 t=1
+PASS arcsine_pot a=-1 b=3 t=2.42857
+PASS arcsine_pot a=-1 b=3 t=3
+PASS arcsine_pot a=-1 b=3 t=3.2
+PASS arcsine_pot a=-1 b=3 t=5
+== exists_nearest_cos ==
+PASS exists_nearest_cos with theta0 = arccos(clamp tau)
+== cos_sub_cos_ge (proved; recheck) ==
+PASS cos_sub_cos_ge ratio >= 1  min ratio=1.014116
+== integral_log_one_add_sq_div ==
+PASS int log(1+b^2/x^2) b=0.01 X=0
+PASS int log(1+b^2/x^2) b=0.01 X=0.1
+PASS int log(1+b^2/x^2) b=0.01 X=1
+PASS int log(1+b^2/x^2) b=0.01 X=3.142
+PASS int log(1+b^2/x^2) b=0.01 X=5
+PASS int log(1+b^2/x^2) b=1.0 X=0
+PASS int log(1+b^2/x^2) b=1.0 X=0.1
+PASS int log(1+b^2/x^2) b=1.0 X=1
+PASS int log(1+b^2/x^2) b=1.0 X=3.142
+PASS int log(1+b^2/x^2) b=1.0 X=5
+PASS int log(1+b^2/x^2) b=3.0 X=0
+PASS int log(1+b^2/x^2) b=3.0 X=0.1
+PASS int log(1+b^2/x^2) b=3.0 X=1
+PASS int log(1+b^2/x^2) b=3.0 X=3.142
+PASS int log(1+b^2/x^2) b=3.0 X=5
+== smooth_err_norm ==
+PASS smooth_err_norm: max LHS/RHS <= 1  max ratio=0.2251
+PASS CONTROL smooth_err with RHS pi*(delta + 0.1*sqrt(delta)) fails
+== arcsine_smooth_err (scaled) ==
+PASS arcsine_smooth_err: max (err / allowed err) <= 1  max=0.2250
+== rho_cross ==
+PASS rho_cross: max (err/allowed) <= 1  max=0.0201
+== Irho_double_sum ==
+PASS Irho_double_sum  Irho=-2.1265934451470504032547
+PASS CONTROL Irho with min(i,j) instead of max(i,j) differs
+== nesting (used by pair_energy_ge) ==
+PASS [a_i,b_i] ⊆ [a_j,b_j] for i ≤ j
+== pair_energy_ge, rho_energy_ge (Gauss-Chebyshev outer, adaptive inner) ==
+PASS pair_energy_ge eps=0.001 i=0 j=0  kE=-6.16621543 >= -6.66756831
+PASS pair_energy_ge eps=0.001 i=0 j=15  kE=-1.66360200 >= -1.67856621
+PASS pair_energy_ge eps=0.001 i=3 j=9  kE=-2.42703630 >= -2.44485107
+PASS pair_energy_ge eps=0.001 i=14 j=15  kE=-1.67267122 >= -1.67856621
+PASS pair_energy_ge eps=0.001 i=15 j=15  kE=-1.67089012 >= -1.67856621
+PASS kE_arc_comm eps=0.001
+PASS pair_energy_ge eps=0.1 i=0 j=0  kE=-2.30226199 >= -6.66756831
+PASS pair_energy_ge eps=0.1 i=0 j=15  kE=-1.16519482 >= -1.67856621
+PASS pair_energy_ge eps=0.1 i=3 j=9  kE=-1.71479500 >= -2.44485107
+PASS pair_energy_ge eps=0.1 i=14 j=15  kE=-1.31679785 >= -1.67856621
+PASS pair_energy_ge eps=0.1 i=15 j=15  kE=-1.30399994 >= -1.67856621
+PASS kE_arc_comm eps=0.1
+PASS rho_energy_ge eps=0.01  kE(rho,rho)=-2.00640365 >= Irho=-2.12659345
+PASS rho_energy_ge eps=1.0  kE(rho,rho)=0.02121074 >= Irho=-2.12659345
+== integral_log_add_sq, Vfield_eq_Vclosed (A.5) ==
+PASS integral_log_add_sq t=1e-08 c=0.075
+PASS integral_log_add_sq t=1e-08 c=1.0
+PASS integral_log_add_sq t=1e-08 c=-2.0
+PASS integral_log_add_sq t=1e-08 c=0.0
+PASS Vfield_eq_Vclosed t=1e-08
+PASS integral_log_add_sq t=0.01 c=0.075
+PASS integral_log_add_sq t=0.01 c=1.0
+PASS integral_log_add_sq t=0.01 c=-2.0
+PASS integral_log_add_sq t=0.01 c=0.0
+PASS Vfield_eq_Vclosed t=0.01
+PASS integral_log_add_sq t=0.592 c=0.075
+PASS integral_log_add_sq t=0.592 c=1.0
+PASS integral_log_add_sq t=0.592 c=-2.0
+PASS integral_log_add_sq t=0.592 c=0.0
+PASS Vfield_eq_Vclosed t=0.592
+PASS integral_log_add_sq t=1.0 c=0.075
+PASS integral_log_add_sq t=1.0 c=1.0
+PASS integral_log_add_sq t=1.0 c=-2.0
+PASS integral_log_add_sq t=1.0 c=0.0
+PASS Vfield_eq_Vclosed t=1.0
+PASS integral_log_add_sq t=2.0 c=0.075
+PASS integral_log_add_sq t=2.0 c=1.0
+PASS integral_log_add_sq t=2.0 c=-2.0
+PASS integral_log_add_sq t=2.0 c=0.0
+PASS Vfield_eq_Vclosed t=2.0
+PASS integral_log_add_sq t=10.0 c=0.075
+PASS integral_log_add_sq t=10.0 c=1.0
+PASS integral_log_add_sq t=10.0 c=-2.0
+PASS integral_log_add_sq t=10.0 c=0.0
+PASS Vfield_eq_Vclosed t=10.0
+PASS CONTROL Vclosed at t=0 differs from the t>0 limit only through 1/0=0 (V(0) finite)
+== (6.7) in closed form (proved in Sec6/Num; recheck on a grid) ==
+PASS max_{t in (0,4]} 2U^rho - V <= M0  max=-6.649897 M0=-6.645
+
+ALL CHECKS PASSED
+python3 check_leaves.py  6.81s user 0.09s system 93% cpu 7.403 total

@@ -160,15 +160,18 @@ python3 numerics/lemma33/l33check.py        # ~20 s -> l33check.out
 For the leaves of `Zeta5/Sec6/` (the proof of (6.14); route in `Zeta5/Sec6/Final.lean`).
 
 * `sec6/check_leaves.py` (with `sec6/common.py`; output `sec6/check_leaves.out`, about 10 s):
-  every sorried leaf is tested at sample points with `mpmath`/`scipy` quadrature — the
+  the leaves, while they were still `sorry`s, are tested at sample points with `mpmath`/`scipy`
+  quadrature (all except the bilinear expansion `kE_rhoM_expand`; the two branches of (A.1)
+  are tested together, through `integral_log_abs_sub_cos`) — the
   Frullani identity, Gaussian positive definiteness and the zero-mass inequality for the
   Cauchy kernel on random finite measures (3000 equal-mass pairs), the normalised and scaled
   arcsine potential (A.1) (both branches, endpoints included), the antiderivative and the
   smoothing-error bounds (worst ratio 0.23), the cross term (worst ratio 0.02), (A.2) as a
   double sum, the pair energies and `I(ρ) ≤ I_k(ρ,ρ)`, (A.5), and (6.2) on a grid.  Must-fail
-  controls: a wrong Frullani value, the zero-mass inequality without the mass condition, the
-  off-interval branch of (A.1) used inside the interval, a smoothing constant `0.1√δ`, and
-  (A.2) with `min(i,j)` in place of `max(i,j)`.  Run with `cd numerics/sec6 && python3 check_leaves.py`.
+  controls (7): a wrong Frullani value, a Gaussian combination that is not positive definite,
+  the zero-mass inequality without the mass condition, the off-interval branch of (A.1) used
+  inside the interval, a smoothing constant `0.1√δ`, (A.2) with `min(i,j)` in place of
+  `max(i,j)`, and the value of the closed form of `V` at `t = 0`.  Run with `cd numerics/sec6 && python3 check_leaves.py`.
 * `sec6/gen_lean.py` regenerates `Zeta5/Sec6/Num/Seg1.lean`–`Seg6.lean` and
   `Zeta5/Sec6/Num/Final.lean` from the certified partition `sec6/partition/pts.txt`
   (1049 cells on `[0,2]`, each point `k·10⁻¹²`), which `sec6/partition/gen.py` produced

@@ -1,0 +1,443 @@
+✔ [8924/8994] Built Zeta5.Sec6.Num.Eval (34s)
+✔ [8925/8994] Built Zeta5.HermiteBasisCore (36s)
+✔ [8926/8994] Built Zeta5.Basic (36s)
+✔ [8927/8994] Built Zeta5.Axioms (18s)
+ℹ [8928/8994] Built Zeta5.HermiteBasis (19s)
+info: Zeta5/HermiteBasis.lean:275:0: 'Zeta5.HermiteBasis.det_coeffMatrix_unimodular' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/HermiteBasis.lean:276:0: 'Zeta5.HermiteBasis.hermite_linearIndependent' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/HermiteBasis.lean:277:0: 'Zeta5.HermiteBasis.det_coeffMatrix_hermite_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/HermiteBasis.lean:278:0: 'Zeta5.HermiteBasis.hermitePoly_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/HermiteBasis.lean:279:0: 'Zeta5.HermiteBasis.hermitePoly_monic' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/HermiteBasis.lean:280:0: 'Zeta5.HermiteBasis.hermitePoly_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/HermiteBasis.lean:281:0: 'Zeta5.HermiteBasis.coeffMatrix_row_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/HermiteBasis.lean:282:0: 'Zeta5.HermiteBasis.sq_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/HermiteBasis.lean:283:0: 'Zeta5.HermiteBasis.sq_injective_half' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8929/8994] Built Zeta5.Sec6.Num.Sound (20s)
+✔ [8930/8994] Built Zeta5.Asymptotics (20s)
+ℹ [8931/8994] Built Zeta5.Lemma42 (21s)
+info: Zeta5/Lemma42.lean:659:0: 'Zeta5.lemma_4_2' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma42.lean:660:0: 'Zeta5.lemma_4_2_rank_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma42.lean:661:0: 'Zeta5.lemma_4_2_rank_zero_gauss' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma42.lean:662:0: 'Zeta5.lemma_4_2_needs_half_integers' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma42.lean:663:0: 'Zeta5.lemma_4_2_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma42.lean:664:0: 'Zeta5.det_add_eq_sum_mixCol' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma42.lean:665:0: 'Zeta5.mixCol_det_eq_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma42.lean:666:0: 'Zeta5.loss_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma42.lean:667:0: 'Zeta5.gaussGe_intCast' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [8932/8994] Built Zeta5.Normalization (21s)
+info: Zeta5/Normalization.lean:436:0: 'Zeta5.prop_5_1_of' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Normalization.lean:437:0: 'Zeta5.exists_intPoly_of_vG' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Normalization.lean:438:0: 'Zeta5.isInt_of_forall_padicValRat_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Normalization.lean:439:0: 'Zeta5.vGAtLeast_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Normalization.lean:440:0: 'Zeta5.vGAtLeast_C_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Normalization.lean:441:0: 'Zeta5.padicValRat_mKM' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Normalization.lean:442:0: 'Zeta5.vS_eq_zero_of_two_h_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Normalization.lean:443:0: 'Zeta5.outer_hypotheses' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8933/8994] Built Zeta5.Skeleton (22s)
+ℹ [8934/8994] Built Zeta5.Functional (22s)
+info: Zeta5/Functional.lean:785:0: 'Zeta5.Functional.partial_fractions' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:786:0: 'Zeta5.Functional.partial_fraction_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:787:0: 'Zeta5.Functional.muOver_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:788:0: 'Zeta5.Functional.muOver_C_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:789:0: 'Zeta5.Functional.muOver_poly' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:790:0: 'Zeta5.Functional.muOver_cof' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:791:0: 'Zeta5.Functional.muOver_coeff_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:792:0: 'Zeta5.Functional.Delta_coeff_h' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:793:0: 'Zeta5.Functional.Gcoef_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:794:0: 'Zeta5.Functional.prod_offDiag' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:795:0: 'Zeta5.Functional.eq_2_9' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:796:0: 'Zeta5.Functional.Delta_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:797:0: 'Zeta5.Functional.Q_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Functional.lean:798:0: 'Zeta5.Functional.muMono_eq_zeta' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8935/8994] Built Zeta5.Tail (23s)
+✔ [8936/8994] Built Zeta5.Counting (25s)
+ℹ [8937/8994] Built Zeta5.RealBound (35s)
+info: Zeta5/RealBound.lean:1119:0: 'Zeta5.RealBound.A10_Irho' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/RealBound.lean:1120:0: 'Zeta5.RealBound.A10_Cstar' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/RealBound.lean:1121:0: 'Zeta5.RealBound.eq_6_4' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/RealBound.lean:1122:0: 'Zeta5.RealBound.eq_6_15' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/RealBound.lean:1123:0: 'Zeta5.RealBound.eq_6_11' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/RealBound.lean:1124:0: 'Zeta5.RealBound.table2_tiles' depends on axioms: [propext]
+info: Zeta5/RealBound.lean:1125:0: 'Zeta5.RealBound.prop_6_3_of' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8938/8994] Built Zeta5.Sec6.Num.Cell (19s)
+ℹ [8939/8994] Built Zeta5.OuterLocal (18s)
+info: Zeta5/OuterLocal.lean:821:0: 'Zeta5.OuterLocal.inv_pow_five_pair' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:822:0: 'Zeta5.OuterLocal.H5_p_sub_one_congr_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:823:0: 'Zeta5.OuterLocal.H5_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:824:0: 'Zeta5.OuterLocal.muPole_tail_is_needed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:825:0: 'Zeta5.OuterLocal.neg_inv_not_congr_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:826:0: 'Zeta5.OuterLocal.muPole_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:827:0: 'Zeta5.OuterLocal.node_sub_valuation' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:828:0: 'Zeta5.OuterLocal.divided_difference_int' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:829:0: 'Zeta5.OuterLocal.muPole_divided_difference' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:830:0: 'Zeta5.OuterLocal.gram_basis_change' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:831:0: 'Zeta5.OuterLocal.det_Gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:832:0: 'Zeta5.OuterLocal.Delta_eq_of_basis' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterLocal.lean:833:0: 'Zeta5.OuterLocal.padicValRat_unimodular' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [8940/8994] Built Zeta5.Positivity (27s)
+info: Zeta5/Positivity.lean:801:0: 'Zeta5.Positivity.wt_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Positivity.lean:802:0: 'Zeta5.Positivity.integral_pow_mul_exp' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Positivity.lean:803:0: 'Zeta5.Positivity.integral_pow_mul_wt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Positivity.lean:804:0: 'Zeta5.Positivity.integrableOn_pow_mul_wt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Positivity.lean:805:0: 'Zeta5.Positivity.integrand_decomp' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Positivity.lean:806:0: 'Zeta5.Positivity.integral_aeval_mul_wt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Positivity.lean:807:0: 'Zeta5.Positivity.integral_wt_div_pole' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Axioms.hermite_pole_integral]
+info: Zeta5/Positivity.lean:808:0: 'Zeta5.Positivity.prop_2_2_moment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Axioms.hermite_pole_integral]
+info: Zeta5/Positivity.lean:809:0: 'Zeta5.Positivity.prop_2_2' depends on axioms: [propext, Classical.choice, Quot.sound, Axioms.hermite_pole_integral]
+ℹ [8941/8994] Built Zeta5.Section41 (25s)
+info: Zeta5/Section41.lean:1113:0: 'Zeta5.ell_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1114:0: 'Zeta5.ell_lt_caseSplit' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1115:0: 'Zeta5.ell_naive_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1116:0: 'Zeta5.ell_eq_naive_of_large_v' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1117:0: 'Zeta5.naive_not_enough' depends on axioms: [propext, Quot.sound]
+info: Zeta5/Section41.lean:1118:0: 'Zeta5.exists_TE' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1119:0: 'Zeta5.unique_TE' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1120:0: 'Zeta5.T_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1121:0: 'Zeta5.T_gt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1122:0: 'Zeta5.L_gt_three_halves' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1123:0: 'Zeta5.dimension_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1124:0: 'Zeta5.InnerAlloc.sum_rowW' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1125:0: 'Zeta5.ell_two_consecutive' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1126:0: 'Zeta5.weight_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1127:0: 'Zeta5.zero_source_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1128:0: 'Zeta5.degree_bound_ordinary' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1129:0: 'Zeta5.degrees_le_p_add_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1130:0: 'Zeta5.vGAtLeast_det' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1131:0: 'Zeta5.prop_4_1_of_entry_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section41.lean:1132:0: 'Zeta5.exists_innerAlloc_of_inner' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8942/8994] Built Zeta5.Sec6.Defs (18s)
+✔ [8943/8994] Built Zeta5.Sec6.Num.Tail (25s)
+✔ [8944/8994] Built Zeta5.Sec6.IrhoSum (19s)
+✔ [8945/8994] Built Zeta5.AppendixB (51s)
+ℹ [8946/8994] Built Zeta5.Arithmetic (28s)
+info: Zeta5/Arithmetic.lean:787:0: 'Zeta5.vS_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:788:0: 'Zeta5.integer_binom_coeffs' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:789:0: 'Zeta5.exists_binom_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:790:0: 'Zeta5.neg_one_le_padicValRat_bernoulli' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:791:0: 'Zeta5.padicValRat_kappa_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:792:0: 'Zeta5.neg_one_le_padicValRat_kappa' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:793:0: 'Zeta5.log_linear_le_quadratic' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:794:0: 'Zeta5.eq_7_1_of' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:795:0: 'Zeta5.theorem_2_1_of' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:796:0: 'Zeta5.zeta5_irrational_of' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:797:0: 'Zeta5.A200_add_Ubar_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:798:0: 'Zeta5.AM_200_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Arithmetic.lean:799:0: 'Zeta5.Lp_small_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8947/8994] Built Zeta5.Sec6.Gram (26s)
+✔ [8948/8994] Built Zeta5.Sec6.LogCosInt (27s)
+✔ [8949/8994] Built Zeta5.Sec6.LogCosOn (27s)
+✔ [8950/8994] Built Zeta5.Sec6.Antideriv (28s)
+✔ [8951/8994] Built Zeta5.Sec6.Field (28s)
+✔ [8952/8994] Built Zeta5.Sec6.LogCosOff (29s)
+✔ [8953/8994] Built Zeta5.Sec6.SmoothAux (23s)
+✔ [8954/8994] Built Zeta5.Sec6.Measures (22s)
+✔ [8955/8994] Built Zeta5.Sec6.Swap (22s)
+✔ [8956/8994] Built Zeta5.Sec6.Num.Seg1 (59s)
+✔ [8957/8994] Built Zeta5.Sec6.GaussPD (21s)
+✔ [8958/8994] Built Zeta5.Sec6.Frullani (22s)
+✔ [8959/8994] Built Zeta5.Sec6.LogCos (23s)
+✔ [8960/8994] Built Zeta5.LocalFunctional (28s)
+ℹ [8961/8994] Built Zeta5.OuterBasis (29s)
+info: Zeta5/OuterBasis.lean:1929:0: 'Zeta5.OuterBasis.outer_local_core' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterBasis.lean:1930:0: 'Zeta5.OuterBasis.entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterBasis.lean:1931:0: 'Zeta5.OuterBasis.rank_Lq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterBasis.lean:1932:0: 'Zeta5.OuterBasis.muL_int' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterBasis.lean:1933:0: 'Zeta5.OuterBasis.rowR_hermite' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterBasis.lean:1934:0: 'Zeta5.OuterBasis.Gram_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterBasis.lean:1935:0: 'Zeta5.OuterBasis.mu0_int' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8962/8994] Built Zeta5.Sec6.SmoothErr (30s)
+✔ [8963/8994] Built Zeta5.Sec6.ArcComm (21s)
+✔ [8964/8994] Built Zeta5.Sec6.Bilinear (24s)
+✔ [8965/8994] Built Zeta5.Sec6.CND (20s)
+ℹ [8966/8994] Built Zeta5.Uniformity (41s)
+info: Zeta5/Uniformity.lean:1393:0: 'Zeta5.Uniformity.eq_5_7_uniformity' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Uniformity.lean:1394:0: 'Zeta5.Uniformity.gamma_inner_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Uniformity.lean:1395:0: 'Zeta5.Uniformity.vS_inner_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Uniformity.lean:1396:0: 'Zeta5.Uniformity.outer_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8967/8994] Built Zeta5.Sec6.Num.Seg4 (86s)
+✔ [8968/8994] Built Zeta5.Sec6.ArcsinePot (22s)
+⚠ [8969/8994] Built Zeta5.InnerTate (22s)
+warning: Zeta5/InnerTate.lean:83:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.vge_neg`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerTate.lean:95:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.vge_zero_iff`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+ℹ [8970/8994] Built Zeta5.OuterRange (22s)
+info: Zeta5/OuterRange.lean:1564:0: 'Zeta5.lemma_4_2_of_vanishing' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1565:0: 'Zeta5.lemma_4_2_of_zeroCols' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1566:0: 'Zeta5.lemma_4_2_of_rank_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1567:0: 'Zeta5.lemma_4_2_gauss_zeroCols' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1568:0: 'Zeta5.zeroCols_of_lowDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1569:0: 'Zeta5.card_compl_lt_filter' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1570:0: 'Zeta5.table_removed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1571:0: 'Zeta5.table_unremoved' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1572:0: 'Zeta5.sum_outerWeight_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1573:0: 'Zeta5.outerZeroCount_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1574:0: 'Zeta5.gammaOut_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1575:0: 'Zeta5.outerRows_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1576:0: 'Zeta5.prop_4_3_of_local_data' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1577:0: 'Zeta5.outer_local_analysis' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1578:0: 'Zeta5.Outer.prop_4_3' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/OuterRange.lean:1579:0: 'Zeta5.Outer.prop_4_3_large' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [8971/8994] Built Zeta5.Lemma33 (24s)
+info: Zeta5/Lemma33.lean:1146:0: 'Zeta5.Lemma33.pullback' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma33.lean:1147:0: 'Zeta5.Lemma33.lemma_3_3_strong' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma33.lean:1148:0: 'Zeta5.Lemma33.lemma_3_3' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma33.lean:1149:0: 'Zeta5.Lemma33.entry_pullback' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Lemma33.lean:1150:0: 'Zeta5.Lemma33.entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8972/8994] Built Zeta5.Sec6.Num.Seg2 (44s)
+✔ [8973/8994] Built Zeta5.Sec6.PairEnergy (17s)
+✔ [8974/8994] Built Zeta5.Sec6.SmoothArc (17s)
+⚠ [8975/8994] Built Zeta5.InnerGeneral (17s)
+warning: Zeta5/InnerGeneral.lean:279:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.comp_X_sub_C_phi`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerGeneral.lean:284:37: Variable name `ha` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _ha
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Zeta5/InnerGeneral.lean:295:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.Tn_monic`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerGeneral.lean:298:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.Tn_natDegree`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerGeneral.lean:318:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.emod_eq_of_dvd_sub`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+⚠ [8976/8994] Built Zeta5.PrimeSum (28s)
+warning: Zeta5/PrimeSum.lean:1301:49: Variable name `hC0` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hC0
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Zeta5/PrimeSum.lean:1344:49: Variable name `hC0` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hC0
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+✔ [8977/8994] Built Zeta5.Sec6.RhoEnergy (17s)
+✔ [8978/8994] Built Zeta5.Sec6.RhoCross (18s)
+⚠ [8979/8994] Built Zeta5.InnerEntries (19s)
+warning: Zeta5/InnerEntries.lean:287:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.emod_eq_iff_dvd`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerEntries.lean:299:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.CF_congr`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerEntries.lean:303:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.CF_mono`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerEntries.lean:398:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.rowPoly_eq_prod`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerEntries.lean:611:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.indic_zero_self`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerEntries.lean:613:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.indic_zero_of_pos`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerEntries.lean:620:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.card_poleSet_filter`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Zeta5/InnerEntries.lean:765:0: automatically included section variable(s) unused in theorem `Zeta5.InnerEntries.K_lt_sq`:
+  hpf
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit hpf in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+info: Zeta5/InnerEntries.lean:1046:0: 'Zeta5.InnerEntries.raabe_tau' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/InnerEntries.lean:1047:0: 'Zeta5.InnerEntries.class_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/InnerEntries.lean:1048:0: 'Zeta5.InnerEntries.general_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/InnerEntries.lean:1049:0: 'Zeta5.InnerEntries.pullback' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/InnerEntries.lean:1050:0: 'Zeta5.InnerEntries.gram_entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/InnerEntries.lean:1051:0: 'Zeta5.InnerEntries.entry_weights' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/InnerEntries.lean:1052:0: 'Zeta5.InnerEntries.entry_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [8980/8994] Built Zeta5.Section3 (15s)
+info: Zeta5/Section3.lean:412:0: 'Zeta5.eq_3_2' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:413:0: 'Zeta5.eq_3_3' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:414:0: 'Zeta5.eq_3_1_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:415:0: 'Zeta5.eq_3_1_pole' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:416:0: 'Zeta5.eq_3_1_partialFraction' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:417:0: 'Zeta5.lemma_3_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:418:0: 'Zeta5.resid_eq_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:419:0: 'Zeta5.Section3.lemma_3_1_hyps_of_near' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:420:0: 'Zeta5.Section3.ordinary_degree_le_p_add_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:421:0: 'Zeta5.Section3.zero_degree_le_p_add_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:422:0: 'Zeta5.Section3.sq_ne_sq_mod' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:423:0: 'Zeta5.Section3.rowPoly_natDegree_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:424:0: 'Zeta5.Section3.eq_4_2_of_lemma_3_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:425:0: 'Zeta5.Section3.eq_4_3_of_lemma_3_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:426:0: 'Zeta5.Section3.entry_bounds_4_2_4_3' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Section3.lean:427:0: 'Zeta5.Section3.prop_4_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8981/8994] Built Zeta5.Sec6.Num.Seg3 (46s)
+✔ [8982/8994] Built Zeta5.Sec6.Num.Seg5 (64s)
+ℹ [8983/8994] Built Zeta5.CrudeBound (15s)
+info: Zeta5/CrudeBound.lean:653:0: 'Zeta5.CrudeBound.eq_3_11' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:654:0: 'Zeta5.CrudeBound.S_eq_change_of_basis' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:655:0: 'Zeta5.CrudeBound.qb_pullback_int' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:656:0: 'Zeta5.CrudeBound.D_pullback_int' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:657:0: 'Zeta5.CrudeBound.fb_pullback_int' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:658:0: 'Zeta5.CrudeBound.pullNum_int' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:659:0: 'Zeta5.CrudeBound.pullNum_natDegree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:660:0: 'Zeta5.CrudeBound.max_two_K_le_five_K' depends on axioms: [propext, Quot.sound]
+info: Zeta5/CrudeBound.lean:661:0: 'Zeta5.CrudeBound.factorial_dvd_descPochhammer_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:662:0: 'Zeta5.CrudeBound.descPochhammer_odd_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:664:0: 'Zeta5.CrudeBound.crude_entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/CrudeBound.lean:665:0: 'Zeta5.eq_3_12' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8984/8994] Built Zeta5.Sec6.Num.Seg6 (66s)
+✔ [8985/8994] Built Zeta5.Sec6.Num.Final (17s)
+✔ [8986/8994] Built Zeta5.Sec6.Potential (14s)
+✔ [8987/8994] Built Zeta5.Sec6.Energy (18s)
+✔ [8988/8994] Built Zeta5.Sec6.Final (14s)
+✔ [8989/8994] Built Zeta5.Interface (14s)
+ℹ [8990/8994] Built Zeta5.AppendixBCheck (14s)
+info: Zeta5/AppendixBCheck.lean:113:0: 'Zeta5.AppendixB.RR_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/AppendixBCheck.lean:114:0: 'Zeta5.AppendixB.intervalIntegrable_RR_div' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/AppendixBCheck.lean:115:0: 'Zeta5.AppendixB.eq_5_18' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/AppendixBCheck.lean:116:0: 'Zeta5.AppendixB.eq_5_10' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/AppendixBCheck.lean:117:0: 'Zeta5.AppendixB.Gam_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/AppendixBCheck.lean:118:0: 'Zeta5.AppendixB.RR_affine' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/AppendixBCheck.lean:119:0: 'Zeta5.AppendixB.eq_5_16_5_18' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [8991/8994] Built Zeta5.Checks (14s)
+info: Zeta5/Checks.lean:233:0: 'Zeta5.theorem_1_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Checks.lean:234:0: 'Zeta5.irrational_of_integerPolynomials' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Checks.lean:235:0: 'Zeta5.ell_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Checks.lean:236:0: 'Zeta5.InnerAlloc.L_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Checks.lean:237:0: 'Zeta5.Delta_natDegree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Checks.lean:238:0: 'Zeta5.eq_7_2_M200' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Checks.lean:239:0: 'Zeta5.Astar_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Zeta5/Checks.lean:243:0: 'Zeta5.theorem_2_1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Axioms.hermite_pole_integral,
+ Axioms.pnt_prime_riemann_sum]
+info: Zeta5/Checks.lean:244:0: 'Zeta5.zeta5_irrational' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Axioms.hermite_pole_integral,
+ Axioms.pnt_prime_riemann_sum]
+ℹ [8992/8994] Built Zeta5.Audit (76s)
+info: Zeta5/Audit.lean:203:0: ASSUMPTION REPORT for Zeta5.zeta5_irrational
+
+  (A) standard Lean axioms:
+    Classical.choice
+    Quot.sound
+    propext
+
+  (B) explicit external axioms of this project (Zeta5/Axioms.lean):
+    Zeta5.Axioms.hermite_pole_integral
+    Zeta5.Axioms.pnt_prime_riemann_sum
+
+  (C) sorry(s) — unfinished steps of the paper's own argument, 0 in all:
+    (none)
+
+  (D) any other axiom (must be empty):
+    (none)
+
+  [self-check: walker agrees with Lean.collectAxioms, 5 axiom(s)]
+info: Zeta5/Audit.lean:207:0: Zeta5.theorem_2_1 depends on NO sorry.
+info: Zeta5/Audit.lean:208:0: Zeta5.prop_5_1 depends on NO sorry.
+info: Zeta5/Audit.lean:209:0: Zeta5.prop_2_2 depends on NO sorry.
+info: Zeta5/Audit.lean:210:0: Zeta5.prop_4_1 depends on NO sorry.
+info: Zeta5/Audit.lean:211:0: Zeta5.prop_4_3 depends on NO sorry.
+info: Zeta5/Audit.lean:212:0: Zeta5.prop_6_3 depends on NO sorry.
+info: Zeta5/Audit.lean:213:0: Zeta5.prop_5_2 depends on NO sorry.
+info: Zeta5/Audit.lean:214:0: Zeta5.eq_3_12 depends on NO sorry.
+info: Zeta5/Audit.lean:215:0: Zeta5.eq_5_16_5_18 depends on NO sorry.
+info: Zeta5/Audit.lean:216:0: Zeta5.eq_7_1 depends on NO sorry.
+info: Zeta5/Audit.lean:217:0: Zeta5.Delta_natDegree depends on NO sorry.
+info: Zeta5/Audit.lean:218:0: Zeta5.Q_natDegree depends on NO sorry.
+info: Zeta5/Audit.lean:219:0: Zeta5.eq_2_9 depends on NO sorry.
+info: Zeta5/Audit.lean:220:0: Zeta5.exists_innerAlloc depends on NO sorry.
+info: Zeta5/Audit.lean:221:0: Zeta5.stdAlloc depends on NO sorry.
+info: Zeta5/Audit.lean:222:0: Zeta5.theorem_1_1 depends on NO sorry.
+info: Zeta5/Audit.lean:223:0: Zeta5.prop_4_1_of_entry_bounds depends on NO sorry.
+info: Zeta5/Audit.lean:224:0: Zeta5.lemma_4_2 depends on NO sorry.
+info: Zeta5/Audit.lean:225:0: Zeta5.ell_lt_caseSplit depends on NO sorry.
+info: Zeta5/Audit.lean:226:0: Zeta5.lemma_3_1 depends on NO sorry.
+info: Zeta5/Audit.lean:227:0: Zeta5.AppendixB.eq_5_16_5_17 depends on NO sorry.
+info: Zeta5/Audit.lean:228:0: Zeta5.Tail.tail_bound_strong depends on NO sorry.
+info: Zeta5/Audit.lean:229:0: Zeta5.CrudeBound.eq_3_11 depends on NO sorry.
+info: Zeta5/Audit.lean:230:0: Zeta5.PrimeSum.block1_le depends on NO sorry.
+info: Zeta5/Audit.lean:231:0: Zeta5.RealBound.prop_6_3_of depends on NO sorry.
+info: Zeta5/Audit.lean:232:0: Zeta5.AppendixB.eq_5_18 depends on NO sorry.
+info: Zeta5/Audit.lean:241:0: Zeta5.outer_local_analysis depends on NO sorry.
+info: Zeta5/Audit.lean:242:0: Zeta5.PrimeSum.eq_5_7_uniformity depends on NO sorry.
+info: Zeta5/Audit.lean:243:0: Zeta5.CrudeBound.crude_entry_bound depends on NO sorry.
+info: Zeta5/Audit.lean:244:0: Zeta5.Section3.entry_bounds_4_2_4_3 depends on NO sorry.
+info: Zeta5/Audit.lean:245:0: Zeta5.HermiteBasis.det_coeffMatrix_unimodular depends on NO sorry.
+info: Zeta5/Audit.lean:246:0: Zeta5.OuterBasis.outer_local_core depends on NO sorry.
+info: Zeta5/Audit.lean:247:0: Zeta5.Uniformity.eq_5_7_uniformity depends on NO sorry.
+info: Zeta5/Audit.lean:248:0: Zeta5.Lemma33.lemma_3_3 depends on NO sorry.
+info: Zeta5/Audit.lean:249:0: Zeta5.Lemma33.pullback depends on NO sorry.
+info: Zeta5/Audit.lean:250:0: Zeta5.InnerEntries.raabe_tau depends on NO sorry.
+info: Zeta5/Audit.lean:251:0: Zeta5.InnerEntries.general_bound depends on NO sorry.
+info: Zeta5/Audit.lean:252:0: Zeta5.InnerEntries.entry_bounds depends on NO sorry.
+info: Zeta5/Audit.lean:253:0: Zeta5.RealBound.eq_6_14 depends on NO sorry.
+info: Zeta5/Audit.lean:261:0: Zeta5.Sec6.Gram.eq_6_14_of_config depends on NO sorry.
+info: Zeta5/Audit.lean:262:0: Zeta5.Sec6.Num.eq_6_7_closed depends on NO sorry.
+info: Zeta5/Audit.lean:263:0: Zeta5.Sec6.eq_6_7_closed depends on NO sorry.
+info: Zeta5/Audit.lean:264:0: Zeta5.Sec6.configBound depends on NO sorry.
+info: Zeta5/Audit.lean:265:0: Zeta5.Sec6.rho_energy_ge depends on NO sorry.
+info: Zeta5/Audit.lean:275:0: every sorry of the Zeta5 namespace is used by Zeta5.zeta5_irrational.
+info: Zeta5/Audit.lean:279:0: 'Zeta5.zeta5_irrational' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Zeta5.Axioms.hermite_pole_integral,
+ Zeta5.Axioms.pnt_prime_riemann_sum]
+info: Zeta5/Audit.lean:280:0: 'Zeta5.theorem_1_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [8993/8994] Built Zeta5 (13s)
+Build completed successfully (8994 jobs).
+lake build Zeta5 > build.log 2>&1  949.39s user 897.75s system 383% cpu 8:01.44 total
+EXIT 0

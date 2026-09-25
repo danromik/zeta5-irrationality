@@ -1,5 +1,5 @@
 # Lake build artifacts and downloaded dependencies (Mathlib cache is fetched with `lake exe cache get`)
-/.lake/
+.lake/
 
 # LaTeX auxiliary files (scoped to docs/: cert/ and numerics/ keep their recorded *.out / *.log outputs)
 docs/*.aux
@@ -9,6 +9,25 @@ docs/*.toc
 docs/*.fls
 docs/*.fdb_latexmk
 docs/*.synctex.gz
+*.aux
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.xdv
+
+# Certification scratch: worktrees and clones of other commits, uncompressed declaration
+# dumps, and renderings of the preprint (which is not distributed here)
+cert/final/**/main-wt/
+cert/final/**/head-wt/
+cert/final/**/cone-wt/
+cert/final/**/z5/
+cert/final/**/*.tsv
+cert/final/fidelity/pdfimg/
+cert/final/fidelity/pp*.txt
+cert/final/fidelity/web_scan.*
 
 # Python / Sage by-products
 __pycache__/

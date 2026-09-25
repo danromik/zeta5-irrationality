@@ -1,0 +1,10 @@
+environment constants: 786934; modules: 10814
+wrote 3862 constants from Zeta5 modules to /private/tmp/claude-501/-Users-romik-Library-CloudStorage-Dropbox-Work-projects-AI-claude-code-math-apery/1c63dac1-3ac0-40d6-b70e-8d12de6dcdfe/scratchpad/final/final.tsv
+Zeta5-namespace constants defined outside Zeta5 modules: 0 #[]
+lake env lean --run cert/final/nochange/DumpDecls.lean $S/final.tsv Zeta5  89.93s user 12.94s system 97% cpu 1:45.96 total
+EXIT 0
+dda2e28613bfc4b6ca531ceb34c298a0d052588782fa954f72420a2b646a5f8d  /private/tmp/claude-501/-Users-romik-Library-CloudStorage-Dropbox-Work-projects-AI-claude-code-math-apery/1c63dac1-3ac0-40d6-b70e-8d12de6dcdfe/scratchpad/final/final.tsv
+dda2e28613bfc4b6ca531ceb34c298a0d052588782fa954f72420a2b646a5f8d  /private/tmp/claude-501/-Users-romik-Library-CloudStorage-Dropbox-Work-projects-AI-claude-code-math-apery/1c63dac1-3ac0-40d6-b70e-8d12de6dcdfe/scratchpad/final/head808.tsv
+IDENTICAL
+
+[exited with code 0]

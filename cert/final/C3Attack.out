@@ -1,0 +1,9 @@
+'C3att.hermite_at_one' depends on axioms: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.hermite_pole_integral]
+'C3att.pnt_dyadic' depends on axioms: [propext, Classical.choice, Quot.sound, Zeta5.Axioms.pnt_prime_riemann_sum]
+'C3att.unbounded_blocked' depends on axioms: [propext, Classical.choice, Quot.sound]
+cone size (native walk) 69102
+unsafe or partial constants in the cone (0): []
+_unsafe_rec auxiliaries in the cone: []
+kinds of the five: [(false, true), (false, true), (false, true), (false, true), (false, true)]
+lake env lean cert/C3Attack.lean  6.96s user 10.35s system 99% cpu 17.416 total
+EXIT 0

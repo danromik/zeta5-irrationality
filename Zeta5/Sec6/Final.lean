@@ -50,8 +50,11 @@ eq_6_14  ⇐  Gram.eq_6_14_of_config         (6.10)–(6.13)          Gram.lean 
 All files are in `Zeta5/Sec6/`.  Shared definitions are in `Defs.lean`; elementary facts about
 the measures in `Measures.lean` (proved).  `Num/` is the kernel-checked certified partition
 for (6.2)/(6.7) (1049 cells on `[0,2]`, 2 on `[2,4]`, an analytic tail for `t ≥ 4`; generated
-by `numerics/sec6/gen_lean.py`).  Every leaf statement was tested numerically, with must-fail
-controls: `numerics/sec6/check_leaves.py` (output `check_leaves.out`).
+by `numerics/sec6/gen_lean.py`).  Before they were proved, the leaf statements were tested
+numerically in `numerics/sec6/check_leaves.py` (output `check_leaves.out`: 133 checks, 7 of
+them must-fail controls).  Sixteen leaves are tested directly.  The two branches
+`integral_log_abs_sub_cos_of_abs_le` and `integral_log_abs_sub_cos_of_one_lt_abs` are tested
+together, through `integral_log_abs_sub_cos`, and `kE_rhoM_expand` has no test of its own.
 
 **Deviation from the paper (energy step).**  The paper regularises the configuration by
 circles of radius `ε` in `ℂ` and applies Lemma 6.2 to the singular kernel `log|z − w|`.  We
@@ -64,8 +67,11 @@ convergence step of Lemma 6.2 disappear; every singular integral is one-dimensio
 margin: (6.9') has `20h` where the paper has `(120+√2)h`, and `eq_6_14_of_config` accepts
 `3h log K + 131h`.
 
-**Deviation from the paper (Gram step)**: see `Sec6/Gram.lean` — the `1/h!` of (6.10) is kept
-(it pays for one `h log K`), and `∫_0^∞(1+y)⁵e^{-y/K}dy ≤ 326K⁶` replaces the constant `652`.
+**Deviation from the paper (Gram step)**: see `Sec6/Gram.lean`.  The `1/h!` of (6.10) is kept
+through to (6.14).  The paper keeps it in (6.13) and discards it (`log h! ≥ 0`) only when it
+takes logarithms.  Here it pays for one `h log K`, so `eq_6_14_of_config` accepts
+`3h log K + 131h`; `configBound`'s `2h log K + 20h` would not need it.
+`∫_0^∞(1+y)⁵e^{-y/K}dy ≤ 326K⁶` replaces the constant `652`.
 
 **Deviation from the paper (potential inequality (6.2)/(6.7))**: Appendix A's route — the
 bound `ℬ(l,r)` of (A.9) on the 684 cells of Table 2 — is not used.  `Num/` instead evaluates
